@@ -7,10 +7,10 @@ using System.Collections.Generic;
 public class State
 {
 	public string description;
-	public Sprite image;
 	public List<Path> pathes = new List<Path>();
     public int stateGUID;
 	public Rect position;
+	public AudioClip sound;
 
 	public State(int guid)
 	{

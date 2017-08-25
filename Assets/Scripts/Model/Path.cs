@@ -12,7 +12,6 @@ public class Path
 	public Condition condition = new Condition();
     public List<ParamChanges> changes = new List<ParamChanges>();
     public int aimStateGuid;
-    public Sprite pathSprite;
 
     public State aimState
     {

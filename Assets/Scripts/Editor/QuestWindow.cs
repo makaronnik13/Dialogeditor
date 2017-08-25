@@ -142,7 +142,7 @@ public class QuestWindow : EditorWindow
         ParamsScrollPosition = GUILayout.BeginScrollView(ParamsScrollPosition, false, true, GUIStyle.none, GUI.skin.verticalScrollbar,GUILayout.Width(position.width-5), GUILayout.Height(position.height-35));
 		GUILayout.BeginVertical();
 		int i = 0;
-		Vector2 rectSize = new Vector2 ((position.width-40)/3, (position.width-40)/3);
+		Vector2 rectSize = new Vector2 ((position.width-40)/3, 150);
 
         foreach (Param param in game.parameters)
         {
@@ -174,13 +174,12 @@ public class QuestWindow : EditorWindow
 
 	void DoParamWindow(Param p, Rect r)
 	{
-        p.scrollPosition = GUILayout.BeginScrollView (p.scrollPosition, false, false, GUIStyle.none, GUI.skin.label, GUILayout.Width(r.width), GUILayout.Height(r.height));
-		GUILayout.BeginHorizontal (GUILayout.Width(r.width-5));
+        p.scrollPosition = GUILayout.BeginScrollView (p.scrollPosition, false, false, GUIStyle.none, GUI.skin.label, GUILayout.Width(r.width), GUILayout.Height(r.height-3));
 		GUILayout.BeginVertical (GUILayout.Width(r.width-5), GUILayout.Height((r.width-10)/1.5f));
-        GUILayout.Space (5);
+        //GUILayout.Space (5);
+
 		GUILayout.BeginHorizontal ();
-		p.name = EditorGUILayout.TextArea (p.name, GUILayout.Width(2*(r.width-10)/3-15));
-		p.tags = EditorGUILayout.TextArea (p.tags, GUILayout.Width((r.width-10) / 3 - 15));
+		p.name = EditorGUILayout.TextArea (p.name);
 		GUI.color = Color.red;
 		if(GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
 		{
@@ -188,255 +187,23 @@ public class QuestWindow : EditorWindow
 		}
 		GUI.color = Color.white;
 		GUILayout.EndHorizontal();
-		p.showing = !GUILayout.Toggle (!p.showing, "hidden");
-		List<Chain> chains = new List<Chain> (game.chains);
 
+
+		p.showing = !GUILayout.Toggle (!p.showing, "hidden");
 		if (p.showing) {
 			p.description = EditorGUILayout.TextArea (p.description, GUILayout.Height (45), GUILayout.Width(r.width-10));
 			p.image = (Sprite)EditorGUILayout.ObjectField (p.image, typeof(Sprite), false);
-		
-
-	
-			p.activating = GUILayout.Toggle (p.activating, "activating");
-
-
-			if (p.activating) {
-				if (p.usableChain == null || !chains.Contains (p.usableChain)) {
-					if (chains.Count > 0) {
-						p.usableChain = chains [0];
-					} else {
-						p.activating = false;
-					}
-				}
-			}
-
-
-
-			if (p.activating) {
-				
-
-					List<State> states = new List<State> ();
-					states.AddRange (p.usableChain.states);
-					if (p.usableState == null || !states.Contains (p.usableState)) 
-					{
-						p.usableState = states[0];
-					}
-                p.manualActivationWithState = GUILayout.Toggle(p.manualActivationWithState, "with state");
-                p.withChange = GUILayout.Toggle(p.withChange, "with change");
-                if (p.manualActivationWithState)
-                {
-                    p.usableChain = chains[EditorGUILayout.Popup(chains.IndexOf(p.usableChain), chains.Select(x => x.name).ToArray())];
-                    p.usableState = states[EditorGUILayout.Popup(states.IndexOf(p.usableState), states.Select(x => x.description).ToArray())];
-                }
-
-                if (p.withChange)
-                {
-                    DrawChanges(p.manualUsingChange);
-                }
-                
-            }
-
-			if (p.activating && (p.manualActivationWithState || p.withChange)) 
-			{
-				EditorGUILayout.BeginHorizontal ();
-                GUI.backgroundColor = Color.white;
-
-                try
-                {
-                    ExpressionSolver.CalculateBool(p.manualUsingCondition.conditionString, p.manualUsingCondition.Parameters);
-                }
-                catch
-                {
-                    GUI.color = Color.red;
-                }
-
-                p.manualUsingCondition.conditionString = EditorGUILayout.TextArea (p.manualUsingCondition.conditionString, GUILayout.Width(r.width - 35)); 
-				GUI.color = Color.yellow;
-				if (GUILayout.Button ((Texture2D)Resources.Load ("Icons/add") as Texture2D, GUILayout.Width (20), GUILayout.Height (20))) {
-					if (game.parameters.Count > 0) {
-						p.manualUsingCondition.AddParam (game.parameters [0]);
-					}
-				}
-
-				GUI.color = Color.white;
-				EditorGUILayout.EndHorizontal ();
-
-				Param removingParam = null;
-
-				for (int i = 0; i < p.manualUsingCondition.Parameters.Count; i++) {
-					EditorGUILayout.BeginHorizontal ();
-					EditorGUILayout.LabelField ("[p" + i + "]", GUILayout.Width ((r.width-10)/3));
-
-					if (!game.parameters.Contains (p.manualUsingCondition.Parameters [i])) {
-						if (game.parameters.Count > 0) {
-							p.manualUsingCondition.setParam(i,game.parameters [0]);
-						} else {
-							removingParam = p.manualUsingCondition.Parameters [i];
-							continue;
-						}
-					}
-
-					p.manualUsingCondition.setParam(i, game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (p.manualUsingCondition.Parameters [i]), game.parameters.Select (x => x.name).ToArray ())]); 
-
-
-					GUI.color = Color.red;
-					if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
-						removingParam = p.manualUsingCondition.Parameters [i];
-					}
-					GUI.color = Color.white;
-					EditorGUILayout.EndHorizontal ();
-				}
-
-				if (removingParam != null) {
-					p.manualUsingCondition.RemoveParam (removingParam);
-				}
-			}
 		}
+	
 
-        GUILayout.BeginHorizontal();
-		GUI.color = Color.green;
-		if (GUILayout.Button ("auto state")) {
-			if(chains.Count>0)
-			{
-				p.AddAutoActivatedChain (new Condition(), chains[0]);
-			}
-		};
         GUI.color = Color.cyan;
         if (GUILayout.Button("auto change"))
         {
             p.autoActivatedChangesGUIDS.Add(new ConditionChange(new Condition()));
         }
         GUI.color = Color.white;
-        GUILayout.EndHorizontal();
+	
 
-        ///
-		int removingCondition = -1;
-
-		for(int i = 0; i< p.autoActivatedChains.Count; i++)
-		{
-			if(p.autoActivatedChains.ElementAt(i).Value == null)
-			{
-				if(GUIDManager.GetChainByGuid(p.autoActivatedChainsGUIDS[i].chainGuid) == null)
-				{
-					List<Chain> chains2 = new List<Chain>(game.chains);	
-					if (chains2.Count > 0) {
-						p.SetAutoActivatedChain (i, chains2 [0]);
-						p.SetAutoActivatedState (i, chains2 [0].StartState);
-					} else {
-						Repaint ();
-						return;
-					}
-				}
-				else
-				{
-					p.SetAutoActivatedState (i, GUIDManager.GetChainByGuid(p.autoActivatedChainsGUIDS[i].chainGuid).StartState);	
-				}
-			}
-
-			if(!chains.Contains(GUIDManager.GetChainByStateGuid(p.autoActivatedChains.ElementAt(i).Value.stateGUID)))
-			{
-				if (chains.Count > 0) {
-					Condition pair = p.autoActivatedChains.ElementAt (i).Key;
-						p.autoActivatedChains[pair] = chains [0].StartState;
-				} else 
-				{
-					removingCondition = i;
-					continue;
-				}
-			}
-			GUILayout.BeginHorizontal ();
-			Condition c = p.autoActivatedChains.ElementAt (i).Key;
-			GUI.color = Color.white;
-
-			int v = EditorGUILayout.Popup(chains.IndexOf(GUIDManager.GetChainByGuid(p.autoActivatedChainsGUIDS[i].chainGuid)), chains.Select(x => x.name).ToArray());
-			p.SetAutoActivatedChain(i, chains[v]); 
-
-			if(p.autoActivatedChainsGUIDS[i].chainGuid!=chains[v].ChainGuid)
-			{
-				p.SetAutoActivatedState (i, chains[v].states[0]);
-			}
-
-			int v2 = EditorGUILayout.Popup(GUIDManager.GetChainByGuid(p.autoActivatedChainsGUIDS[i].chainGuid).states.IndexOf(GUIDManager.GetStateByGuid(p.autoActivatedChainsGUIDS[i].stateGuid)), GUIDManager.GetChainByStateGuid(p.autoActivatedChainsGUIDS[i].stateGuid).states.Select(x => x.description).ToArray());
-
-
-			if(v2>=GUIDManager.GetChainByGuid(p.autoActivatedChainsGUIDS[i].chainGuid).states.Count || v2<0)
-			{
-				v2 = 0;
-			}
-				
-			p.SetAutoActivatedState (i, chains[v].states[v2]);
-
-			GUI.color = Color.red;
-			if(GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
-			{
-				removingCondition = i;
-			}
-			GUILayout.EndHorizontal ();
-
-
-			GUILayout.BeginHorizontal ();
-			Param removingParam = null;
-			GUI.color = Color.white;
-            try
-            {
-                ExpressionSolver.CalculateBool(c.conditionString, c.Parameters);
-            }
-            catch
-            {
-                GUI.color = Color.red;
-            }
-            c.conditionString = EditorGUILayout.TextArea (c.conditionString, GUILayout.Width(r.width-35));
-			GUI.color = Color.yellow;
-			if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-			{
-				if(game.parameters.Count>0)
-				{
-					c.AddParam(game.parameters[0]);
-				}
-			}
-
-
-			GUI.color = Color.white;
-			EditorGUILayout.EndHorizontal ();
-
-			for(int j = 0;j<c.Parameters.Count;j++)
-			{
-				EditorGUILayout.BeginHorizontal ();
-				EditorGUILayout.LabelField ("[p"+j+"]", GUILayout.Width((r.width-10)/3));
-
-				if(!game.parameters.Contains(c.Parameters[j]))
-				{
-					if(game.parameters.Count>0){
-						c.Parameters [j] = game.parameters [0];
-					}
-					else{
-						removingParam = c.Parameters[j];
-						continue;
-					}
-				}
-
-                int val = EditorGUILayout.Popup(game.parameters.IndexOf(c.Parameters[j]), game.parameters.Select(x => x.name).ToArray());
-                c.setParam(j, game.parameters[val]);
-				GUI.color = Color.red;
-				if(GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
-				{
-					removingParam = c.Parameters[i];
-				}
-				GUI.color = Color.white;
-				EditorGUILayout.EndHorizontal ();
-			}
-
-			if(removingParam!=null)
-			{
-				c.RemoveParam (removingParam);
-			}
-		}
-		if(removingCondition>=0)
-		{
-			p.RemoveAutoActivatedChain  (removingCondition);
-		}
-        ///
-        GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
 
         ConditionChange removingConditionChange = null;
         foreach (ConditionChange conditionChange in p.autoActivatedChangesGUIDS)
@@ -478,9 +245,9 @@ public class QuestWindow : EditorWindow
         {
             p.autoActivatedChangesGUIDS.Remove(removingConditionChange);
         }
+        
         GUI.color = Color.white;
 		GUILayout.EndVertical ();
-		GUILayout.EndHorizontal ();
 		GUILayout.EndScrollView ();
 	}
 
@@ -834,7 +601,7 @@ public class QuestWindow : EditorWindow
         GUILayout.BeginHorizontal ();
 		GUILayout.BeginVertical ();
 		currentChain.states [windowID].description = EditorGUILayout.TextArea (currentChain.states [windowID].description, GUILayout.Height(75), GUILayout.Width(170));
-		currentChain.states [windowID].image = (Sprite)EditorGUILayout.ObjectField (currentChain.states [windowID].image, typeof(Sprite), false);
+		currentChain.states [windowID].sound = (AudioClip)EditorGUILayout.ObjectField (currentChain.states [windowID].sound, typeof(AudioClip), false);
 		GUILayout.EndVertical ();
 		GUILayout.EndHorizontal ();
         GUI.DragWindow();
@@ -1001,11 +768,10 @@ public class QuestWindow : EditorWindow
 		}
 		GUI.color = Color.white;
 		GUILayout.EndHorizontal ();
-        inspectedState.pathes[inspectedPath].pathSprite = (Sprite)EditorGUILayout.ObjectField(inspectedState.pathes[inspectedPath].pathSprite, typeof(Sprite), false);
-        inspectedState.pathes[inspectedPath].auto = GUILayout.Toggle(inspectedState.pathes[inspectedPath].auto, "auto", GUILayout.Width(60));
+        //inspectedState.pathes[inspectedPath].auto = GUILayout.Toggle(inspectedState.pathes[inspectedPath].auto, "auto", GUILayout.Width(60));
 
-
-        inspectedState.pathes[inspectedPath].waitInput = GUILayout.Toggle(inspectedState.pathes[inspectedPath].waitInput, "wait input", GUILayout.Width(80));
+		GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
+        //inspectedState.pathes[inspectedPath].waitInput = GUILayout.Toggle(inspectedState.pathes[inspectedPath].waitInput, "wait input", GUILayout.Width(80));
         DrawCondition (inspectedState.pathes [inspectedPath]);
 	
  

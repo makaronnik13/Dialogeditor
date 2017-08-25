@@ -8,4 +8,9 @@ public class PersonDialog : MonoBehaviour {
     public PathGame game;
     [HideInInspector]
     public int personChainId;
+
+	public void Talk()
+	{
+		Debug.Log ("talk");
+	}
 }
