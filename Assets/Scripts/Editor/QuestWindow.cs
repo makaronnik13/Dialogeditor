@@ -68,7 +68,6 @@ public class QuestWindow : EditorWindow
 
     public static void Init(PathGame editedGame = null)
     {
-        Debug.Log("init quest "+editedGame);
         game = editedGame;
         GUIDManager.SetInspectedGame(game);
         Init();

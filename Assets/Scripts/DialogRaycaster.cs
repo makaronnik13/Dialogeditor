@@ -4,24 +4,29 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class DialogRaycaster : MonoBehaviour {
+	public float length = 2;
 
 	[HideInInspector]
 	public UnityEvent OnRaycast, OffRaycast;
-	private bool avaliableHint = true;
+	[HideInInspector]
+	public bool avaliable = true;
+	private RaycastHit hit;
+	private int layerMask = (1 << 8);
 	private PersonDialog person;
 	private PersonDialog Person
 	{
 		set
 		{
-			if(person!=value && avaliableHint)
+			if(person!=value)
 			{
 				if (value) {
 					OnRaycast.Invoke ();
 				} else {
 					OffRaycast.Invoke ();
 				}
+
+				person = value;
 			}
-			person = value;
 		}
 		get
 		{
@@ -29,27 +34,40 @@ public class DialogRaycaster : MonoBehaviour {
 		}
 	}
 		
+	void Start()
+	{
+		layerMask = ~layerMask;
+	}
 
 	void Update()
 	{
-		Vector3 fwd = transform.forward;
-		RaycastHit hit;
-		var layerMask = (1 << 8);
-		layerMask = ~layerMask;
-
-		if (Physics.Raycast (transform.position, fwd, out hit, 1, layerMask)) {
-			Debug.Log (hit.collider.gameObject);
+		if (Physics.Raycast (transform.position, transform.forward, out hit, length, layerMask)) 
+		{
+			Debug.Log (hit.collider.GetComponent<PersonDialog> ());
+			if(!hit.collider.GetComponent<PersonDialog> ())
+			{
+				avaliable = true;
+				DialogGui.Instance.HideText ();
+			}
 			Person = hit.collider.GetComponent<PersonDialog> ();
-		} else {
-			Person = null;
-		}
-		if(Input.GetMouseButton(0) || Input.GetKey(KeyCode.F))
+		} 
+		else 
 		{
 			if(Person)
 			{
-				Person.Talk ();
+				DialogGui.Instance.HideText ();
 				Person = null;
-				avaliableHint = false;
+				avaliable = true;
+			}
+		}
+		if(Input.GetKey(KeyCode.F) && avaliable)
+		{
+			if(Person)
+			{
+				Camera.main.GetComponent<CameraFocuser>().Focus();
+				avaliable = false;
+				DialogGui.Instance.HideDialogHint ();
+				Person.Talk ();
 			}
 		}
 	}
