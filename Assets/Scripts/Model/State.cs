@@ -4,19 +4,45 @@ using System;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class State
+public class State: ScriptableObject
 {
 	public string description;
 	public List<Path> pathes = new List<Path>();
-    public int stateGUID;
 	public Rect position;
 	public AudioClip sound;
 
-	public State(int guid)
+	public void Init()
 	{
 		description = "";
-		position = new Rect(0,0,150,100);
-        stateGUID = guid;
+		position = new Rect(300,300,208,30);
+	}
+
+	public Path AddPath()
+	{
+		Path newPath = CreateInstance<Path> ();
+		pathes.Add(newPath);
+		AssetDatabase.AddObjectToAsset (newPath, AssetDatabase.GetAssetPath(this));
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+
+		position = new Rect (position.position, new Vector2(Mathf.Max(208, 15*(pathes.Count+1)) ,position.size.y));
+		return newPath; 
+	}
+
+	public void RemovePath(Path path)
+	{
+		pathes.Remove (path);
+		DestroyImmediate (path, true);
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+	}
+
+	public void DestroyState()
+	{
+		for(int i = 0; i<pathes.Count; i++)
+		{
+			RemovePath (pathes[i]);
+		}
 	}
 }
 

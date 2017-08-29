@@ -43,7 +43,6 @@ public class DialogRaycaster : MonoBehaviour {
 	{
 		if (Physics.Raycast (transform.position, transform.forward, out hit, length, layerMask)) 
 		{
-			Debug.Log (hit.collider.GetComponent<PersonDialog> ());
 			if(!hit.collider.GetComponent<PersonDialog> ())
 			{
 				avaliable = true;

@@ -16,15 +16,33 @@ public class PersonDialogInspector : Editor
         GUILayout.EndHorizontal();
         if (myTarget.game && myTarget.game.chains.Count>0)
         {
-            GUIDManager.SetInspectedGame(myTarget.game);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Dialog:");
-            if (!myTarget.game.chains.Select(x => x.ChainGuid).Contains(myTarget.personChainId))
+            if (!myTarget.game.chains.Contains(myTarget.personChain))
             {
-                myTarget.personChainId = myTarget.game.chains[0].ChainGuid;
+                myTarget.personChain = myTarget.game.chains[0];
             }
-            myTarget.personChainId = myTarget.game.chains[EditorGUILayout.Popup(myTarget.game.chains.IndexOf(GUIDManager.GetChainByGuid(myTarget.personChainId)), myTarget.game.chains.Select(x => x.name).ToArray())].ChainGuid;
+            myTarget.personChain = myTarget.game.chains[EditorGUILayout.Popup(myTarget.game.chains.IndexOf(myTarget.personChain), myTarget.game.chains.Select(x => x.dialogName).ToArray())];
             GUILayout.EndHorizontal();
+
+			foreach(State s in myTarget.personChain.states)
+			{
+				foreach(Path p in s.pathes)
+				{
+					if(p.withEvent)
+					{
+						string aim = "";
+						if(p.aimState!=null)
+						{
+							aim = p.aimState.description;
+						}
+						GUILayout.Label (s.description.Substring(0,Mathf.Min(s.description.Length, 8))+" -> "+aim.Substring(0,Mathf.Min(aim.Length, 8)));
+						SerializedObject serializedGame = new SerializedObject(p); 
+						SerializedProperty onPath = serializedGame.FindProperty("pathEvent"); 
+						EditorGUILayout.PropertyField(onPath); 
+					}
+				}
+			}
         }
     }
 }

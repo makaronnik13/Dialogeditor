@@ -6,28 +6,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Condition
 {
-	public List<Param> Parameters
-	{
-		get
-		{
-			List<Param> par = new List<Param> ();
-			foreach(int pg in ParametersGUID)
-			{
-				par.Add (GUIDManager.GetItemByGuid(pg));
-			}
-			return par;
-		}
-		set
-		{
-			ParametersGUID = new List<int> ();
-			foreach(Param p in value)
-			{
-				ParametersGUID.Add (p.paramGUID);
-			}
-		}
-	}
-	public List<int> ParametersGUID = new List<int>();
-
+	public List<Param> Parameters = new List<Param>();
     public string conditionString = "";
     public bool ConditionValue
     {
@@ -40,16 +19,16 @@ public class Condition
 
 	public void RemoveParam(Param p)
 	{
-		ParametersGUID.Remove (p.paramGUID);
+		Parameters.Remove (p);
 	}
 	public void AddParam(Param p)
 	{
-		ParametersGUID.Add(p.paramGUID);
+		Parameters.Add(p);
 	}
 
     public void setParam(int j, Param param)
     {
-        ParametersGUID[j] = param.paramGUID;
+        Parameters[j] = param;
     }
 }
 

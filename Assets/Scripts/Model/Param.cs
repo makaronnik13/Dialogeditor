@@ -4,15 +4,15 @@ using System;
 using System.Linq;
 
 [System.Serializable]
-public class Param
+public class Param: ScriptableObject
 {
 	public delegate void ParamActivation(State state);
     public event ParamActivation OnParamActivation;
 
    
-    public string name;
+    public string name = "new param";
 	public bool showing;
-	public string description;
+	public string description = "";
 	public Sprite image;
     public bool withChange;
 
@@ -47,12 +47,4 @@ public class Param
         }
         */
     }
-
-	public Param(int Guid)
-	{
-		this.paramGUID = Guid;
-		name = "new param";
-		showing = false;
-		description = "";
-	}
 }

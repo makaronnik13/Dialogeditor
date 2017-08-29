@@ -40,11 +40,10 @@ public class QuestWindow : EditorWindow
     State pathAimState;
     Path startPath;
     private State menuState;
-    private State inspectedState;
-    private int inspectedPath;
 	private Param deletingParam;
     private Texture2D backgroundTexture;
-    private StateLink menuStateLink;
+	private Vector2 draggingVector;
+	private State draggingState;
 
     private Texture2D BackgroundTexture
     {
@@ -69,7 +68,6 @@ public class QuestWindow : EditorWindow
     public static void Init(PathGame editedGame = null)
     {
         game = editedGame;
-        GUIDManager.SetInspectedGame(game);
         Init();
     }
 
@@ -163,6 +161,9 @@ public class QuestWindow : EditorWindow
 		if(deletingParam!=null)
 		{
 			game.parameters.Remove (deletingParam);
+			DestroyImmediate(deletingParam, true);
+			AssetDatabase.SaveAssets ();
+			AssetDatabase.Refresh ();
 			deletingParam = null;
 		}
 		GUILayout.EndVertical ();
@@ -252,7 +253,11 @@ public class QuestWindow : EditorWindow
 
 	void CreateParam()
 	{
-		game.parameters.Add (new Param(GUIDManager.GetItemGUID()));
+		Param newParam = CreateInstance<Param> ();
+		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+		game.parameters.Add (newParam);
 	}
 
     void DrowPacksWindow ()
@@ -271,7 +276,9 @@ public class QuestWindow : EditorWindow
 
     private void CreateChain()
     {
-        game.chains.Insert(0, new Chain(GUIDManager.GetChainGUID(), GUIDManager.GetStateGUID()));
+		Chain newChain = CreateInstance<Chain> ();
+		newChain.Init (game);
+		game.chains.Insert(0, newChain);
         Repaint();
     }
 
@@ -294,12 +301,10 @@ public class QuestWindow : EditorWindow
 		foreach(Chain chain in game.chains)
 		{
 			GUILayout.BeginHorizontal ();
-			chain.name = EditorGUILayout.TextArea (chain.name, GUILayout.Height(15));
+			chain.dialogName = EditorGUILayout.TextArea (chain.dialogName, GUILayout.Height(15));
 			if(GUILayout.Button("edit", GUILayout.Width(50), GUILayout.Height(15)))
 			{
 				currentChain = chain;
-                inspectedPath = -1;
-                inspectedState = null;
 				chainEditorMode = EditorMode.chains;
 			}
 			if(GUILayout.Button("delete", GUILayout.Width(50), GUILayout.Height(15)))
@@ -311,9 +316,11 @@ public class QuestWindow : EditorWindow
 
 		if(deletingChain!=null)
 		{
-            inspectedPath = -1;
-            inspectedState = null;
             game.chains.Remove (deletingChain);
+			deletingChain.DestroyChain ();
+			DestroyImmediate (deletingChain, true);
+			AssetDatabase.SaveAssets ();
+			AssetDatabase.Refresh ();
 	    }
 
 		GUILayout.EndVertical ();
@@ -326,9 +333,6 @@ public class QuestWindow : EditorWindow
         Undo.RecordObject(game, "chains");
         if (currentChain == null)
         {
-            inspectedPath = -1;
-            inspectedState = null;
-           
                 foreach (Chain c in game.chains)
                 {
                     currentChain = c;        
@@ -352,12 +356,8 @@ public class QuestWindow : EditorWindow
         {
             Vector2 delta = Event.current.mousePosition - lastMousePosition;
             foreach (State s in currentChain.states)
-            {
+            {	
                 s.position = new Rect(s.position.position+delta, s.position.size);
-            }
-            foreach (StateLink sl in currentChain.statesLinks)
-            {
-                sl.position = new Rect(sl.position.position + delta, sl.position.size);
             }
             lastMousePosition = Event.current.mousePosition;
             Repaint();
@@ -369,27 +369,24 @@ public class QuestWindow : EditorWindow
 
         if (makingPath && !makingPathRect.Contains(Event.current.mousePosition))
         {
-            startPath.aimState = new State(-1);
+			startPath.aimState = null;
         }
 
      
+		State upperState = null;
 
         foreach (State state in currentChain.states)
 		{
-			DrawStateBox (state);
+			if (DrawStateBox (state)) 
+			{
+				upperState = state;
+			}
 		}
-
-
-        foreach (StateLink stateLink in currentChain.StateLinks)
-        {
-            DrawStateLinkBox(stateLink);
-        }
-        
-
-        if (inspectedState != null)
-        {
-            DrawPathWindow();
-        }
+		if(upperState)
+		{
+			currentChain.states.Remove(upperState);
+			currentChain.states.Insert(currentChain.states.Count, upperState);
+		}
 
         EndWindows ();
 
@@ -398,14 +395,31 @@ public class QuestWindow : EditorWindow
 
 		if (evt.button == 1 && evt.type == EventType.MouseDown)
 		{
+			State onState = null;
+			foreach(State s in currentChain.states)
+			{
+				if(s.position.Contains(evt.mousePosition))
+				{
+					onState = s;
+				}
+			}
 
-			lastMousePosition = evt.mousePosition;
-
-
+			if (onState) {
+				menuState = onState;
+				lastMousePosition = Event.current.mousePosition;
+				GenericMenu menu = new GenericMenu();
+				Undo.RecordObject(game, "chainsed");
+				menu.AddItem(new GUIContent("Remove state"), false, RemoveState);
+				menu.AddItem(new GUIContent("Add path"), false, AddPath);
+				menu.AddItem(new GUIContent("Make start"), false, MakeStart);
+				Undo.FlushUndoRecordObjects();
+				menu.ShowAsContext();
+			} else {
+				lastMousePosition = evt.mousePosition;
 				GenericMenu menu = new GenericMenu();
 				menu.AddItem(new GUIContent("Add state"), false, CreateNewState);
-                menu.AddItem(new GUIContent("Add state link"), false, CreateNewStateLink);
-                menu.ShowAsContext();
+				menu.ShowAsContext();
+			}
 		}
 
         if (evt.button == 0 && evt.type == EventType.MouseUp)
@@ -429,11 +443,6 @@ public class QuestWindow : EditorWindow
             foreach (State s in currentChain.states)
             {
                 s.position = new Rect(s.position.position + delta, s.position.size);
-            }
-
-            foreach (StateLink sl in currentChain.statesLinks)
-            {
-                sl.position = new Rect(sl.position.position + delta, sl.position.size);
             }
         }
     }
@@ -460,16 +469,11 @@ public class QuestWindow : EditorWindow
                     Handles.BeginGUI();
                     Handles.color = Color.red;
 
-                    Rect end = path.aimState.position;
+					Rect end = path.aimState.position;
 
-                    foreach (StateLink sl in currentChain.statesLinks)
-                    {
-                        if (sl.stateGUID == path.aimState.stateGUID)
-                        {
-                            end = sl.position;
-                        }
-                    }
-                    DrawNodeCurve( new Rect(state.position.position + new Vector2(state.position.width + 15f, 7.5f + i * 19), Vector2.zero), end, Color.gray);
+
+					Rect start =new Rect(state.position.x+16 * i, state.position.y + state.position.height, 15, 15);
+					DrawNodeCurve(start, end, Color.gray);
                     Handles.EndGUI();
                 }
                 i++;
@@ -477,37 +481,10 @@ public class QuestWindow : EditorWindow
         }
     }
 
-    void DrawStateLinkBox(StateLink stateLink)
-    {
-        Rect header = new Rect(stateLink.position.position, new Vector3(stateLink.position.width, 20));
 
-        
-        if (header.Contains(Event.current.mousePosition) && makingPath == true)
-        {
-            GUI.backgroundColor = Color.yellow;
-            if (Event.current.button == 0 && Event.current.type == EventType.MouseUp)
-            {
-                if (GUIDManager.GetStateByGuid(stateLink.stateGUID)!=null)
-                {
-                    startPath.aimState = GUIDManager.GetStateByGuid(stateLink.stateGUID);
-                }
-                makingPath = false;
-                Repaint();
-            }
-        }
-
-        string title = "";
-        if (GUIDManager.GetStateByGuid(stateLink.stateGUID)!=null)
-        {
-            title = GUIDManager.GetStateByGuid(stateLink.stateGUID).description;
-        }
-        stateLink.position = GUILayout.Window(currentChain.statesLinks.IndexOf(stateLink)+90000, stateLink.position, DoStateLinkWindow, title, GUILayout.Width(100), GUILayout.Height(60));   
-        GUI.backgroundColor = Color.white;
-    }
-
-    void DrawStateBox(State state)
+	bool DrawStateBox(State state)
 	{
-
+		bool moving = false;
         //GUI.Box(_boxPos, state.description);
         string ss = "";
         if (state.description!="")
@@ -515,25 +492,58 @@ public class QuestWindow : EditorWindow
             ss = state.description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
             ss = ss.Substring(0, Mathf.Min(20, ss.Length));
         }
-        Rect header = new Rect(state.position.position, new Vector3(state.position.width, 20));
+       
 
-        if (currentChain.StartState == state)
-        {
-            GUI.backgroundColor = Color.green;
-        }
 
-        if (header.Contains(Event.current.mousePosition) && makingPath == true)
-        {
-            GUI.backgroundColor = Color.yellow;
-            if (Event.current.button == 0 && Event.current.type == EventType.MouseUp)
-            {
-                startPath.aimState = state;
-                makingPath = false;
-                Repaint();
-            }
-        }
-				
-        state.position = GUILayout.Window(currentChain.states.IndexOf(state), state.position, DoStateWindow, ss, GUILayout.Width(180), GUILayout.Height(120));
+
+		if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && state.position.Contains(Event.current.mousePosition)) 
+		{
+			moving = true;
+			Selection.activeObject = state;
+			draggingState = state;
+			draggingVector = state.position.position - Event.current.mousePosition;
+			Repaint ();
+		}
+
+		if (Event.current.type == EventType.mouseDrag) {
+			if(draggingState==state)
+			{
+				state.position = new Rect (draggingVector+Event.current.mousePosition, state.position.size);
+				Repaint ();
+			}
+		}
+			
+		if(Event.current.type == EventType.mouseUp && Event.current.button == 0 )
+		{
+			draggingState = null;
+		}
+
+		if (currentChain.StartState == state) {
+			GUI.backgroundColor = Color.green * 0.8f;
+		} else 
+		{
+			GUI.backgroundColor = Color.white * 0.8f;
+		}
+
+		if(Selection.activeObject == state)
+		{
+			GUI.backgroundColor = GUI.backgroundColor * 1.3f;
+		}
+
+		if (state.position.Contains(Event.current.mousePosition) && makingPath == true)
+		{
+			GUI.backgroundColor = Color.yellow;
+			if (Event.current.button == 0 && Event.current.type == EventType.MouseUp)
+			{
+				startPath.aimState = state;
+				makingPath = false;
+				Repaint();
+			}
+		}
+
+		GUI.Box (state.position, ss);
+
+        //state.position = GUILayout.Window(currentChain.states.IndexOf(state), state.position, DoStateWindow, ss, GUILayout.Width(180), GUILayout.Height(30));
 
         int i = 0;
 
@@ -541,9 +551,9 @@ public class QuestWindow : EditorWindow
 
         foreach (Path path in state.pathes)
         {
-            Rect r = new Rect(state.position.x + state.position.width, state.position.y + 16 * i, 15, 15);
+			Rect r = new Rect(state.position.x+16 * i, state.position.y + state.position.height, 15, 15);
             GUI.backgroundColor = Color.white;
-            if (inspectedState == state && inspectedPath == state.pathes.IndexOf(path))
+			if (Selection.activeObject == path)
             {
                 GUI.backgroundColor = Color.gray;
             }
@@ -560,17 +570,7 @@ public class QuestWindow : EditorWindow
             {
                 if (makingPath)
                 {
-                    if (inspectedState != state || inspectedPath != state.pathes.IndexOf(path))
-                    {
-                        inspectedPath = state.pathes.IndexOf(path);
-                        inspectedState = state;
-                        Repaint();
-                    }
-                    else
-                    {
-                        inspectedPath = -1;
-                        Repaint();
-                    }
+					Selection.activeObject = path;
                 }
                 makingPath = false;
             }
@@ -578,110 +578,9 @@ public class QuestWindow : EditorWindow
         }
 
         GUI.backgroundColor = Color.white;
+		return moving;
     }
-
-	void DoStateWindow(int windowID)
-	{
-        Event evt = Event.current;
-
-        if (evt.button == 1 && evt.type == EventType.MouseDown)
-        {     
-            menuState = currentChain.states[windowID];
-            lastMousePosition = evt.mousePosition;
-            GenericMenu menu = new GenericMenu();
-            Undo.RecordObject(game, "chainsed");
-            menu.AddItem(new GUIContent("Remove state"), false, RemoveState);
-            menu.AddItem(new GUIContent("Add path"), false, AddPath);
-            menu.AddItem(new GUIContent("Make start"), false, MakeStart);
-            Undo.FlushUndoRecordObjects();
-            menu.ShowAsContext();
-        }
-
-        GUILayout.BeginHorizontal ();
-		GUILayout.BeginVertical ();
-		currentChain.states [windowID].description = EditorGUILayout.TextArea (currentChain.states [windowID].description, GUILayout.Height(75), GUILayout.Width(170));
-		currentChain.states [windowID].sound = (AudioClip)EditorGUILayout.ObjectField (currentChain.states [windowID].sound, typeof(AudioClip), false);
-		GUILayout.EndVertical ();
-		GUILayout.EndHorizontal ();
-        GUI.DragWindow();
-	}
-
-    void DoStateLinkWindow(int windowID)
-    {
-        
-        Event evt = Event.current;
-
-        if (evt.button == 1 && evt.type == EventType.MouseDown)
-        {
-            menuStateLink = currentChain.statesLinks[windowID-90000];
-            lastMousePosition = evt.mousePosition;
-            GenericMenu menu = new GenericMenu();
-            Undo.RecordObject(game, "remove link");
-            menu.AddItem(new GUIContent("Remove state link"), false, RemoveStateLink);
-            Undo.FlushUndoRecordObjects();
-            menu.ShowAsContext();
-        }
-        
-
-        GUILayout.BeginVertical();
-        List<Chain> avaliableChains = new List<Chain>(game.chains);
-        
-
-        avaliableChains.Remove(currentChain);
-
-        if (avaliableChains.Count>0)
-        {
-            if (currentChain.statesLinks.Count>(windowID - 90000))
-            {
-                currentChain.statesLinks[windowID - 90000].chainGUID = avaliableChains[0].ChainGuid;
-            }
-
-            currentChain.statesLinks[windowID-90000].chainGUID = avaliableChains[EditorGUILayout.Popup(avaliableChains.IndexOf(GUIDManager.GetChainByGuid(currentChain.statesLinks[windowID-90000].chainGUID)), avaliableChains.Select(x => x.name).ToArray())].ChainGuid;
-
-            List<State> avaliableStates = new List<State>();
-            foreach (State  s in GUIDManager.GetChainByGuid(currentChain.statesLinks[windowID - 90000].chainGUID).states)
-            {
-                avaliableStates.Add(s);
-            }
-
-            if (GUIDManager.GetStateByGuid(currentChain.statesLinks[windowID-90000].stateGUID) == null || !avaliableStates.Contains(GUIDManager.GetStateByGuid(currentChain.statesLinks[windowID-90000].stateGUID)))
-            {
-                currentChain.statesLinks[windowID-90000].stateGUID = avaliableStates[0].stateGUID;
-            }
-
-            currentChain.statesLinks[windowID-90000].stateGUID = avaliableStates[EditorGUILayout.Popup(avaliableStates.IndexOf(GUIDManager.GetStateByGuid(currentChain.statesLinks[windowID - 90000].stateGUID)), avaliableStates.Select(x => x.description).ToArray())].stateGUID;
-        }
-        GUILayout.EndVertical();
-        GUI.DragWindow();
-    }
-
-    private void RemoveStateLink()
-    {
-        foreach (State s in currentChain.states)
-        {
-            List<Path> removigPathes = new List<Path>();
-            int i = 0;
-            foreach (Path p in s.pathes)
-            {
-                if (p.aimState == GUIDManager.GetStateByGuid(menuStateLink.stateGUID))
-                {
-                    removigPathes.Add(s.pathes[i]);
-                    inspectedPath = -1;
-                }
-                i++;
-            }
-
-            foreach (Path p in s.pathes.FindAll((p) => removigPathes.Contains(p)))
-            {
-                p.aimState = new State(-1);
-            }
-        }
-
-        //inspectedState = null;
-        currentChain.statesLinks.Remove(menuStateLink);
-        Repaint();
-        Debug.Log(currentChain.statesLinks.Count);
-    }
+		
 
     private void MakeStart()
     {
@@ -690,25 +589,6 @@ public class QuestWindow : EditorWindow
 
     private void RemoveState()
     {
-        if (menuState == currentChain.StartState)
-        {
-            if (currentChain.states.Count == 1)
-            {
-                currentChain.StartState = CreateState();
-            }
-            else
-            {
-                foreach (State s in currentChain.states)
-                {
-                    if (s!=menuState)
-                    {
-                        currentChain.StartState = s;
-                        break;
-                    }
-                }
-            }
-        }
-
         foreach (State s in currentChain.states)
         {
             List<Path> removigPathes = new List<Path>();
@@ -717,72 +597,19 @@ public class QuestWindow : EditorWindow
             {
                 if (p.aimState == menuState)
                 {
-                    removigPathes.Add(s.pathes[i]);
-                    inspectedPath = -1;
+					p.aimState = null;
                 }
-                i++;
-            }
-            foreach(Path p in s.pathes.FindAll((p) => removigPathes.Contains(p)))
-            {
-                p.aimState = new State(-1);
-            }
+            }    
         }
-
-        inspectedState = null;
-        currentChain.states.Remove(menuState);
+			
+		currentChain.RemoveState(menuState);
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
     }
 
     private void AddPath()
     {
-        menuState.pathes.Add(new Path());
-        inspectedPath = menuState.pathes.Count-1;
-        inspectedState = menuState;
-    }
-
-    private void DrawPathWindow()
-    {
-		if (inspectedState.pathes.Count > inspectedPath && inspectedPath>=0)
-        {
-            string ss = "";
-            if (inspectedState.pathes[inspectedPath].text != "")
-            {
-                ss = inspectedState.pathes[inspectedPath].text.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-                ss = ss.Substring(0, Mathf.Min(20, ss.Length));
-            }
-            GUILayout.Window(42, new Rect(inspectedState.position.x, inspectedState.position.y+ inspectedState.position.height, 100, 50), DoPathWindow, ss, GUILayout.Width(165), GUILayout.Height(50));
-        }
-    }
-
-    private void DoPathWindow(int id)
-    {
-        GUILayout.BeginVertical(GUILayout.Width(171));
-		GUILayout.BeginHorizontal ();
-        inspectedState.pathes[inspectedPath].text = EditorGUILayout.TextArea(inspectedState.pathes[inspectedPath].text, GUILayout.Height(30), GUILayout.Width(171-25));
-		GUI.color = Color.red;
-		if(GUILayout.Button("",GUILayout.Width(20),GUILayout.Height(20)))
-		{
-			inspectedState.pathes.RemoveAt (inspectedPath);
-			inspectedPath = -1;
-			return;
-		}
-		GUI.color = Color.white;
-		GUILayout.EndHorizontal ();
-        //inspectedState.pathes[inspectedPath].auto = GUILayout.Toggle(inspectedState.pathes[inspectedPath].auto, "auto", GUILayout.Width(60));
-
-		GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
-        //inspectedState.pathes[inspectedPath].waitInput = GUILayout.Toggle(inspectedState.pathes[inspectedPath].waitInput, "wait input", GUILayout.Width(80));
-        DrawCondition (inspectedState.pathes [inspectedPath]);
-	
- 
-            
-   
-
-		GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
-
-		DrawChanges (inspectedState.pathes[inspectedPath]);
-        
-        GUI.color = Color.white;
-        GUILayout.EndVertical();
+		menuState.AddPath();
     }
 
     private void CreateNewState()
@@ -790,32 +617,16 @@ public class QuestWindow : EditorWindow
         CreateState();
     }
 
-    private void CreateNewStateLink()
-    {
-        CreateStateLink();
-    }
 
-    StateLink CreateStateLink()
-    {
-        List<Chain> chains = new List<Chain>(game.chains);
-        chains.Remove(currentChain);
 
-        if (chains.Count>0)
-        {
-            StateLink link = new StateLink(chains[0]);
-            link.position = new Rect(lastMousePosition.x - link.position.width / 2, lastMousePosition.y - link.position.height / 2, link.position.width, link.position.height);
-            currentChain.statesLinks.Add(link);
-            return link;
-        }
-        return null;
-    }
+   
 
     State CreateState()
 	{
-		State newState = new State(GUIDManager.GetStateGUID());
+		State newState = currentChain.AddState ();
 		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
-		currentChain.states.Add (newState);
-        return newState;
+        
+		return newState;
 	}
 
 	private void OnDestroy()
@@ -825,71 +636,7 @@ public class QuestWindow : EditorWindow
 			AssetDatabase.SaveAssets ();
 		}
 	}
-
-	private void DrawCondition(Path path)
-	{
-		EditorGUILayout.BeginHorizontal ();
-
-        GUI.backgroundColor = Color.white;
-        try
-        {
-            ExpressionSolver.CalculateBool(path.condition.conditionString, path.condition.Parameters);
-        }
-        catch
-        {
-            GUI.color = Color.red;
-        }
-
-		path.condition.conditionString = EditorGUILayout.TextArea (path.condition.conditionString, GUILayout.Width(171 - 25));
-         
-		GUI.color = Color.yellow;
-		if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-		{
-			if(game.parameters.Count>0)
-			{
-				path.condition.AddParam(game.parameters[0]);
-			}
-		}
-
-		GUI.color = Color.white;
-		EditorGUILayout.EndHorizontal ();
-
-		Param removingParam = null;
-
-		for(int i = 0;i<path.condition.Parameters.Count;i++)
-		{
-			EditorGUILayout.BeginHorizontal ();
-			EditorGUILayout.LabelField ("[p"+i+"]", GUILayout.Width(35));
-
-			if(!game.parameters.Contains(path.condition.Parameters[i]))
-			{
-				if(game.parameters.Count>0){
-					path.condition.Parameters [i] = game.parameters [0];
-				}
-				else{
-					removingParam = path.condition.Parameters[i];
-					continue;
-				}
-			}
-			path.condition.setParam(i, game.parameters[EditorGUILayout.Popup (game.parameters.IndexOf(path.condition.Parameters[i]), game.parameters.Select (x => x.name).ToArray())]); 
-
-
-			GUI.color = Color.red;
-			if(GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
-			{
-				removingParam = path.condition.Parameters[i];
-			}
-			GUI.color = Color.white;
-			EditorGUILayout.EndHorizontal ();
-		}
-
-		if(removingParam!=null)
-		{
-			path.condition.RemoveParam (removingParam);
-		}
-
-	}
-
+		
     private void DrawCondition(Condition condition)
     {
         GUILayout.BeginVertical();
@@ -958,104 +705,6 @@ public class QuestWindow : EditorWindow
         GUILayout.EndVertical();
     }
 
-    private void DrawChanges(Path path)
-	{
-		GUILayout.BeginHorizontal ();
-		GUILayout.FlexibleSpace ();
-		GUI.color = Color.green;
-		if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-		{
-			if(game.parameters.Count>0)
-			{
-				inspectedState.pathes[inspectedPath].changes.Add(new ParamChanges(game.parameters[0]));
-			}
-		}
-		GUILayout.EndHorizontal ();
-		GUI.color = Color.white;
-
-		ParamChanges removingChanger = null;
-		for (int i = 0; i< path.changes.Count; i++) {
-			EditorGUILayout.BeginHorizontal ();
-
-			if(!game.parameters.Contains(path.changes[i].aimParam))
-			{
-				if (game.parameters.Count > 0) {
-					path.changes [i].aimParam = game.parameters [0];	
-				} else {
-					removingChanger = path.changes [i];
-					continue;
-				}
-			}
-			path.changes [i].aimParam = game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].aimParam), game.parameters.Select (x => x.name).ToArray ())]; 
-
-			GUILayout.Label ("=");
-
-            GUI.backgroundColor = Color.white;
-            try
-            {
-                ExpressionSolver.CalculateFloat(path.changes[i].changeString, path.changes[i].parameters);
-            }
-            catch
-            {
-                GUI.color = Color.red;
-            }
-
-            path.changes [i].changeString = EditorGUILayout.TextArea(path.changes [i].changeString, GUILayout.Width(58));
-			GUI.color = Color.red;
-			if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
-				removingChanger = path.changes[i];
-			}
-			GUI.color = Color.yellow;
-			if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
-				if (game.parameters.Count > 0) {
-					path.changes[i].AddParam (game.parameters [0]);
-				}
-			}
-			GUI.color = Color.white;
-
-			Param removingParam = null;
-			EditorGUILayout.EndHorizontal ();
-
-			for (int j = 0; j < path.changes[i].parameters.Count; j++) {
-				EditorGUILayout.BeginHorizontal ();
-				EditorGUILayout.LabelField ("[p" + j + "]", GUILayout.Width (35));
-
-				if (!game.parameters.Contains (path.changes[i].parameters [j])) {
-					if (game.parameters.Count > 0) {
-						path.changes[i].setParam(game.parameters [0], j);
-					} else {
-						removingParam = path.changes[i].parameters [j];
-						continue;
-					}
-				}
-
-				int v = EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].parameters [j]), game.parameters.Select (x => x.name).ToArray ());
-
-
-                path.changes[i].setParam(game.parameters[v], j);
-                
-
-                GUI.color = Color.red;
-				if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
-					removingParam = path.changes[i].parameters [j];
-				}
-				GUI.color = Color.white;
-				EditorGUILayout.EndHorizontal ();
-			}
-
-			if (removingParam != null) {
-				path.changes[i].RemoveParam (removingParam);
-			}
-
-			GUI.color = Color.white;
-
-		}
-		if(removingChanger!=null)
-		{
-			path.changes.Remove (removingChanger);
-		}
-	}
-
     private void DrawChanges(ParamChanges change)
     {
         GUILayout.BeginVertical();
@@ -1083,7 +732,7 @@ public class QuestWindow : EditorWindow
             GUI.backgroundColor = Color.white;
             try
             {
-                ExpressionSolver.CalculateFloat(change.changeString, change.parameters);
+                ExpressionSolver.CalculateFloat(change.changeString, change.Parameters);
             }
             catch
             {
@@ -1104,17 +753,17 @@ public class QuestWindow : EditorWindow
             Param removingParam = null;
             EditorGUILayout.EndHorizontal();
 
-            if (change.parameters == null)
+            if (change.Parameters == null)
             {
                 change = new ParamChanges(change.aimParam);
             }
 
-        for (int j = 0; j < change.parameters.Count; j++)
+        for (int j = 0; j < change.Parameters.Count; j++)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("[p" + j + "]", GUILayout.Width(35));
 
-                if (!game.parameters.Contains(change.parameters[j]))
+                if (!game.parameters.Contains(change.Parameters[j]))
                 {
                     if (game.parameters.Count > 0)
                     {
@@ -1122,17 +771,17 @@ public class QuestWindow : EditorWindow
                     }
                     else
                     {
-                        removingParam = change.parameters[j];
+                        removingParam = change.Parameters[j];
                         continue;
                     }
                 }
 
-                int v = EditorGUILayout.Popup(game.parameters.IndexOf(change.parameters[j]), game.parameters.Select(x => x.name).ToArray());
+                int v = EditorGUILayout.Popup(game.parameters.IndexOf(change.Parameters[j]), game.parameters.Select(x => x.name).ToArray());
                 change.setParam(game.parameters[v], j);
                 GUI.color = Color.red;
                 if (GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
                 {
-                    removingParam = change.parameters[j];
+                    removingParam = change.Parameters[j];
                 }
                 GUI.color = Color.white;
                 EditorGUILayout.EndHorizontal();
@@ -1148,10 +797,10 @@ public class QuestWindow : EditorWindow
 
     void DrawNodeCurve(Rect start, Rect end, Color c)
     {
-        Vector3 startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
-        Vector3 endPos = new Vector3(end.x, end.y + end.height / 2, 0);
-        Vector3 startTan = startPos + Vector3.right * 150;
-        Vector3 endTan = endPos + Vector3.left * 150;
+		Vector3 startPos = new Vector3(start.x+start.width/2, start.y + start.height / 2, 0);
+		Vector3 endPos = new Vector3(end.x+end.width/2, end.y + end.height / 2, 0);
+        Vector3 startTan = startPos;
+        Vector3 endTan = endPos;
         Color shadowCol = new Color(0, 0, 0, 0.06f);
         for (int i = 0; i < 2; i++) // Draw a shadow
         Handles.DrawBezier(startPos, endPos, startTan, endTan, shadowCol, null, (i + 1) * 7);

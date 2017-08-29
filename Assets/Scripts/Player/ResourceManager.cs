@@ -49,7 +49,7 @@ public class ResourceManager : Singleton<ResourceManager> {
 	{
 		foreach(ParamChanges pch in changers)
 		{
-			SetParam(pch.aimParam.name, pch.changeString, pch.parameters);
+			SetParam(pch.aimParam.name, pch.changeString, pch.Parameters);
 		}
 	}
 

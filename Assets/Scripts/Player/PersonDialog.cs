@@ -9,18 +9,17 @@ public class PersonDialog : MonoBehaviour {
     [HideInInspector]
     public PathGame game;
 	[SerializeField]
-	private int _personChainId;
-	public int personChainId
+	private Chain _personChain;
+	public Chain personChain
 	{
 		set
 		{
-			_personChainId = value;
-			currentStateId = (GUIDManager.GetChainByGuid(value).StartState).stateGUID;
-			Debug.Log (currentStateId);
+			_personChain = value;
+			currentState = value.StartState;
 		}
 		get
 		{
-			return _personChainId;
+			return _personChain;
 		}
 	}
 	private AudioSource source;
@@ -36,15 +35,13 @@ public class PersonDialog : MonoBehaviour {
 		}
 	}
 	[SerializeField]
-	private int currentStateId;
+	private State currentState;
 
 	public void Talk()
 	{
-		GUIDManager.SetInspectedGame (game);
-		ResourceManager.Instance.Init(game);
-		DialogGui.Instance.ShowText(GUIDManager.GetStateByGuid (currentStateId).description);
+		DialogGui.Instance.ShowText(currentState.description);
 		Source.Stop ();
-		Source.clip = GUIDManager.GetStateByGuid (currentStateId).sound;
+		Source.clip = currentState.sound;
 		if (Source.clip) {
 			StartCoroutine(ShowVariants (Source.clip.length));
 		} else {
@@ -55,6 +52,6 @@ public class PersonDialog : MonoBehaviour {
 	IEnumerator ShowVariants(float time)
 	{
 		yield return new WaitForSeconds(time);
-		DialogGui.Instance.ShowVariants (GUIDManager.GetStateByGuid (currentStateId));
+		DialogGui.Instance.ShowVariants (currentState);
 	}
 }

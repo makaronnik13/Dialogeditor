@@ -3,46 +3,13 @@
 [System.Serializable]
 public class ParamChanges
 {
-    public Param aimParam
-    {
-        get
-        {   
-            return  GUIDManager.GetItemByGuid(aimParamGui);
-        }
-        set
-        {
-            aimParamGui = value.paramGUID;
-        } 
-    }
-
-    public int aimParamGui;
-	public List<Param> parameters
-	{
-		get
-		{
-			List<Param> par = new List<Param> ();
-			foreach(int pg in ParametersGUID)
-			{
-				par.Add (GUIDManager.GetItemByGuid(pg));
-			}
-			return par;
-		}
-		set
-		{
-			ParametersGUID = new List<int> ();
-			foreach(Param p in value)
-			{
-				ParametersGUID.Add (p.paramGUID);
-			}
-		}
-	}
-
+	public Param aimParam;
     public void setParam(Param p, int index)
     {
-        ParametersGUID[index] = p.paramGUID;
+		Parameters[index] = p;
     }
 
-	public List<int> ParametersGUID = new List<int>();
+	public List<Param> Parameters = new List<Param>();
     public string changeString = "";
 
 	public ParamChanges(Param aimParam)
@@ -52,10 +19,10 @@ public class ParamChanges
 
 	public void RemoveParam(Param p)
 	{
-		ParametersGUID.Remove (p.paramGUID);
+		Parameters.Remove (p);
 	}
 	public void AddParam(Param p)
 	{
-		ParametersGUID.Add(p.paramGUID);
+		Parameters.Add(p);
 	}
 }

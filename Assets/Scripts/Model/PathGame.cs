@@ -13,19 +13,4 @@ public class PathGame: ScriptableObject
     public List<Chain> chains = new List<Chain>();
 	[HideInInspector]
     public List<Param> parameters = new List<Param>();
-
-    public State GetStateByGuid(int aimStateGuid)
-    {
-            foreach (Chain c in chains)
-            {
-                foreach (State s in c.states)
-                {
-                    if (s.stateGUID == aimStateGuid)
-                    {
-                        return s;
-                    }
-                }
-        }
-        return null;
-    }
 }
