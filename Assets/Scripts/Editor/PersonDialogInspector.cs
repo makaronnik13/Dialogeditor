@@ -36,7 +36,7 @@ public class PersonDialogInspector : Editor
 						{
 							aim = p.aimState.description;
 						}
-						GUILayout.Label (s.description.Substring(0,Mathf.Min(s.description.Length, 8))+" -> "+aim.Substring(0,Mathf.Min(aim.Length, 8)));
+						GUILayout.Label (s.description.Substring(0,Mathf.Min(s.description.Length, 8))+" -> "+p.text.Substring(0, Mathf.Min(p.text.Length, 5))+"->"+aim.Substring(0,Mathf.Min(aim.Length, 8)));
 						SerializedObject serializedGame = new SerializedObject(p); 
 						SerializedProperty onPath = serializedGame.FindProperty("pathEvent"); 
 						EditorGUILayout.PropertyField(onPath); 

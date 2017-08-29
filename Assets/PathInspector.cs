@@ -39,9 +39,10 @@ public class PathInspector : Editor {
 		}
 		GUI.color = Color.white;
 		GUILayout.EndHorizontal ();
-		//inspectedState.pathes[inspectedPath].auto = GUILayout.Toggle(inspectedState.pathes[inspectedPath].auto, "auto", GUILayout.Width(60));
+		GUILayout.BeginHorizontal ();
+		p.auto = GUILayout.Toggle(p.auto, "auto", GUILayout.Width(60));
 		p.withEvent = GUILayout.Toggle(p.withEvent, "action", GUILayout.Width(60));
-
+		GUILayout.EndHorizontal ();
 		GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
 		//inspectedState.pathes[inspectedPath].waitInput = GUILayout.Toggle(inspectedState.pathes[inspectedPath].waitInput, "wait input", GUILayout.Width(80));
 		DrawCondition (p);
@@ -71,7 +72,7 @@ public class PathInspector : Editor {
 			GUI.color = Color.red;
 		}
 
-		path.condition.conditionString = EditorGUILayout.TextArea (path.condition.conditionString, GUILayout.Width(171 - 25));
+		path.condition.conditionString = EditorGUILayout.TextArea (path.condition.conditionString);
 
 		GUI.color = Color.yellow;
 		if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
