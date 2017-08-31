@@ -15,6 +15,6 @@ public class TextContent : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		contentTransform.rect.Set(contentTransform.rect.position.x, contentTransform.rect.position.y, contentTransform.rect.width, textTransform.rect.height+50);
+		contentTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textTransform.sizeDelta.y);
 	}
 }

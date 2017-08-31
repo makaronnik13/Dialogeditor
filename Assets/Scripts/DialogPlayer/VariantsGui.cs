@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.Events;
 
 public class VariantsGui : MonoBehaviour {
 
@@ -9,13 +10,13 @@ public class VariantsGui : MonoBehaviour {
 	private float variantHeight;
 	private RectTransform port;
 
-	private void Start()
+	private void Awake()
 	{
 		variantHeight = variantPrefab.GetComponent<RectTransform> ().rect.height;
 		port = GetComponent<RectTransform> ();
 	}
 
-	public void ShowVariants(List<Path> pathes)
+	public void ShowVariants(List<Path> pathes, Dictionary<Path, UnityEvent> pathEvents)
 	{
 		foreach(Transform child in transform)
 		{
@@ -25,7 +26,12 @@ public class VariantsGui : MonoBehaviour {
 		foreach(Path p in pathes)
 		{
 			VariantButton newButton = Instantiate (variantPrefab, port).GetComponent<VariantButton>();
-			newButton.Init (p);
+			if (pathEvents.ContainsKey (p)) {
+				newButton.Init (p, pathEvents [p]);
+			} else 
+			{
+				newButton.Init (p, null);
+			}
 		}
 	}
 }

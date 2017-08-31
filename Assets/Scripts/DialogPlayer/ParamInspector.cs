@@ -46,14 +46,14 @@ public class ParamInspector : Editor
 			p.image = (Sprite)EditorGUILayout.ObjectField (p.image, typeof(Sprite), false);
 		}
 
-
+		/*
 		GUI.color = Color.cyan;
 		if (GUILayout.Button("auto change"))
 		{
 			p.autoActivatedChangesGUIDS.Add(new ConditionChange(new Condition()));
 		}
 		GUI.color = Color.white;
-
+		*/
 
 
 		ConditionChange removingConditionChange = null;

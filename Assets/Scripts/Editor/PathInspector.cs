@@ -10,7 +10,6 @@ public class PathInspector : Editor {
 
 	private Path p;
 	private PathGame game;
-	private State removingState = null;
 
 	public void OnEnable()
 	{
@@ -22,44 +21,32 @@ public class PathInspector : Editor {
 	{
 		GUILayout.BeginHorizontal ();
 		p.text = EditorGUILayout.TextArea(p.text, GUILayout.Height(30));
-		GUI.color = Color.red;
-		if(GUILayout.Button("",GUILayout.Width(20),GUILayout.Height(20)))
-		{
-			foreach(Chain c in game.chains)
-			{
-				foreach(State s in c.states)
-				{
-					if(s.pathes.Contains(p))
-					{
-						removingState = s;
-					}
-				}
-			}
-			return;
-		}
 		GUI.color = Color.white;
 		GUILayout.EndHorizontal ();
 		GUILayout.BeginHorizontal ();
 		p.auto = GUILayout.Toggle(p.auto, "auto", GUILayout.Width(60));
 		p.withEvent = GUILayout.Toggle(p.withEvent, "action", GUILayout.Width(60));
+		EditorGUI.BeginDisabledGroup (game.parameters.Count == 0);
+		if (GUILayout.Button("add condition param"))
+		{
+				p.condition.AddParam(game.parameters[0]);
+		}
+		if (GUILayout.Button("add param changer"))
+		{
+				p.changes.Add(new ParamChanges(game.parameters[0]));
+		}
+		EditorGUI.EndDisabledGroup ();
 		GUILayout.EndHorizontal ();
 		GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
 		//inspectedState.pathes[inspectedPath].waitInput = GUILayout.Toggle(inspectedState.pathes[inspectedPath].waitInput, "wait input", GUILayout.Width(80));
 		DrawCondition (p);
-		GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
 		DrawChanges (p);
 		GUI.color = Color.white;
-
-		if(removingState!=null)
-		{
-			Selection.activeObject = null;
-			Repaint ();
-			removingState.RemovePath (p);
-		}
 	}
 
 	private void DrawCondition(Path path)
 	{
+		EditorGUILayout.LabelField ("condition:");
 		EditorGUILayout.BeginHorizontal ();
 
 		GUI.backgroundColor = Color.white;
@@ -74,14 +61,7 @@ public class PathInspector : Editor {
 
 		path.condition.conditionString = EditorGUILayout.TextArea (path.condition.conditionString);
 
-		GUI.color = Color.yellow;
-		if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-		{
-			if(game.parameters.Count>0)
-			{
-				path.condition.AddParam(game.parameters[0]);
-			}
-		}
+
 
 		GUI.color = Color.white;
 		EditorGUILayout.EndHorizontal ();
@@ -124,21 +104,21 @@ public class PathInspector : Editor {
 
 	private void DrawChanges(Path path)
 	{
-		GUILayout.BeginHorizontal ();
-		GUILayout.FlexibleSpace ();
-		GUI.color = Color.green;
-		if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-		{
-			if(game.parameters.Count>0)
-			{
-				p.changes.Add(new ParamChanges(game.parameters[0]));
-			}
-		}
-		GUILayout.EndHorizontal ();
-		GUI.color = Color.white;
-
 		ParamChanges removingChanger = null;
 		for (int i = 0; i< path.changes.Count; i++) {
+			GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
+			EditorGUILayout.BeginHorizontal ();
+			if (GUILayout.Button ("delete")) 
+			{
+				removingChanger = path.changes[i];
+			}
+
+			if (GUILayout.Button ("add param")) 
+			{
+				path.changes[i].AddParam (game.parameters [0]);
+			}
+			EditorGUILayout.EndHorizontal ();
+
 			EditorGUILayout.BeginHorizontal ();
 
 			if(!game.parameters.Contains(path.changes[i].aimParam))
@@ -150,9 +130,9 @@ public class PathInspector : Editor {
 					continue;
 				}
 			}
-			path.changes [i].aimParam = game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].aimParam), game.parameters.Select (x => x.name).ToArray ())]; 
+			path.changes [i].aimParam = game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].aimParam), game.parameters.Select (x => x.name).ToArray (), GUILayout.Width(100))]; 
 
-			GUILayout.Label ("=");
+			GUILayout.Label ("=", GUILayout.Width(15));
 
             GUI.backgroundColor = Color.white;
             try
@@ -164,17 +144,8 @@ public class PathInspector : Editor {
                 GUI.color = Color.red;
             }
 
-            path.changes [i].changeString = EditorGUILayout.TextArea(path.changes [i].changeString, GUILayout.Width(58));
-			GUI.color = Color.red;
-			if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
-				removingChanger = path.changes[i];
-			}
-			GUI.color = Color.yellow;
-			if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
-				if (game.parameters.Count > 0) {
-					path.changes[i].AddParam (game.parameters [0]);
-				}
-			}
+            path.changes [i].changeString = EditorGUILayout.TextArea(path.changes [i].changeString);
+
 			GUI.color = Color.white;
 
 			Param removingParam = null;

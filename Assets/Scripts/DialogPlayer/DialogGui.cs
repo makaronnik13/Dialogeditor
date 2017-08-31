@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using HoloToolkit.Unity;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.Events;
 
 public class DialogGui : Singleton<DialogGui> {
 
@@ -12,9 +13,25 @@ public class DialogGui : Singleton<DialogGui> {
 	public GameObject dialogVariants;
 	public FirstPersonController controller;
 	private VariantsGui variants;
+	private Dictionary<Path, UnityEvent> pathEvents;
+
+	private State currentState;
+
+	private AudioSource source;
+	private AudioSource Source
+	{
+		get
+		{
+			if(!source)
+			{
+				source = GetComponent<AudioSource> ();
+			}
+			return source;
+		}
+	}
 
 	[HideInInspector]
-	public Transform focusedTransform;
+	public RectTransform focusedTransform;
 
 	void Start()
 	{
@@ -29,7 +46,7 @@ public class DialogGui : Singleton<DialogGui> {
 		variants = GetComponentInChildren<VariantsGui> ();
 		dialogVariants.SetActive (false);
 		dialogText.SetActive (false);
-		gameObject.AddComponent<ResourceManager>();
+		gameObject.AddComponent<ResourceManager>().Load();
 	}
 
 	public void ShowDialogHint()
@@ -47,10 +64,22 @@ public class DialogGui : Singleton<DialogGui> {
 		dialogVariants.SetActive (false);
 	}
 
-	public void ShowText(string text)
+	public void ShowText(State state)
 	{
+		currentState = state;
+
+
+			if (state.sound) {
+				Source.Stop ();
+				Source.PlayOneShot (state.sound);
+				StartCoroutine(ShowVariants (state.sound.length));
+			} else {
+				StartCoroutine(ShowVariants (0));
+			}
+
+
 		dialogText.SetActive (true);
-		dialogText.GetComponentInChildren<Text> ().text = text;
+		dialogText.GetComponentInChildren<Text> ().text = state.description;
 		controller.enabled = false;
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
@@ -59,6 +88,16 @@ public class DialogGui : Singleton<DialogGui> {
 	public void HideText()
 	{
 		dialogText.SetActive (false);
+	}
+
+	public void SetGame(PathGame game)
+	{
+		GetComponent<ResourceManager> ().Init (game);
+	}
+
+	public void SetActions(Dictionary<Path, UnityEvent> pathEvents)
+	{
+		this.pathEvents = pathEvents;
 	}
 
 	public void ShowVariants(State state)
@@ -80,7 +119,14 @@ public class DialogGui : Singleton<DialogGui> {
 					visibleVariants.Add (p);
 				}
 			}
-			variants.ShowVariants (visibleVariants);
+			variants.ShowVariants (visibleVariants, pathEvents);
 		}
+	}
+
+
+	IEnumerator ShowVariants(float time)
+	{
+		yield return new WaitForSeconds(time);
+		ShowVariants (currentState);
 	}
 }

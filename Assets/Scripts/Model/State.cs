@@ -39,7 +39,8 @@ public class State: ScriptableObject
 
 	public void DestroyState()
 	{
-		for(int i = 0; i<pathes.Count; i++)
+		int pc = pathes.Count;
+		for(int i = pc-1; i>=0; i--)
 		{
 			RemovePath (pathes[i]);
 		}

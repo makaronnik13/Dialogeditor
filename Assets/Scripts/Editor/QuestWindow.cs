@@ -30,9 +30,7 @@ public class QuestWindow : EditorWindow
 	Vector2 lastMousePosition;
 	Chain currentChain;
 	ReorderableList packList;
-	string[] toolbarStrings = new string[] {"Packs", "Chains"};
-	int toolbarInt = 0, selectedChain = 0;
-	Vector2 packsScrollPosition = Vector2.zero;
+	Vector2 paramsScrollPosition = Vector2.zero;
 	Vector2 chainsScrollPosition = Vector2.zero;
 	EditorMode chainEditorMode = EditorMode.packs;
 	Rect makingPathRect = new Rect(Vector2.one*0.12345f, Vector2.one*0.12345f);
@@ -58,208 +56,72 @@ public class QuestWindow : EditorWindow
         }
     }
 
+	#region LifeCycle
+	public static void Init(PathGame editedGame = null)
+	{
+		game = editedGame;
+		Init();
+	}
+
 	static void Init()
 	{
 		QuestWindow window = (QuestWindow)EditorWindow.GetWindow(typeof(QuestWindow), false,  "Dialog creator", true);
-        window.minSize = new Vector2(600, 400);
+		window.minSize = new Vector2(600, 400);
 		window.Show();
 	}
 
-    public static void Init(PathGame editedGame = null)
-    {
-        game = editedGame;
-        Init();
-    }
-
-    void OnGUI()
+	void OnGUI()
 	{
-        if (Event.current.type == EventType.ValidateCommand)
-        {
-            switch (Event.current.commandName)
-            {
-                case "UndoRedoPerformed":
-                    Repaint();
-                    break;
-            }
-
-        }
-
-        switch (chainEditorMode) {
-			case EditorMode.chains:
-                if (game)
-                {
-                    DrowChainsWindow();
-                }
-				break;
-			case EditorMode.packs:
-                if (game)
-                {
-                    DrowPacksWindow();
-                }
-				break;
-			case EditorMode.parameters:
-                if (game)
-                {
-                    DrowParamsWindow();
-                }
+		if (Event.current.type == EventType.ValidateCommand)
+		{
+			switch (Event.current.commandName)
+			{
+			case "UndoRedoPerformed":
+				Repaint();
 				break;
 			}
-
-        EditorMode newChainMode = (EditorMode)Tabs.DrawTabs(new Rect(0, 0, position.width, 30), new string[] { "Dialogs", "Node tree", "Parameters" }, (int)chainEditorMode);
-        if (newChainMode == EditorMode.chains && newChainMode!=chainEditorMode)
-        {
-            RecalculateWindowsPositions();
-        }
-
-        chainEditorMode = newChainMode;
-
-        if (game)
-		{
-			game.SetDirty ();
-		}
-       
-    }
-
-    private void DrowParamsWindow()
-    {
-        Undo.RecordObject(game, "params");
-        Event evt = Event.current;
-
-		if (evt.button == 1 && evt.type == EventType.MouseDown)
-		{
-			GenericMenu menu = new GenericMenu();
-			menu.AddItem(new GUIContent("Add param"), false, CreateParam);
-			menu.ShowAsContext();
 
 		}
 
-        GUILayout.BeginVertical();
-        GUILayout.Space(35);
-
-        ParamsScrollPosition = GUILayout.BeginScrollView(ParamsScrollPosition, false, true, GUIStyle.none, GUI.skin.verticalScrollbar,GUILayout.Width(position.width-5), GUILayout.Height(position.height-35));
-		GUILayout.BeginVertical();
-		int i = 0;
-		Vector2 rectSize = new Vector2 ((position.width-40)/3, 150);
-
-        foreach (Param param in game.parameters)
-        {
-			if(i%3==0)
+		switch (chainEditorMode) {
+		case EditorMode.chains:
+			if (game)
 			{
-				GUILayout.BeginHorizontal ();
+				DrowChainsWindow();
 			}
-			Rect r = new Rect (new Rect (i % 3 * (rectSize.x + 5), Mathf.FloorToInt (i / 3) * (rectSize.y + 5 / 1.5f), rectSize.x, rectSize.y));
-			EditorGUI.DrawRect (r, Color.gray/2);
-
-			DoParamWindow (game.parameters[i], new Rect(r.position.x, r.position.y, r.width+3, r.height+3));
-			//GUILayout.EndArea ();
-			if(i%3==2 || i== game.parameters.Count-1)
+			break;
+		case EditorMode.packs:
+			if (game)
 			{
-				GUILayout.EndHorizontal();
+				DrowPacksWindow();
 			}
-			i++;
-        }
-		if(deletingParam!=null)
+			break;
+		}
+
+		EditorMode newChainMode = (EditorMode)Tabs.DrawTabs(new Rect(0, 0, position.width, 30), new string[] { "Dialogs and parameters", "Node tree"}, (int)chainEditorMode);
+		if (newChainMode == EditorMode.chains && newChainMode!=chainEditorMode)
 		{
-			game.parameters.Remove (deletingParam);
-			DestroyImmediate(deletingParam, true);
+			RecalculateWindowsPositions();
+		}
+
+		chainEditorMode = newChainMode;
+
+		if (game)
+		{
+			EditorUtility.SetDirty (game);
+		}
+
+	}
+
+	private void OnDestroy()
+	{
+		if (game)
+		{
 			AssetDatabase.SaveAssets ();
-			AssetDatabase.Refresh ();
-			deletingParam = null;
 		}
-		GUILayout.EndVertical ();
-        GUILayout.EndScrollView();
-        GUILayout.EndVertical();
-        Undo.FlushUndoRecordObjects();
-    }
-
-	void DoParamWindow(Param p, Rect r)
-	{
-        p.scrollPosition = GUILayout.BeginScrollView (p.scrollPosition, false, false, GUIStyle.none, GUI.skin.label, GUILayout.Width(r.width), GUILayout.Height(r.height-3));
-		GUILayout.BeginVertical (GUILayout.Width(r.width-5), GUILayout.Height((r.width-10)/1.5f));
-        //GUILayout.Space (5);
-
-		GUILayout.BeginHorizontal ();
-		p.name = EditorGUILayout.TextArea (p.name);
-		GUI.color = Color.red;
-		if(GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
-		{
-			deletingParam = p;
-		}
-		GUI.color = Color.white;
-		GUILayout.EndHorizontal();
-
-
-		p.showing = !GUILayout.Toggle (!p.showing, "hidden");
-		if (p.showing) {
-			p.description = EditorGUILayout.TextArea (p.description, GUILayout.Height (45), GUILayout.Width(r.width-10));
-			p.image = (Sprite)EditorGUILayout.ObjectField (p.image, typeof(Sprite), false);
-		}
-	
-
-        GUI.color = Color.cyan;
-        if (GUILayout.Button("auto change"))
-        {
-            p.autoActivatedChangesGUIDS.Add(new ConditionChange(new Condition()));
-        }
-        GUI.color = Color.white;
-	
-
-
-        ConditionChange removingConditionChange = null;
-        foreach (ConditionChange conditionChange in p.autoActivatedChangesGUIDS)
-        {
-            GUILayout.BeginHorizontal();
-            DrawCondition(conditionChange.condition);
-            GUI.color = Color.green;
-            if (GUILayout.Button((Texture2D)Resources.Load("Icons/cancel") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-            {
-                conditionChange.changes.Add(new ParamChanges(p));
-            }
-            GUI.color = Color.red;
-            if (GUILayout.Button("", GUILayout.Width(20), GUILayout.Height(20)))
-            {
-                removingConditionChange = conditionChange;
-            }
-            GUI.color = Color.white;
-            GUILayout.EndHorizontal();
-            ParamChanges removingChanger = null;
-
-            foreach (ParamChanges c in conditionChange.changes)
-            {
-                GUILayout.BeginHorizontal();
-                DrawChanges(c);
-                GUI.color = Color.red;
-                if (GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
-                {
-                    removingChanger = c;
-                }
-                GUILayout.EndHorizontal();
-            }
-            if (removingChanger!=null)
-            {
-                conditionChange.changes.Remove(removingChanger);
-            }
-        }
-
-        if (removingConditionChange!=null)
-        {
-            p.autoActivatedChangesGUIDS.Remove(removingConditionChange);
-        }
-        
-        GUI.color = Color.white;
-		GUILayout.EndVertical ();
-		GUILayout.EndScrollView ();
 	}
-
-	void CreateParam()
-	{
-		Param newParam = CreateInstance<Param> ();
-		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		game.parameters.Add (newParam);
-	}
-
+	#endregion
+		
     void DrowPacksWindow ()
 	{  
         GUILayout.BeginVertical();
@@ -267,33 +129,61 @@ public class QuestWindow : EditorWindow
 
         GUILayout.BeginHorizontal();
         Undo.RecordObject(game, "packs and chains");
+
+		Event evt = Event.current;
+		if (evt.button == 1 && evt.type == EventType.MouseDown)
+		{
+			GenericMenu menu = new GenericMenu();
+			menu.AddItem(new GUIContent("Add dialog"), false, CreateChain);
+			menu.AddItem(new GUIContent("Add parameter"), false, CreateParam);
+			menu.ShowAsContext();
+		}
+
         DrawChainsList();
+		DrawParamsList ();
         Undo.FlushUndoRecordObjects();
         GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
 	}
 
-    private void CreateChain()
-    {
-		Chain newChain = CreateInstance<Chain> ();
-		newChain.Init (game);
-		game.chains.Insert(0, newChain);
-        Repaint();
-    }
+	void DrawParamsList()
+	{
+		chainsScrollPosition = GUILayout.BeginScrollView (paramsScrollPosition, false, true, GUILayout.Width(position.width/2-5), GUILayout.Height(position.height-20));
+		GUILayout.BeginVertical();
+
+		Param deletingParam = null;
+
+		foreach(Param parameter in game.parameters)
+		{
+			GUILayout.BeginHorizontal ();
+			parameter.name = EditorGUILayout.TextArea (parameter.name);
+			if(GUILayout.Button("edit", GUILayout.Width(50), GUILayout.Height(15)))
+			{
+				Selection.activeObject = parameter;
+			}
+			if(GUILayout.Button("delete", GUILayout.Width(50), GUILayout.Height(15)))
+			{
+				deletingParam = parameter;
+			}
+			GUILayout.EndHorizontal();
+		}
+
+		if(deletingParam!=null)
+		{
+			game.parameters.Remove (deletingParam);
+			DestroyImmediate (deletingParam, true);
+			AssetDatabase.SaveAssets ();
+			AssetDatabase.Refresh ();
+		}
+
+		GUILayout.EndVertical ();
+		GUILayout.EndScrollView ();
+	}
 
     void DrawChainsList()
 	{
-        Event evt = Event.current;
-
-        if (evt.button == 1 && evt.type == EventType.MouseDown)
-        {
-            GenericMenu menu = new GenericMenu();
-            menu.AddItem(new GUIContent("Add dialog"), false, CreateChain);
-            menu.ShowAsContext();
-        }
-
-        chainsScrollPosition = GUILayout.BeginScrollView (chainsScrollPosition, false, true, GUIStyle.none, GUI.skin.label,GUILayout.Width(position.width-5), GUILayout.Height(position.height-20));
+        chainsScrollPosition = GUILayout.BeginScrollView (chainsScrollPosition, false, true, GUILayout.Width(position.width/2-5), GUILayout.Height(position.height-20));
 		GUILayout.BeginVertical();
 
 		Chain deletingChain = null;
@@ -580,220 +470,68 @@ public class QuestWindow : EditorWindow
         GUI.backgroundColor = Color.white;
 		return moving;
     }
-		
 
-    private void MakeStart()
-    {
-        currentChain.StartState = menuState;
-    }
+	#region menuDropdownEvents
+	private void MakeStart()
+	{
+		currentChain.StartState = menuState;
+	}
 
-    private void RemoveState()
-    {
-        foreach (State s in currentChain.states)
-        {
-            List<Path> removigPathes = new List<Path>();
-            int i = 0;
-            foreach (Path p in s.pathes)
-            {
-                if (p.aimState == menuState)
-                {
+	private void RemoveState()
+	{
+		foreach (State s in currentChain.states)
+		{
+			List<Path> removigPathes = new List<Path>();
+			int i = 0;
+			foreach (Path p in s.pathes)
+			{
+				if (p.aimState == menuState)
+				{
 					p.aimState = null;
-                }
-            }    
-        }
-			
+				}
+			}    
+		}
+
 		currentChain.RemoveState(menuState);
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
-    }
+	}
 
-    private void AddPath()
-    {
+	private void AddPath()
+	{
 		menuState.AddPath();
-    }
+	}
 
-    private void CreateNewState()
-    {
-        CreateState();
-    }
+	private void CreateNewState()
+	{
+		CreateState();
+	}
 
-
-
-   
-
-    State CreateState()
+	State CreateState()
 	{
 		State newState = currentChain.AddState ();
 		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
-        
+
 		return newState;
 	}
 
-	private void OnDestroy()
+	void CreateParam()
 	{
-		if (game)
-		{
-			AssetDatabase.SaveAssets ();
-		}
+		Param newParam = CreateInstance<Param> ();
+		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+		game.parameters.Add (newParam);
 	}
-		
-    private void DrawCondition(Condition condition)
-    {
-        GUILayout.BeginVertical();
-        EditorGUILayout.BeginHorizontal();
 
-        GUI.backgroundColor = Color.white;
-        try
-        {
-            ExpressionSolver.CalculateBool(condition.conditionString, condition.Parameters);
-        }
-        catch
-        {
-            GUI.color = Color.red;
-        }
-
-        condition.conditionString = EditorGUILayout.TextArea(condition.conditionString, GUILayout.Width((position.width - 40) / 3 - 80));
-
-        GUI.color = Color.yellow;
-        if (GUILayout.Button((Texture2D)Resources.Load("Icons/add") as Texture2D, GUILayout.Width(20), GUILayout.Height(20)))
-        {
-            if (game.parameters.Count > 0)
-            {
-                condition.AddParam(game.parameters[0]);
-            }
-        }
-
-        GUI.color = Color.white;
-        EditorGUILayout.EndHorizontal();
-
-        Param removingParam = null;
-
-        for (int i = 0; i < condition.Parameters.Count; i++)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("[p" + i + "]", GUILayout.Width(35));
-
-            if (!game.parameters.Contains(condition.Parameters[i]))
-            {
-                if (game.parameters.Count > 0)
-                {
-                    condition.Parameters[i] = game.parameters[0];
-                }
-                else
-                {
-                    removingParam = condition.Parameters[i];
-                    Repaint();
-                    continue;
-                }
-            }
-            condition.setParam(i, game.parameters[EditorGUILayout.Popup(game.parameters.IndexOf(condition.Parameters[i]), game.parameters.Select(x => x.name).ToArray())]);
-
-
-            GUI.color = Color.red;
-            if (GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
-            {
-                removingParam = condition.Parameters[i];
-            }
-            GUI.color = Color.white;
-            EditorGUILayout.EndHorizontal();
-        }
-
-        if (removingParam != null)
-        {
-            condition.RemoveParam(removingParam);
-        }
-        GUILayout.EndVertical();
-    }
-
-    private void DrawChanges(ParamChanges change)
-    {
-        GUILayout.BeginVertical();
-        GUI.color = Color.white;
-
-            EditorGUILayout.BeginHorizontal();
-
-            if (!game.parameters.Contains(change.aimParam))
-            {
-                if (game.parameters.Count > 0)
-                {
-                    change.aimParam = game.parameters[0];
-                }
-                else
-                {
-                    //removingChanger = path.changes[i];
-                    EditorGUILayout.EndHorizontal();
-                    return;
-                }
-            }
-            change.aimParam = game.parameters[EditorGUILayout.Popup(game.parameters.IndexOf(change.aimParam), game.parameters.Select(x => x.name).ToArray())];
-
-            GUILayout.Label("=");
-
-            GUI.backgroundColor = Color.white;
-            try
-            {
-                ExpressionSolver.CalculateFloat(change.changeString, change.Parameters);
-            }
-            catch
-            {
-                GUI.color = Color.red;
-            }
-
-            change.changeString = EditorGUILayout.TextArea(change.changeString, GUILayout.Width(58));
-            GUI.color = Color.yellow;
-            if (GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
-            {
-                if (game.parameters.Count > 0)
-                {
-                    change.AddParam(game.parameters[0]);
-                }
-            }
-            GUI.color = Color.white;
-
-            Param removingParam = null;
-            EditorGUILayout.EndHorizontal();
-
-            if (change.Parameters == null)
-            {
-                change = new ParamChanges(change.aimParam);
-            }
-
-        for (int j = 0; j < change.Parameters.Count; j++)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("[p" + j + "]", GUILayout.Width(35));
-
-                if (!game.parameters.Contains(change.Parameters[j]))
-                {
-                    if (game.parameters.Count > 0)
-                    {
-                        change.setParam(game.parameters[0], j);
-                    }
-                    else
-                    {
-                        removingParam = change.Parameters[j];
-                        continue;
-                    }
-                }
-
-                int v = EditorGUILayout.Popup(game.parameters.IndexOf(change.Parameters[j]), game.parameters.Select(x => x.name).ToArray());
-                change.setParam(game.parameters[v], j);
-                GUI.color = Color.red;
-                if (GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
-                {
-                    removingParam = change.Parameters[j];
-                }
-                GUI.color = Color.white;
-                EditorGUILayout.EndHorizontal();
-            }
-
-            if (removingParam != null)
-            {
-                change.RemoveParam(removingParam);
-            }
-            GUI.color = Color.white;
-        GUILayout.EndVertical();
-    }
+	private void CreateChain()
+	{
+		Chain newChain = CreateInstance<Chain> ();
+		newChain.Init (game);
+		game.chains.Insert(0, newChain);
+		Repaint();
+	}
+	#endregion
 
     void DrawNodeCurve(Rect start, Rect end, Color c)
     {

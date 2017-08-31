@@ -3,45 +3,79 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CustomEditor(typeof(PersonDialog))]
 public class PersonDialogInspector : Editor
 {
+	private PersonDialog dialog;
+
+
+	private void OnEnable()
+	{
+		dialog = (PersonDialog)target;
+	}
+
+	private void SetEvents()
+	{
+		List<Path> newPathes = new List<Path>();
+		List<UnityEvent> newEvents = new List<UnityEvent>();
+		Debug.Log ("newEvents");
+		foreach (State s in dialog.personChain.states)
+		{
+			foreach (Path p in s.pathes)
+			{
+				if (p.withEvent)
+				{
+					newEvents.Add (new UnityEvent());
+					newPathes.Add (p);
+				}
+			}
+		}
+		dialog.pathes = newPathes.ToArray ();
+		dialog.pathEvents = newEvents.ToArray ();
+	}
+
     public override void OnInspectorGUI()
     {
-        PersonDialog myTarget = (PersonDialog)target;
         GUILayout.BeginHorizontal();
         GUILayout.Label("Dialogs pack:");
-        myTarget.game = (PathGame)EditorGUILayout.ObjectField(myTarget.game, typeof(PathGame), false);
+		dialog.game = (PathGame)EditorGUILayout.ObjectField(dialog.game, typeof(PathGame), false);
         GUILayout.EndHorizontal();
-        if (myTarget.game && myTarget.game.chains.Count>0)
+		if (dialog.game && dialog.game.chains.Count>0)
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label("Dialog:");
-            if (!myTarget.game.chains.Contains(myTarget.personChain))
-            {
-                myTarget.personChain = myTarget.game.chains[0];
-            }
-            myTarget.personChain = myTarget.game.chains[EditorGUILayout.Popup(myTarget.game.chains.IndexOf(myTarget.personChain), myTarget.game.chains.Select(x => x.dialogName).ToArray())];
-            GUILayout.EndHorizontal();
 
-			foreach(State s in myTarget.personChain.states)
-			{
-				foreach(Path p in s.pathes)
-				{
-					if(p.withEvent)
-					{
+			if (!dialog.game.chains.Contains(dialog.personChain))
+            {
+				dialog.personChain = dialog.game.chains[0];
+				SetEvents ();
+            }
+
+			Chain ch = dialog.game.chains[EditorGUILayout.Popup(dialog.game.chains.IndexOf(dialog.personChain), dialog.game.chains.Select(x => x.dialogName).ToArray())];
+
+			if (dialog.personChain!=ch)
+            {
+				dialog.personChain = ch;
+				SetEvents ();
+            }
+            GUILayout.EndHorizontal();
+			int i = 0;
+			foreach(KeyValuePair<Path, UnityEvent> pathEvent in dialog.pathEventsList)
+			{			
 						string aim = "";
-						if(p.aimState!=null)
+						
+						if(pathEvent.Key.aimState!=null)
 						{
-							aim = p.aimState.description;
+							aim = pathEvent.Key.aimState.description;
 						}
-						GUILayout.Label (s.description.Substring(0,Mathf.Min(s.description.Length, 8))+" -> "+p.text.Substring(0, Mathf.Min(p.text.Length, 5))+"->"+aim.Substring(0,Mathf.Min(aim.Length, 8)));
-						SerializedObject serializedGame = new SerializedObject(p); 
-						SerializedProperty onPath = serializedGame.FindProperty("pathEvent"); 
+						GUILayout.Label (pathEvent.Key.text+"->"+aim);
+						
+						SerializedObject so = new SerializedObject (dialog);
+						SerializedProperty onPath = so.FindProperty("pathEvents").GetArrayElementAtIndex(i); 
 						EditorGUILayout.PropertyField(onPath); 
-					}
-				}
+				i++;
 			}
         }
     }

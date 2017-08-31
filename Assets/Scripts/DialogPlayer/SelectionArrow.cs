@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SelectionArrow : MonoBehaviour {
 
-	private Transform focusedTransform;
+	private RectTransform focusedTransform;
 	private Image img;
 
 	void Start(){
@@ -19,7 +19,7 @@ public class SelectionArrow : MonoBehaviour {
 			focusedTransform = DialogGui.Instance.focusedTransform;
 			if(focusedTransform){
 				img.enabled = true;
-				transform.position = focusedTransform.position+Vector3.left*(((RectTransform)focusedTransform).rect.width/2+((RectTransform)transform).rect.width);
+				GetComponent<RectTransform>().position = new Vector3(GetComponent<RectTransform>().position.x,focusedTransform.position.y,GetComponent<RectTransform>().position.z);
 			}
 			else{
 				img.enabled = false;

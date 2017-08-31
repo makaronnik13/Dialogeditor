@@ -17,7 +17,8 @@ public class Chain: ScriptableObject
 			name = value;
 		}
 	}
-		
+
+	[HideInInspector]
 	public State StartState;
 	[HideInInspector]
     public State inspectedState;
@@ -55,6 +56,7 @@ public class Chain: ScriptableObject
 				}
 			}
 		}
+
 		states.Remove (state);
 		state.DestroyState ();
 		DestroyImmediate (state, true);

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class VariantButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 	
-	public void Init(Path path)
+	public void Init(Path path, UnityEvent pathEvent)
 	{
 		GetComponentInChildren<Text> ().text = path.text;
 		GetComponent<Button> ().onClick.AddListener (()=>
@@ -14,8 +15,7 @@ public class VariantButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 				ResourceManager.Instance.ApplyChanger(path.changes);
 				if(path.aimState!=null)
 				{
-					DialogGui.Instance.ShowText(path.aimState.description);
-					DialogGui.Instance.ShowVariants(path.aimState);	
+					DialogGui.Instance.ShowText(path.aimState);
 				}
 				else
 				{
@@ -25,13 +25,16 @@ public class VariantButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 					DialogGui.Instance.HideVariants();
 					Camera.main.GetComponent<CameraFocuser>().UnFocus();
 				}
-
+				if(pathEvent!=null)
+				{
+					pathEvent.Invoke();
+				}
 		});
 	}
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		DialogGui.Instance.focusedTransform = transform;
+		DialogGui.Instance.focusedTransform = GetComponent<RectTransform>();
 	}
 	public void OnPointerExit(PointerEventData eventData)
 	{

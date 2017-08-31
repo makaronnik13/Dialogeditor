@@ -14,7 +14,7 @@ public class Path: ScriptableObject
 	public Condition condition = new Condition();
     public List<ParamChanges> changes = new List<ParamChanges>();
     public int aimStateGuid;
-	public UnityEvent pathEvent;
+	public UnityAction pathEvent;
 	public State aimState;
 }
 
