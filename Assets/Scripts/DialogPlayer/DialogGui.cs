@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using HoloToolkit.Unity;
 using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.Events;
 
@@ -13,10 +12,7 @@ public class DialogGui : Singleton<DialogGui> {
 	public GameObject dialogVariants;
 	public FirstPersonController controller;
 	private VariantsGui variants;
-	private Dictionary<Path, UnityEvent> pathEvents;
-
 	private State currentState;
-
 	private AudioSource source;
 	private AudioSource Source
 	{
@@ -46,7 +42,7 @@ public class DialogGui : Singleton<DialogGui> {
 		variants = GetComponentInChildren<VariantsGui> ();
 		dialogVariants.SetActive (false);
 		dialogText.SetActive (false);
-		gameObject.AddComponent<ResourceManager>().Load();
+		DialogPlayer.Instance.onStateIn += new DialogPlayer.StateEventHandler(ShowText);
 	}
 
 	public void ShowDialogHint()
@@ -67,8 +63,6 @@ public class DialogGui : Singleton<DialogGui> {
 	public void ShowText(State state)
 	{
 		currentState = state;
-
-
 			if (state.sound) {
 				Source.Stop ();
 				Source.PlayOneShot (state.sound);
@@ -76,8 +70,7 @@ public class DialogGui : Singleton<DialogGui> {
 			} else {
 				StartCoroutine(ShowVariants (0));
 			}
-
-
+			
 		dialogText.SetActive (true);
 		dialogText.GetComponentInChildren<Text> ().text = state.description;
 		controller.enabled = false;
@@ -88,16 +81,6 @@ public class DialogGui : Singleton<DialogGui> {
 	public void HideText()
 	{
 		dialogText.SetActive (false);
-	}
-
-	public void SetGame(PathGame game)
-	{
-		GetComponent<ResourceManager> ().Init (game);
-	}
-
-	public void SetActions(Dictionary<Path, UnityEvent> pathEvents)
-	{
-		this.pathEvents = pathEvents;
 	}
 
 	public void ShowVariants(State state)
@@ -114,12 +97,14 @@ public class DialogGui : Singleton<DialogGui> {
 			List<Path> visibleVariants = new List<Path> ();
 			foreach(Path p in state.pathes)
 			{
-				if(p.condition.ConditionValue)
+				Debug.Log (p.text);
+
+				if(PlayerResource.Instance.CheckCondition(p.condition))
 				{
 					visibleVariants.Add (p);
 				}
 			}
-			variants.ShowVariants (visibleVariants, pathEvents);
+			variants.ShowVariants (visibleVariants);
 		}
 	}
 

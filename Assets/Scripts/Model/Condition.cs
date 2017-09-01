@@ -8,14 +8,6 @@ public class Condition
 {
 	public List<Param> Parameters = new List<Param>();
     public string conditionString = "";
-    public bool ConditionValue
-    {
-        get
-        {
-            return ExpressionSolver.CalculateBool(conditionString, Parameters); ;
-        }
-    }
-
 
 	public void RemoveParam(Param p)
 	{

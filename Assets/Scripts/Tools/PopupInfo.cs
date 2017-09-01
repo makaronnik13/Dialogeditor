@@ -1,5 +1,4 @@
-﻿using HoloToolkit.Unity;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 

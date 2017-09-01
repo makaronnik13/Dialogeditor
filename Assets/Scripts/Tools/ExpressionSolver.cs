@@ -7,21 +7,21 @@ public static class ExpressionSolver {
 
     private static ExpressionParser parser = new ExpressionParser();
 
-    public static float CalculateFloat(string evalString, List<Param> parameters)
+	public static float CalculateFloat(string evalString, List<float> parameters)
     {
         string eval = evalString;
         if (parameters!=null)
         {
             for (int i = 0; i < parameters.Count; i++)
             {
-                eval = eval.Replace("[p" + i + "]", "(" + parameters[i].PValue + ")");
+                eval = eval.Replace("[p" + i + "]", "(" + parameters[i] + ")");
             }
         }
         eval = ReplaceRandom(eval);
         return (float)parser.EvaluateExpression(eval).Value; 
     }
 
-    public static bool CalculateBool(string evalString, List<Param> parameters)
+	public static bool CalculateBool(string evalString, List<float> parameters)
     {
         if (evalString == "")
         {
@@ -32,7 +32,7 @@ public static class ExpressionSolver {
         {
             for (int i = 0; i < parameters.Count; i++)
             {
-                eval = eval.Replace("[p" + i + "]", "(" + parameters[i].PValue + ")");
+                eval = eval.Replace("[p" + i + "]", "(" + parameters[i] + ")");
             }
         }
         eval = ReplaceRandom(eval);

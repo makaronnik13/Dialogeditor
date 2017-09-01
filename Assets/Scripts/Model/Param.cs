@@ -6,11 +6,7 @@ using System.Linq;
 [System.Serializable]
 public class Param: ScriptableObject
 {
-	public delegate void ParamActivation(State state);
-    public event ParamActivation OnParamActivation;
-
-   
-    public string name = "new param";
+    public string paramName = "new param";
 	public bool showing;
 	public string description = "";
 	public Sprite image;
@@ -21,30 +17,4 @@ public class Param: ScriptableObject
     //use guid
     public Vector2 scrollPosition;
 	public int paramGUID;
-    public float pValue;
-    public float PValue
-    {
-        get
-        {
-            return pValue;
-        }
-        set
-        {
-                pValue = value;
-                CheckConditions();
-        }
-    }
-
-    private void CheckConditions()
-    {
-		/*
-		foreach (KeyValuePair<Condition, State> pair in autoActivatedChains)
-        {
-            if (pair.Key.ConditionValue)
-            {
-                OnParamActivation(pair.Value);
-            }
-        }
-        */
-    }
 }

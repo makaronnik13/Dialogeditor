@@ -18,7 +18,7 @@ namespace UnityStandardAssets.Utility
         {
             // active object starts from first in array
             m_CurrentActiveObject = 0;
-            camSwitchButton.text = objects[m_CurrentActiveObject].name;
+			camSwitchButton.text = objects[m_CurrentActiveObject].name;
         }
 
 
@@ -32,7 +32,7 @@ namespace UnityStandardAssets.Utility
             }
 
             m_CurrentActiveObject = nextactiveobject;
-            camSwitchButton.text = objects[m_CurrentActiveObject].name;
+			camSwitchButton.text = objects[m_CurrentActiveObject].name;
         }
     }
 }

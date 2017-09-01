@@ -7,16 +7,18 @@ using UnityEditor;
 public class TestEventInspector : Editor{
 
 	private SerializedProperty prop;
-
+	private SerializedObject so;
 	private void OnEnable()
 	{
 		TestEvent testEvent = (TestEvent)target;
-		SerializedObject so = new SerializedObject (testEvent);
+		so = new SerializedObject (testEvent);
 		prop = so.FindProperty("ev"); 
 	}
 
 	public override void OnInspectorGUI()
 	{
-		EditorGUILayout.PropertyField(prop);
+		Undo.RecordObject(target, "Changed event");
+		 EditorGUILayout.PropertyField(prop);
+		so.ApplyModifiedProperties ();
 	}
 }

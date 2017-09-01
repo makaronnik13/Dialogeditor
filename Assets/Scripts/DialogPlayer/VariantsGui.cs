@@ -16,7 +16,7 @@ public class VariantsGui : MonoBehaviour {
 		port = GetComponent<RectTransform> ();
 	}
 
-	public void ShowVariants(List<Path> pathes, Dictionary<Path, UnityEvent> pathEvents)
+	public void ShowVariants(List<Path> pathes)
 	{
 		foreach(Transform child in transform)
 		{
@@ -26,12 +26,7 @@ public class VariantsGui : MonoBehaviour {
 		foreach(Path p in pathes)
 		{
 			VariantButton newButton = Instantiate (variantPrefab, port).GetComponent<VariantButton>();
-			if (pathEvents.ContainsKey (p)) {
-				newButton.Init (p, pathEvents [p]);
-			} else 
-			{
-				newButton.Init (p, null);
-			}
+			newButton.Init (p);
 		}
 	}
 }

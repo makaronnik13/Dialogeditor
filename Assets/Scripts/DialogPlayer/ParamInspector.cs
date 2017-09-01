@@ -27,7 +27,7 @@ public class ParamInspector : Editor
 	{	
 		p = (Param)target;
 		GUILayout.BeginHorizontal ();
-		p.name = EditorGUILayout.TextArea (p.name);
+		p.paramName = EditorGUILayout.TextArea (p.paramName);
 		GUI.color = Color.red;
 		if(GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
 		{
@@ -119,14 +119,14 @@ public class ParamInspector : Editor
 				return;
 			}
 		}
-		change.aimParam = game.parameters[EditorGUILayout.Popup(game.parameters.IndexOf(change.aimParam), game.parameters.Select(x => x.name).ToArray())];
+		change.aimParam = game.parameters[EditorGUILayout.Popup(game.parameters.IndexOf(change.aimParam), game.parameters.Select(x => x.paramName).ToArray())];
 
 		GUILayout.Label("=");
 
 		GUI.backgroundColor = Color.white;
 		try
 		{
-			ExpressionSolver.CalculateFloat(change.changeString, change.Parameters);
+			ExpressionSolver.CalculateFloat(change.changeString, new float[change.Parameters.Count].ToList());
 		}
 		catch
 		{
@@ -170,7 +170,7 @@ public class ParamInspector : Editor
 				}
 			}
 
-			int v = EditorGUILayout.Popup(game.parameters.IndexOf(change.Parameters[j]), game.parameters.Select(x => x.name).ToArray());
+			int v = EditorGUILayout.Popup(game.parameters.IndexOf(change.Parameters[j]), game.parameters.Select(x => x.paramName).ToArray());
 			change.setParam(game.parameters[v], j);
 			GUI.color = Color.red;
 			if (GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))

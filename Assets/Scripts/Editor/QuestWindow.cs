@@ -157,7 +157,7 @@ public class QuestWindow : EditorWindow
 		foreach(Param parameter in game.parameters)
 		{
 			GUILayout.BeginHorizontal ();
-			parameter.name = EditorGUILayout.TextArea (parameter.name);
+			parameter.paramName = EditorGUILayout.TextArea (parameter.paramName);
 			if(GUILayout.Button("edit", GUILayout.Width(50), GUILayout.Height(15)))
 			{
 				Selection.activeObject = parameter;

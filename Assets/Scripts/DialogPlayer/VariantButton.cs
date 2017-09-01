@@ -7,15 +7,14 @@ using UnityEngine.Events;
 
 public class VariantButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 	
-	public void Init(Path path, UnityEvent pathEvent)
+	public void Init(Path path)
 	{
 		GetComponentInChildren<Text> ().text = path.text;
 		GetComponent<Button> ().onClick.AddListener (()=>
 		{
-				ResourceManager.Instance.ApplyChanger(path.changes);
 				if(path.aimState!=null)
 				{
-					DialogGui.Instance.ShowText(path.aimState);
+					DialogPlayer.Instance.PlayPath(path);
 				}
 				else
 				{
@@ -24,10 +23,6 @@ public class VariantButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 					DialogGui.Instance.HideText();
 					DialogGui.Instance.HideVariants();
 					Camera.main.GetComponent<CameraFocuser>().UnFocus();
-				}
-				if(pathEvent!=null)
-				{
-					pathEvent.Invoke();
 				}
 		});
 	}

@@ -9,31 +9,36 @@ using UnityEngine.Events;
 public class PersonDialogInspector : Editor
 {
 	private PersonDialog dialog;
-
+	private SerializedObject dialogObject;
+	private SerializedProperty dialogProperty;
 
 	private void OnEnable()
 	{
 		dialog = (PersonDialog)target;
+		dialogObject = new SerializedObject (dialog);
+		dialogProperty = dialogObject.FindProperty ("pathEvents");
 	}
 
 	private void SetEvents()
 	{
 		List<Path> newPathes = new List<Path>();
-		List<UnityEvent> newEvents = new List<UnityEvent>();
-		Debug.Log ("newEvents");
+		List<PathEvent> newEvents = new List<PathEvent>();
 		foreach (State s in dialog.personChain.states)
 		{
 			foreach (Path p in s.pathes)
 			{
 				if (p.withEvent)
 				{
-					newEvents.Add (new UnityEvent());
+					newEvents.Add (new PathEvent());
 					newPathes.Add (p);
 				}
 			}
 		}
 		dialog.pathes = newPathes.ToArray ();
 		dialog.pathEvents = newEvents.ToArray ();
+
+		dialogObject = new SerializedObject (dialog);
+		dialogProperty = dialogObject.FindProperty ("pathEvents");
 	}
 
     public override void OnInspectorGUI()
@@ -59,10 +64,11 @@ public class PersonDialogInspector : Editor
             {
 				dialog.personChain = ch;
 				SetEvents ();
+				Debug.Log (dialogProperty.arraySize+" "+dialog.pathEvents.Count());
             }
             GUILayout.EndHorizontal();
 			int i = 0;
-			foreach(KeyValuePair<Path, UnityEvent> pathEvent in dialog.pathEventsList)
+			foreach(KeyValuePair<Path, PathEvent> pathEvent in dialog.PathEventsList)
 			{			
 						string aim = "";
 						
@@ -72,9 +78,9 @@ public class PersonDialogInspector : Editor
 						}
 						GUILayout.Label (pathEvent.Key.text+"->"+aim);
 						
-						SerializedObject so = new SerializedObject (dialog);
-						SerializedProperty onPath = so.FindProperty("pathEvents").GetArrayElementAtIndex(i); 
-						EditorGUILayout.PropertyField(onPath); 
+						Undo.RecordObject(target, "Changed event");
+						EditorGUILayout.PropertyField(dialogProperty.GetArrayElementAtIndex(i)); 
+						dialogObject.ApplyModifiedProperties ();
 				i++;
 			}
         }

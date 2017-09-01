@@ -83,7 +83,7 @@ public class PathInspector : Editor {
 					continue;
 				}
 			}
-			path.condition.setParam(i, game.parameters[EditorGUILayout.Popup (game.parameters.IndexOf(path.condition.Parameters[i]), game.parameters.Select (x => x.name).ToArray())]); 
+			path.condition.setParam(i, game.parameters[EditorGUILayout.Popup (game.parameters.IndexOf(path.condition.Parameters[i]), game.parameters.Select (x => x.paramName).ToArray())]); 
 
 
 			GUI.color = Color.red;
@@ -130,7 +130,7 @@ public class PathInspector : Editor {
 					continue;
 				}
 			}
-			path.changes [i].aimParam = game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].aimParam), game.parameters.Select (x => x.name).ToArray (), GUILayout.Width(100))]; 
+			path.changes [i].aimParam = game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].aimParam), game.parameters.Select (x => x.paramName).ToArray (), GUILayout.Width(100))]; 
 
 			GUILayout.Label ("=", GUILayout.Width(15));
 
@@ -165,7 +165,7 @@ public class PathInspector : Editor {
 					}
 				}
 
-				int v = EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].Parameters [j]), game.parameters.Select (x => x.name).ToArray ());
+				int v = EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].Parameters [j]), game.parameters.Select (x => x.paramName).ToArray ());
 
 
                 path.changes[i].setParam(game.parameters[v], j);

@@ -8,21 +8,22 @@ using UnityEngine.Events;
 public class PersonDialog : MonoBehaviour {
 
 	public Path[] pathes;
-	public UnityEvent[] pathEvents;
+	public PathEvent[] pathEvents;
+	public Dictionary<Path, PathEvent> pathEventsList = new Dictionary<Path, PathEvent>();
 
-	public Dictionary<Path, UnityEvent> pathEventsList
+	public Dictionary<Path, PathEvent> PathEventsList
 	{
 		get
 		{
-			Dictionary<Path, UnityEvent> newPathEvents = new Dictionary<Path, UnityEvent> ();
+			Dictionary<Path, PathEvent> newPathEvents = new Dictionary<Path, PathEvent> ();
 			for(int i = 0; i<pathes.Length;i++)
 			{
-				newPathEvents.Add (pathes[i], pathEvents[i]);
+				newPathEvents.Add (pathes[i], (PathEvent)pathEvents[i]);
 			}
+			pathEventsList = newPathEvents;
 			return newPathEvents;
 		}
 	}
-
     [HideInInspector]
     public PathGame game;
 	[SerializeField]
@@ -32,7 +33,6 @@ public class PersonDialog : MonoBehaviour {
 		set
 		{
 			_personChain = value;
-			currentState = value.StartState;
 		}
 		get
 		{
@@ -40,13 +40,21 @@ public class PersonDialog : MonoBehaviour {
 		}
 	}
 
-	[SerializeField]
-	private State currentState;
+	public void Start()
+	{
+		DialogPlayer.Instance.onPathGo+=new DialogPlayer.PathEventHandler(InvokeEvent);
+	}
 
 	public void Talk()
 	{
-		DialogGui.Instance.SetGame (game);
-		DialogGui.Instance.SetActions (pathEventsList);
-		DialogGui.Instance.ShowText(currentState);
+		DialogPlayer.Instance.PlayState (personChain.StartState);
+	}
+
+	public void InvokeEvent(Path p)
+	{
+		if(pathEventsList.ContainsKey(p))
+		{
+			pathEventsList [p].Invoke ();
+		}
 	}
 }
