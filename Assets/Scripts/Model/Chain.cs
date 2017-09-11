@@ -24,6 +24,28 @@ public class Chain: ScriptableObject
     public State inspectedState;
 	[HideInInspector]
 	public List<State> states = new List<State>();
+	[HideInInspector]
+	public List<StateLink> links = new List<StateLink> ();
+
+	public StateLink AddStateLink()
+	{
+		StateLink sl = CreateInstance<StateLink> ();
+		sl.Init (this);
+		AssetDatabase.AddObjectToAsset (sl, AssetDatabase.GetAssetPath(this));
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+		Debug.Log (sl);
+		links.Add (sl);
+		return sl;
+	}
+
+	public void RemoveStateLink(StateLink link)
+	{
+		links.Remove (link);
+		DestroyImmediate (link, true);
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+	}
 
 	public State AddState()
 	{

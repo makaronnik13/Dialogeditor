@@ -10,7 +10,18 @@ public class DialogGui : Singleton<DialogGui> {
 	public Text dialogHint;
 	public GameObject dialogText;
 	public GameObject dialogVariants;
-	public FirstPersonController controller;
+	public FirstPersonController _controller;
+	public FirstPersonController controller
+	{
+		get
+		{
+			if(!_controller)
+			{
+				_controller = FindObjectOfType<FirstPersonController> ();
+			}
+			return _controller;
+		}
+	}
 	private VariantsGui variants;
 	private State currentState;
 	private AudioSource source;
@@ -97,7 +108,6 @@ public class DialogGui : Singleton<DialogGui> {
 			List<Path> visibleVariants = new List<Path> ();
 			foreach(Path p in state.pathes)
 			{
-				Debug.Log (p.text);
 
 				if(PlayerResource.Instance.CheckCondition(p.condition))
 				{

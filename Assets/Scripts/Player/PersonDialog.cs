@@ -42,16 +42,24 @@ public class PersonDialog : MonoBehaviour {
 
 	public void Start()
 	{
+
 		DialogPlayer.Instance.onPathGo+=new DialogPlayer.PathEventHandler(InvokeEvent);
 	}
 
 	public void Talk()
 	{
+		//#if UNITY_EDITOR
+		//QuestWindow.Init (game);
+		//#endif
 		DialogPlayer.Instance.PlayState (personChain.StartState);
 	}
 
 	public void InvokeEvent(Path p)
 	{
+		if(!personChain.states.Contains(p))
+		{
+			personChain = 
+		}
 		if(pathEventsList.ContainsKey(p))
 		{
 			pathEventsList [p].Invoke ();

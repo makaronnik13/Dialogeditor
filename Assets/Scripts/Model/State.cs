@@ -6,7 +6,23 @@ using System.Collections.Generic;
 [System.Serializable]
 public class State: ScriptableObject
 {
-	public string description;
+	private string _description;
+	public string description{
+		get
+		{
+			return _description;
+		}
+		set
+		{
+			_description = value;
+			if(_description!="")
+			{
+				string ss = _description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+				ss = ss.Substring(0, Mathf.Min(10, ss.Length));
+				name = ss;
+			}
+		}
+	}
 	public List<Path> pathes = new List<Path>();
 	public Rect position;
 	public AudioClip sound;

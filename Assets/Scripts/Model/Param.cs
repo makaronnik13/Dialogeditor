@@ -6,11 +6,21 @@ using System.Linq;
 [System.Serializable]
 public class Param: ScriptableObject
 {
-    public string paramName = "new param";
+	private string _paramName = "new param";
+	public string paramName{
+		get{
+			return _paramName;
+		}
+		set{
+			_paramName = value;
+			name = _paramName;
+		}
+	}
 	public bool showing;
 	public string description = "";
 	public Sprite image;
     public bool withChange;
+	public int id;
 
     public List<ConditionChange> autoActivatedChangesGUIDS = new List<ConditionChange>();
 

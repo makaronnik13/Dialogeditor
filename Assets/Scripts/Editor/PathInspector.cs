@@ -52,7 +52,7 @@ public class PathInspector : Editor {
 		GUI.backgroundColor = Color.white;
 		try
 		{
-			ExpressionSolver.CalculateBool(path.condition.conditionString, path.condition.Parameters);
+			//ExpressionSolver.CalculateBool(path.condition.conditionString, path.condition.Parameters);
 		}
 		catch
 		{
@@ -137,7 +137,12 @@ public class PathInspector : Editor {
             GUI.backgroundColor = Color.white;
             try
             {
-                ExpressionSolver.CalculateFloat(path.changes[i].changeString, path.changes[i].Parameters);
+				List<float> paramsV = new List<float>();
+				foreach(Param p in path.changes[i].Parameters)
+				{
+					paramsV.Add(1);
+				}
+				ExpressionSolver.CalculateFloat(path.changes[i].changeString, paramsV);
             }
             catch
             {

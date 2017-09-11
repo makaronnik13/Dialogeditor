@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class StateLink
+public class StateLink: ScriptableObject
 {
     public Chain chain;
 	public State state;
     public Rect position;
 
-    public StateLink(Chain chain)
+    public void Init(Chain chain)
     {
         this.chain= chain;
         this.state = chain.StartState;

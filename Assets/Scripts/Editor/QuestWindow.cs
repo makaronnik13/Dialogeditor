@@ -38,10 +38,43 @@ public class QuestWindow : EditorWindow
     State pathAimState;
     Path startPath;
     private State menuState;
+	private StateLink menuStateLink;
 	private Param deletingParam;
     private Texture2D backgroundTexture;
 	private Vector2 draggingVector;
 	private State draggingState;
+	private StateLink draggingStateLink;
+	private State debuggingState;
+	public State DebuggingState
+	{
+		set
+		{
+			debuggingState = value;
+			if(!currentChain.states.Contains(debuggingState))
+			{
+				if(!game.chains.SelectMany(g=>g.states).Contains(debuggingState))
+				{
+					foreach(PathGame pg in UnityEngine.Object.FindObjectsOfTypeIncludingAssets(typeof(PathGame)))
+					{
+						if (pg.chains.SelectMany (g => g.states).Contains (debuggingState)) 
+						{
+							Init (pg);
+							Repaint ();
+						}
+					}
+				}
+
+				foreach(Chain c in game.chains)
+				{
+					if(c.states.Contains(debuggingState))
+					{
+						currentChain = c;
+						Repaint ();
+					}
+				}
+			}
+		}
+	}
 
     private Texture2D BackgroundTexture
     {
@@ -57,6 +90,15 @@ public class QuestWindow : EditorWindow
     }
 
 	#region LifeCycle
+
+	private void Awake()
+	{
+		//if(FindObjectOfType<DialogPlayer>())
+		//{
+		//	FindObjectOfType<DialogPlayer> ().onStateIn += DebugState;
+		//}
+	}
+
 	public static void Init(PathGame editedGame = null)
 	{
 		game = editedGame;
@@ -122,6 +164,12 @@ public class QuestWindow : EditorWindow
 	}
 	#endregion
 		
+	void DebugState(State s)
+	{
+		Debug.Log (s.description);
+		DebuggingState = s;
+	}
+
     void DrowPacksWindow ()
 	{  
         GUILayout.BeginVertical();
@@ -264,6 +312,7 @@ public class QuestWindow : EditorWindow
 
      
 		State upperState = null;
+		StateLink upperLink = null;
 
         foreach (State state in currentChain.states)
 		{
@@ -272,6 +321,15 @@ public class QuestWindow : EditorWindow
 				upperState = state;
 			}
 		}
+
+		foreach(StateLink link in currentChain.links)
+		{
+			if(DrawStateLinkBox(link))
+			{
+				upperLink = link;
+			}
+		}
+
 		if(upperState)
 		{
 			currentChain.states.Remove(upperState);
@@ -286,11 +344,20 @@ public class QuestWindow : EditorWindow
 		if (evt.button == 1 && evt.type == EventType.MouseDown)
 		{
 			State onState = null;
+			StateLink onStateLink = null;
 			foreach(State s in currentChain.states)
 			{
 				if(s.position.Contains(evt.mousePosition))
 				{
 					onState = s;
+				}
+			}
+
+			foreach(StateLink s in currentChain.links)
+			{
+				if(s.position.Contains(evt.mousePosition))
+				{
+					onStateLink = s;
 				}
 			}
 
@@ -304,10 +371,23 @@ public class QuestWindow : EditorWindow
 				menu.AddItem(new GUIContent("Make start"), false, MakeStart);
 				Undo.FlushUndoRecordObjects();
 				menu.ShowAsContext();
-			} else {
+			} 
+			else if(onStateLink)
+			{
+				menuStateLink = onStateLink;
+				lastMousePosition = Event.current.mousePosition;
+				GenericMenu menu = new GenericMenu();
+				Undo.RecordObject(game, "chainsed");
+				menu.AddItem(new GUIContent("Remove"), false, RemoveStateLink);
+				Undo.FlushUndoRecordObjects();
+				menu.ShowAsContext();
+			}
+			else
+			{
 				lastMousePosition = evt.mousePosition;
 				GenericMenu menu = new GenericMenu();
 				menu.AddItem(new GUIContent("Add state"), false, CreateNewState);
+				menu.AddItem(new GUIContent("Add state link"), false, CreateNewStateLink);
 				menu.ShowAsContext();
 			}
 		}
@@ -360,7 +440,10 @@ public class QuestWindow : EditorWindow
                     Handles.color = Color.red;
 
 					Rect end = path.aimState.position;
-
+					if(currentChain.links.Select(x=>x.state).Contains(path.aimState))
+					{
+						end = currentChain.links.Find (x => x.state == path.aimState).position;
+					}
 
 					Rect start =new Rect(state.position.x+16 * i, state.position.y + state.position.height, 15, 15);
 					DrawNodeCurve(start, end, Color.gray);
@@ -372,17 +455,82 @@ public class QuestWindow : EditorWindow
     }
 
 
-	bool DrawStateBox(State state)
+	bool DrawStateLinkBox(StateLink state)
 	{
 		bool moving = false;
         //GUI.Box(_boxPos, state.description);
         string ss = "";
-        if (state.description!="")
+		if (state.state!=null)
         {
-            ss = state.description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+			ss = "=>";
+			if(state.state.description!="")
+			{
+				ss += state.state.description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+			}
             ss = ss.Substring(0, Mathf.Min(20, ss.Length));
         }
-       
+
+		if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && state.position.Contains(Event.current.mousePosition)) 
+		{
+			moving = true;
+			Selection.activeObject = state;
+			draggingStateLink = state;
+			draggingVector = state.position.position - Event.current.mousePosition;
+			Repaint ();
+		}
+
+		if (Event.current.type == EventType.mouseDrag) {
+			if(draggingStateLink==state)
+			{
+				state.position = new Rect (draggingVector+Event.current.mousePosition, state.position.size);
+				Repaint ();
+			}
+		}
+			
+		if(Event.current.type == EventType.mouseUp && Event.current.button == 0 )
+		{
+			draggingStateLink = null;
+		}
+
+
+		GUI.backgroundColor = Color.cyan * 0.8f;
+	
+
+		if(Selection.activeObject == state)
+		{
+			GUI.backgroundColor = GUI.backgroundColor * 1.3f;
+		}
+
+		if (state.position.Contains(Event.current.mousePosition) && makingPath == true)
+		{
+			GUI.backgroundColor = Color.yellow;
+			if (Event.current.button == 0 && Event.current.type == EventType.MouseUp && state.state)
+			{
+				startPath.aimState = state.state;
+				makingPath = false;
+				Repaint();
+			}
+		}
+
+		GUI.Box (state.position, ss);
+
+        Event c = Event.current;
+
+        GUI.backgroundColor = Color.white;
+		return moving;
+    }
+
+	bool DrawStateBox(State state)
+	{
+		bool moving = false;
+		//GUI.Box(_boxPos, state.description);
+		string ss = "";
+		if (state.description!="")
+		{
+			ss = state.description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+			ss = ss.Substring(0, Mathf.Min(20, ss.Length));
+		}
+
 
 
 
@@ -402,7 +550,7 @@ public class QuestWindow : EditorWindow
 				Repaint ();
 			}
 		}
-			
+
 		if(Event.current.type == EventType.mouseUp && Event.current.button == 0 )
 		{
 			draggingState = null;
@@ -420,6 +568,11 @@ public class QuestWindow : EditorWindow
 			GUI.backgroundColor = GUI.backgroundColor * 1.3f;
 		}
 
+		if(debuggingState == state)
+		{
+			GUI.backgroundColor = Color.red*0.8f;
+		}
+
 		if (state.position.Contains(Event.current.mousePosition) && makingPath == true)
 		{
 			GUI.backgroundColor = Color.yellow;
@@ -433,43 +586,43 @@ public class QuestWindow : EditorWindow
 
 		GUI.Box (state.position, ss);
 
-        //state.position = GUILayout.Window(currentChain.states.IndexOf(state), state.position, DoStateWindow, ss, GUILayout.Width(180), GUILayout.Height(30));
+		//state.position = GUILayout.Window(currentChain.states.IndexOf(state), state.position, DoStateWindow, ss, GUILayout.Width(180), GUILayout.Height(30));
 
-        int i = 0;
+		int i = 0;
 
-        Event c = Event.current;
+		Event c = Event.current;
 
-        foreach (Path path in state.pathes)
-        {
+		foreach (Path path in state.pathes)
+		{
 			Rect r = new Rect(state.position.x+16 * i, state.position.y + state.position.height, 15, 15);
-            GUI.backgroundColor = Color.white;
+			GUI.backgroundColor = Color.white;
 			if (Selection.activeObject == path)
-            {
-                GUI.backgroundColor = Color.gray;
-            }
-            GUI.Box(r, new GUIContent((Texture2D)Resources.Load("Icons/play-button") as Texture2D));
+			{
+				GUI.backgroundColor = Color.gray;
+			}
+			GUI.Box(r, new GUIContent((Texture2D)Resources.Load("Icons/play-button") as Texture2D));
 
-            if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown)
-            {
-                makingPath = true;
-                makingPathRect = r;
-                startPath = path;
-            }
+			if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown)
+			{
+				makingPath = true;
+				makingPathRect = r;
+				startPath = path;
+			}
 
-            if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseUp)
-            {
-                if (makingPath)
-                {
+			if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseUp)
+			{
+				if (makingPath)
+				{
 					Selection.activeObject = path;
-                }
-                makingPath = false;
-            }
-            i++;
-        }
+				}
+				makingPath = false;
+			}
+			i++;
+		}
 
-        GUI.backgroundColor = Color.white;
+		GUI.backgroundColor = Color.white;
 		return moving;
-    }
+	}
 
 	#region menuDropdownEvents
 	private void MakeStart()
@@ -481,8 +634,6 @@ public class QuestWindow : EditorWindow
 	{
 		foreach (State s in currentChain.states)
 		{
-			List<Path> removigPathes = new List<Path>();
-			int i = 0;
 			foreach (Path p in s.pathes)
 			{
 				if (p.aimState == menuState)
@@ -497,6 +648,24 @@ public class QuestWindow : EditorWindow
 		AssetDatabase.Refresh ();
 	}
 
+	private void RemoveStateLink()
+	{
+		foreach (State s in currentChain.states)
+		{
+			foreach (Path p in s.pathes)
+			{
+				if (p.aimState == menuStateLink.state)
+				{
+					p.aimState = null;
+				}
+			}    
+		}
+
+		currentChain.RemoveStateLink(menuStateLink);
+		AssetDatabase.SaveAssets ();
+		AssetDatabase.Refresh ();
+	}
+
 	private void AddPath()
 	{
 		menuState.AddPath();
@@ -505,6 +674,18 @@ public class QuestWindow : EditorWindow
 	private void CreateNewState()
 	{
 		CreateState();
+	}
+
+	private void CreateNewStateLink()
+	{
+		CreateStateLink();
+	}
+
+	StateLink CreateStateLink()
+	{
+		StateLink newState = currentChain.AddStateLink();
+		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
+		return newState;
 	}
 
 	State CreateState()
@@ -518,6 +699,7 @@ public class QuestWindow : EditorWindow
 	void CreateParam()
 	{
 		Param newParam = CreateInstance<Param> ();
+		newParam.id = GuidManager.GetItemGUID ();
 		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
