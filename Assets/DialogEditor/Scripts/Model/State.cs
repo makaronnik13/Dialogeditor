@@ -15,7 +15,7 @@ public class State: ScriptableObject
 		}
 		set
 		{
-			if(_description!="" && _description!=value)
+			if(value!="" && _description!=value)
 			{
 				string ss = value.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
 				ss = ss.Substring(0, Mathf.Min(10, ss.Length));

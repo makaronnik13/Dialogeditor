@@ -46,6 +46,7 @@ public class QuestWindow : EditorWindow
 	private State draggingState;
 	private StateLink draggingStateLink;
 	private State debuggingState;
+    private float zoom = 1;
 	public State DebuggingState
 	{
 		set
@@ -290,6 +291,12 @@ public class QuestWindow : EditorWindow
         Rect fieldRect = new Rect(0, 30, position.width, position.height);
         GUI.DrawTextureWithTexCoords(fieldRect, BackgroundTexture, new Rect(0, 0, fieldRect.width / BackgroundTexture.width, fieldRect.height / BackgroundTexture.height));
 
+        if (Event.current.type == EventType.ScrollWheel)
+        {
+            zoom += Event.current.delta.y*0.01f;
+            zoom = Mathf.Clamp(zoom, 0.2f, 1.5f);
+            Repaint();
+        }
 
         if (Event.current.type == EventType.MouseDown && Event.current.button == 2)
         {
@@ -301,7 +308,7 @@ public class QuestWindow : EditorWindow
             Vector2 delta = Event.current.mousePosition - lastMousePosition;
             foreach (State s in currentChain.states)
             {	
-                s.position = new Rect(s.position.position+delta, s.position.size);
+                s.position = new Rect(s.position.position+delta*zoom, s.position.size);
             }
             lastMousePosition = Event.current.mousePosition;
             Repaint();
@@ -353,7 +360,7 @@ public class QuestWindow : EditorWindow
 			StateLink onStateLink = null;
 			foreach(State s in currentChain.states)
 			{
-				if(s.position.Contains(evt.mousePosition))
+				if(ZoomedPosition(s.position).Contains(evt.mousePosition))
 				{
 					onState = s;
 				}
@@ -429,7 +436,7 @@ public class QuestWindow : EditorWindow
 		{
 			Handles.BeginGUI();
 			Handles.color = Color.white;
-            DrawNodeCurve(makingPathRect, new Rect(Event.current.mousePosition, Vector2.zero), Color.white);
+            DrawNodeCurve(makingPathRect, new Rect(UnZoomedPosition(Event.current.mousePosition), Vector2.zero), Color.white);
 
             Handles.EndGUI();
             Repaint();
@@ -488,7 +495,7 @@ public class QuestWindow : EditorWindow
 		if (Event.current.type == EventType.mouseDrag) {
 			if(draggingStateLink==state)
 			{
-				state.position = new Rect (draggingVector+Event.current.mousePosition, state.position.size);
+				state.position = new Rect (draggingVector * zoom + Event.current.mousePosition, state.position.size);
 				Repaint ();
 			}
 		}
@@ -518,7 +525,7 @@ public class QuestWindow : EditorWindow
 			}
 		}
 
-		GUI.Box (state.position, ss);
+		GUI.Box (ZoomedPosition(state.position), ss);
 
         Event c = Event.current;
 
@@ -540,7 +547,7 @@ public class QuestWindow : EditorWindow
 
 
 
-		if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && state.position.Contains(Event.current.mousePosition)) 
+		if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && ZoomedPosition(state.position).Contains(Event.current.mousePosition)) 
 		{
 			moving = true;
 			Selection.activeObject = state;
@@ -552,7 +559,7 @@ public class QuestWindow : EditorWindow
 		if (Event.current.type == EventType.mouseDrag) {
 			if(draggingState==state)
 			{
-				state.position = new Rect (draggingVector+Event.current.mousePosition, state.position.size);
+				state.position = new Rect (draggingVector * zoom + Event.current.mousePosition,  state.position.size);
 				Repaint ();
 			}
 		}
@@ -579,7 +586,7 @@ public class QuestWindow : EditorWindow
 			GUI.backgroundColor = Color.red*0.8f;
 		}
 
-		if (state.position.Contains(Event.current.mousePosition) && makingPath == true)
+		if (ZoomedPosition(state.position).Contains(Event.current.mousePosition) && makingPath == true)
 		{
 			GUI.backgroundColor = Color.yellow;
 			if (Event.current.button == 0 && Event.current.type == EventType.MouseUp)
@@ -589,8 +596,9 @@ public class QuestWindow : EditorWindow
 				Repaint();
 			}
 		}
-
-		GUI.Box (state.position, ss);
+        GUIStyle s = new GUIStyle(GUI.skin.box);
+        s.fontSize = Mathf.FloorToInt(15 * zoom);
+		GUI.Box (ZoomedPosition(state.position), ss, s);
 
 		//state.position = GUILayout.Window(currentChain.states.IndexOf(state), state.position, DoStateWindow, ss, GUILayout.Width(180), GUILayout.Height(30));
 
@@ -606,16 +614,16 @@ public class QuestWindow : EditorWindow
 			{
 				GUI.backgroundColor = Color.gray;
 			}
-			GUI.Box(r, new GUIContent((Texture2D)Resources.Load("Icons/play-button") as Texture2D));
+			GUI.Box(ZoomedPosition(r), new GUIContent((Texture2D)Resources.Load("Icons/play-button") as Texture2D));
 
-			if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown)
+			if (ZoomedPosition(r).Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown)
 			{
 				makingPath = true;
 				makingPathRect = r;
 				startPath = path;
 			}
 
-			if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseUp)
+			if (ZoomedPosition(r).Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseUp)
 			{
 				if (makingPath)
 				{
@@ -630,8 +638,18 @@ public class QuestWindow : EditorWindow
 		return moving;
 	}
 
-	#region menuDropdownEvents
-	private void MakeStart()
+    private Vector2 UnZoomedPosition(Vector2 p)
+    {
+        return p / zoom;
+    }
+
+    private Rect ZoomedPosition(Rect position)
+    {
+        return new Rect(position.position*zoom, position.size*zoom);
+    }
+
+    #region menuDropdownEvents
+    private void MakeStart()
 	{
 		currentChain.StartState = menuState;
 	}
@@ -697,7 +715,7 @@ public class QuestWindow : EditorWindow
 	State CreateState()
 	{
 		State newState = currentChain.AddState ();
-		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
+		newState.position = new Rect (lastMousePosition.x - ZoomedPosition(newState.position).width/2, lastMousePosition.y - ZoomedPosition(newState.position).height/2, ZoomedPosition(newState.position).width, ZoomedPosition(newState.position).height);
 
 		return newState;
 	}
@@ -723,6 +741,8 @@ public class QuestWindow : EditorWindow
 
     void DrawNodeCurve(Rect start, Rect end, Color c)
     {
+        start = ZoomedPosition(start);
+        end = ZoomedPosition(end);
 		Vector3 startPos = new Vector3(start.x+start.width/2, start.y + start.height / 2, 0);
 		Vector3 endPos = new Vector3(end.x+end.width/2, end.y + end.height / 2, 0);
         Vector3 startTan = startPos;
