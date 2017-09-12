@@ -1,0 +1,104 @@
+	LightCake: light cookie animation.
+		Created by Alzheimer studio
+##______________________________________##
+
+
+1: Setup.
+2: Pro and con.
+3: Script explanation.
+
+Sometimes a false NullpointerException shows up with the text "Object reference not set to an instance of an object". This happens when you switch from one light source to a non light source
+while the LightCake window is open. This error however does not occur in builds or play modes and can be cleared without any problems.
+__________________________________________________________________________________________________________________________________________________________________________________________
+1.
+Setup:	Before starting you will are required to create your own animation, rendered out in separate image files (so no gif or movie files) and every file must be in the 
+		correct cookie format (spot light, point light, directional light). Follow Unity's guide in order to prepare files for light cookies**.
+		
+		
+		** link: http://docs.unity3d.com/Manual/HOWTO-LightCookie.html
+
+
+		- We start preparing our light for the cookie animation by opening the LightCake window. You will find this under: Window->LightCake.
+		 
+		- When you have the LightCake window open, it will tell you if the object can be prepared. This will only work on light objects with a cookie slot.
+		  Select the light object you want to prepare(for instance a point light), and the LightCake window will tell you that "There is no cake on this light source".
+		  The "add cake" button should be green, click it. The add cake button will turn red and the selected light source is now prepared for light cookie
+		  animation and a new component will be added to the light.
+		  
+		- Open the dropdown "Cookie Batch".(The example scene uses an array of cookies).
+		  Drag all the frames in the array. Click the sort array button in the window to organize the array numerically (if not done already by Unity).
+		  
+		  tip: To add multiple frames at once, lock the inspector and select all the desired frames from the folder hierachy, drag and drop them in the array.
+		  
+		- When all slots are filled, change the desired fps to set the speed of animation playback (default is 25 frames per second).
+		
+		- Finally enter play mode and watch your light cookie be fully animated! In the example scene a water caustics effect is being animated.
+		
+		
+		'Attention! Make sure your animation has the correct amount of frames to support your desired playback speed. A 60 fps loop will require 60 frames to play one second.
+		
+		
+		
+__________________________________________________________________________________________________________________________________________________________________________________________		
+2.		
+		
+pro: One advantage the light cookie animation has towards projector animation: Projector animation is UV based and will only work per  face or sometimes the complete
+object itself. Even if the view is occluded the texture is drawn anyway. With light cookie animation you have the advantage of the light's behavior.(This also includes Unity 5's realtime GI).
+Shadows will make sure occluded areas have no texture applied.
+
+Second advantage is that you won't have clipping (incase the light follows the player) a projector will clip/snap from face to face, not being able to smoothly transfer,
+whereas the light cookie will just like all lights smoothly transfer.
+
+(This "Con" only applies to Unity 4 users using Beast, Unity 5 does not have any of the negative side effects)
+Con: One drawback is that an animated light cookie will not be baked (Beast light baking), only the first frame will be taken into account while baking light.
+
+
+__________________________________________________________________________________________________________________________________________________________________________________________
+3.
+
+Script explanation:
+
+This system exist of two important scripts: -LightCake.js
+											-LightCakeEditor.js
+											
+
+LightCake.js: This script is the runtime core that will control the cookie's animation.
+
+			- Variables: - var CookieBatch: In here you set your number of desired frames and set the desired cookies into place.
+
+						 - private var BatchNr:Inserts the next frame and works behind the scenes.
+			
+						 - var fps:
+
+
+			- Functions: - Start(): This function will start the animation loop and is vital to the existence of AnimateTExture().
+			
+					     - AnimateTexture(): This is what executes the runtime animation and will callback to Loop(). This is done so that each frame is called seperatly
+		 			       and that the frame rate can be controlled trough callbacks. Running it trough an Update() function would not work because update would start new
+		   			       complete animation loop  every frame, thus creating almost infinite render calls for each frame.
+		   			     
+		   			     - function Loop(): This part controls the animation speed (framers pers seconds).
+		     
+		  
+
+
+LightCakeEditor.js: This script is what runs inside the editor, it will detect if an object can be prepared or not and will 
+					aid in the setup of previous mentioned LightCake.js.
+
+
+			- Variables: - var Selected: Makes sure that only the selected light object gets prepared/edited.
+
+
+			- Functions: - OnGUI(): Will draw the window GUI and control the preparation of light sources.
+						
+						 - OnInspectorUpdate(): This keeps the window updated with new information (inspector changes) even though it is not currently active.
+						 
+						 -SortTextures(): This is the new sorting Algorithm that was added in version 1.2. When a user drags multiple frames in an array
+						 				  , none of the frames will be in chronological order. This new sorting algorithm re-organizes the whole array.
+		
+			!!!Keep note that both scripts need to exist for each other to work and for that reason must not be changed in any way.!!!
+			
+__________________________________________________________________________________________________________________________________________________________________________________________			
+			
+			
+			

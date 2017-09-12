@@ -1,0 +1,43 @@
+update 1.4:
+
+-Fixed playback bug that skipped random frames.
+-New sorting algoritm.
+-Cookie player now supports unlimmited amount of frames.
+ Opening up the possibility for time based playback.
+ (For example 120 frames at 60 fps = 2 seconds of playback).
+-Hooked up the new sorting algoritm to the window interface.
+-Window can now also be opened through the inspector.
+
+
+update 1.3:
+-Cleaned and improved example scene.
+-Optimized example code.
+-Tweaked manual formatting.
+-Fixed nasty exception error bug when re-selecting an empty LightCake batch.
+-Made the UI colors more eye friendly.
+-New logo.
+
+
+update 1.2:
+-Creating sorting algorithm: The user can now with ease drop in multiple textures and the editor script will sort them out.
+-Added sort button to light cake menu window: This button is only visible of there is Cake on the light.
+-New looping pass for the animation, it no longer relies every loop on Start() to replay.
+-Unity 5 enabled example scene
+-Added animated water effect to example scene
+-Fixed some performance issues
+-Realtime GI of Unity  5 confirmed working.
+-Changed the manual.
+
+update 1.1:
+
+-Multiple object support. The user can now setup multiple light sources at once.
+-Setup and delete LightCake component of multiple objects with one button.
+-Added update log.
+-Cleaned up scripts(editor script).
+-Added more explanation inside scripts.
+
+
+update 1.0:
+
+-Created the main control and setup scripts.
+-Created editor window for easy setup.
