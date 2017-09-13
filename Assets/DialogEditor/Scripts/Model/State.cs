@@ -43,8 +43,6 @@ public class State: ScriptableObject
 		AssetDatabase.AddObjectToAsset (newPath, AssetDatabase.GetAssetPath(this));
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
-
-		position = new Rect (position.position, new Vector2(Mathf.Max(208, 15*(pathes.Count+1)) ,position.size.y));
 		return newPath; 
 	}
 

@@ -50,7 +50,7 @@ public class StateInspector : Editor {
 		};
 
 		list.onRemoveCallback = (ReorderableList l) => {
-			state.pathes.Remove(l.serializedProperty.GetArrayElementAtIndex(l.index).objectReferenceValue as Path);
+			state.RemovePath(l.serializedProperty.GetArrayElementAtIndex(l.index).objectReferenceValue as Path);
 			Repaint();
 			SearchableEditorWindow.GetWindow(typeof(EditorWindow)).Repaint();
 		};
