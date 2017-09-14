@@ -15,13 +15,15 @@ public class State: ScriptableObject
 		}
 		set
 		{
-			if(value!="" && _description!=value)
+			if(value!="")
 			{
-				string ss = value.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-				ss = ss.Substring(0, Mathf.Min(10, ss.Length));
-				name = ss;
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                string ss = value.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+                ss = ss.Substring(0, Mathf.Min(10, ss.Length));
+                if (name!=ss) {
+                    name = ss;
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                }
             }
             _description = value;
         }
@@ -30,10 +32,12 @@ public class State: ScriptableObject
 	public Rect position;
 	public AudioClip sound;
 
-	public void Init()
+	public void Init(Chain chain)
 	{
+        Debug.Log(GuidManager.getGameByChain(chain));
 		description = "";
-		position = new Rect(300,300,208,30);
+        float z = GuidManager.getGameByChain(chain).zoom;
+        position = new Rect(300,300,208*z,30*z);
 	}
 
 	public Path AddPath()

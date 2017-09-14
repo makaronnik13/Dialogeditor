@@ -13,4 +13,6 @@ public class PathGame: ScriptableObject
     public List<Chain> chains = new List<Chain>();
 	[HideInInspector]
     public List<Param> parameters = new List<Param>();
+    [HideInInspector]
+    public float zoom = 1;
 }

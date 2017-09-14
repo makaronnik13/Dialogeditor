@@ -16,13 +16,16 @@ public class Path: ScriptableObject
         }
         set
         {
-            if (_text.Length>0 && _text!=value)
+            if (value != "")
             {
                 string ss = value.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
                 ss = ss.Substring(0, Mathf.Min(10, ss.Length));
-                name = ss;
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
+                if (name != ss)
+                {
+                    name = ss;
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                }
             }
             _text = value;
         }

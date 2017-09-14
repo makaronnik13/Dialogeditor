@@ -34,19 +34,37 @@ public class QuestWindow : EditorWindow
 	Vector2 paramsScrollPosition = Vector2.zero;
 	Vector2 chainsScrollPosition = Vector2.zero;
 	EditorMode chainEditorMode = EditorMode.packs;
-	Rect makingPathRect = new Rect(Vector2.one*0.12345f, Vector2.one*0.12345f);
+    Rect makingPathRect = new Rect(Vector2.one*0.12345f, Vector2.one*0.12345f);
     bool makingPath = false;
     State pathAimState;
     Path startPath;
     private State menuState;
-	private StateLink menuStateLink;
+    private Path menuPath;
+    private StateLink menuStateLink;
 	private Param deletingParam;
     private Texture2D backgroundTexture;
 	private Vector2 draggingVector;
 	private State draggingState;
 	private StateLink draggingStateLink;
 	private State debuggingState;
-    private float zoom = 1;
+    private float zoom
+    {
+        get
+        {
+            if (game)
+            {
+                return game.zoom;
+            }
+            return 1;
+        }
+        set
+        {
+            if (game)
+            {
+                game.zoom = value;
+            }
+        }
+    }
 	public State DebuggingState
 	{
 		set
@@ -210,8 +228,7 @@ public class QuestWindow : EditorWindow
         GUILayout.Space(30);
 
         GUILayout.BeginHorizontal();
-        Undo.RecordObject(game, "packs and chains");
-
+       
 		Event evt = Event.current;
 		if (evt.button == 1 && evt.type == EventType.MouseDown)
 		{
@@ -223,7 +240,6 @@ public class QuestWindow : EditorWindow
 
         DrawChainsList();
 		DrawParamsList ();
-        Undo.FlushUndoRecordObjects();
         GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
@@ -295,7 +311,6 @@ public class QuestWindow : EditorWindow
 
     void DrowChainsWindow ()
 	{
-        Undo.RecordObject(game, "chains");
         if (currentChain == null)
         {
                 foreach (Chain c in game.chains)
@@ -391,10 +406,21 @@ public class QuestWindow : EditorWindow
 		if (evt.button == 1 && evt.type == EventType.MouseDown)
 		{
 			State onState = null;
+            Path onPath = null;
 			StateLink onStateLink = null;
 			foreach(State s in currentChain.states)
 			{
-				if(s.position.Contains(evt.mousePosition))
+                int i = 0;
+                foreach (Path p in s.pathes)
+                {
+                    if (new Rect(s.position.x + 16 * zoom * i, s.position.y + s.position.height, 15 * zoom, 15 * zoom).Contains(evt.mousePosition))
+                    {
+                        onPath = p;
+                    }
+                    i++;
+                }
+
+                if (s.position.Contains(evt.mousePosition))
 				{
 					onState = s;
 				}
@@ -407,16 +433,21 @@ public class QuestWindow : EditorWindow
 					onStateLink = s;
 				}
 			}
-
-			if (onState) {
+            if (onPath)
+            {
+                menuPath = onPath;
+                lastMousePosition = Event.current.mousePosition;
+                GenericMenu menu = new GenericMenu();
+                menu.AddItem(new GUIContent("Remove"), false, RemoveCurrentPath);
+                menu.ShowAsContext();
+            }
+			else if (onState) {
 				menuState = onState;
 				lastMousePosition = Event.current.mousePosition;
 				GenericMenu menu = new GenericMenu();
-				Undo.RecordObject(game, "chainsed");
 				menu.AddItem(new GUIContent("Remove state"), false, RemoveState);
 				menu.AddItem(new GUIContent("Add path"), false, AddPath);
 				menu.AddItem(new GUIContent("Make start"), false, MakeStart);
-				Undo.FlushUndoRecordObjects();
 				menu.ShowAsContext();
 			} 
 			else if(onStateLink)
@@ -424,11 +455,10 @@ public class QuestWindow : EditorWindow
 				menuStateLink = onStateLink;
 				lastMousePosition = Event.current.mousePosition;
 				GenericMenu menu = new GenericMenu();
-				Undo.RecordObject(game, "chainsed");
 				menu.AddItem(new GUIContent("Remove"), false, RemoveStateLink);
-				Undo.FlushUndoRecordObjects();
 				menu.ShowAsContext();
 			}
+
 			else
 			{
 				lastMousePosition = evt.mousePosition;
@@ -443,13 +473,14 @@ public class QuestWindow : EditorWindow
         {
             makingPath = false;
         }
-
-        Undo.FlushUndoRecordObjects();
     }
 
-    
+    private void RemoveCurrentPath()
+    {
+        RemovePath(menuPath);
+    }
 
-	private void RecalculateWindowsPositions(Vector2 center)
+    private void RecalculateWindowsPositions(Vector2 center)
     {
         if (currentChain!=null)
         {
@@ -474,11 +505,11 @@ public class QuestWindow : EditorWindow
 		{
 			foreach (State s in currentChain.states)
 			{
-				s.position = new Rect( (s.position.position - Event.current.mousePosition)*(1+force)+Event.current.mousePosition, s.position.size*(1+force));
+				s.position = new Rect( (s.position.position - Event.current.mousePosition)*(1+force)+Event.current.mousePosition, new Vector2(208, 30) *zoom);
 			}
 			foreach (StateLink s in currentChain.links)
 			{
-				s.position = new Rect( (s.position.position - Event.current.mousePosition)*(1+force)+Event.current.mousePosition, s.position.size*(1+force));
+				s.position = new Rect( (s.position.position - Event.current.mousePosition)*(1+force)+Event.current.mousePosition, new Vector2(100, 30) * zoom);
 			}
 		}
 	}
@@ -797,6 +828,9 @@ public class QuestWindow : EditorWindow
 	StateLink CreateStateLink()
 	{
 		StateLink newState = currentChain.AddStateLink();
+
+        Debug.Log(zoom);
+
 		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
 		return newState;
 	}
@@ -804,7 +838,7 @@ public class QuestWindow : EditorWindow
 	State CreateState()
 	{
 		State newState = currentChain.AddState ();
-		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
+        newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
 
 		return newState;
 	}
@@ -823,7 +857,6 @@ public class QuestWindow : EditorWindow
 	{
 		Chain newChain = CreateInstance<Chain> ();
 		newChain.Init (game);
-		game.chains.Insert(0, newChain);
 		Repaint();
 	}
 	#endregion
