@@ -18,8 +18,6 @@ public class Param: ScriptableObject
             if (name != _paramName)
             {
                 name = _paramName;
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
             }
         }
 	}

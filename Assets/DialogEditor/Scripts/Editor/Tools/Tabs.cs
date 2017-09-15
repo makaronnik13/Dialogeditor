@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tabs {
 
 
-    public static int DrawTabs(Rect r, string[] options, int selected)
+    public static int DrawTabs(Rect r, string[] options, int selected, bool vertical = false)
     {
         const float DarkGray = 0.4f;
         const float LightGray = 0.9f;
@@ -29,10 +29,27 @@ public class Tabs {
         for (int i = 0; i < options.Length; ++i)
             {
                 GUI.backgroundColor = i == selected ? highlightCol : bgCol;
-                if (GUI.Button(new Rect(r.position.x + StartSpace+ i*((r.width-StartSpace*2)/options.Length), r.position.y+StartSpace/3, (r.width - StartSpace*2) / options.Length, r.height-StartSpace/2),options[i], buttonStyle))
+            if (!vertical)
+            {
+                if (GUI.Button(new Rect(r.position.x + StartSpace + i * ((r.width - StartSpace * 2) / options.Length), r.position.y + StartSpace / 3, (r.width - StartSpace * 2) / options.Length, r.height - StartSpace / 2), options[i], buttonStyle))
                 {
                     selected = i; //Tab click
                 }
+            }
+            else
+            {
+                if (GUI.Button(new Rect
+                    (
+                    r.position.x + StartSpace,
+                    r.position.y + StartSpace + i * ((r.height - StartSpace*2) / options.Length),
+                    r.width - StartSpace*2,
+                    (r.height - StartSpace*2) / options.Length
+                    ),options[i], buttonStyle))
+                {
+                    selected = i; //Tab click
+                }
+            }
+                
             }
 
         return selected;

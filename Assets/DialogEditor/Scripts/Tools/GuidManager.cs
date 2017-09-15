@@ -82,4 +82,25 @@ public class GuidManager
         }
         return null;
     }
+
+    public static State GetStateByPath(Path activeObject)
+    {
+        foreach (PathGame inspectedgame in Games)
+        {
+            foreach (Chain c in inspectedgame.chains)
+            {
+                foreach (State s in c.states)
+                {
+                    foreach (Path p in s.pathes)
+                    {
+                        if (p == activeObject)
+                        {
+                            return s;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

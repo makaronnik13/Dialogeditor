@@ -26,35 +26,26 @@ public class ParamInspector : Editor
 	public override void OnInspectorGUI()
 	{	
 		p = (Param)target;
-		GUILayout.BeginHorizontal ();
-		p.paramName = EditorGUILayout.TextArea (p.paramName);
-		GUI.color = Color.red;
-		if(GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
-		{
-			game.parameters.Remove(p);
-			DestroyImmediate(p, true);
-			AssetDatabase.Refresh();
-			AssetDatabase.SaveAssets();
-		}
-		GUI.color = Color.white;
-		GUILayout.EndHorizontal();
 
+        EditorGUI.BeginChangeCheck();
 
-		p.showing = !GUILayout.Toggle (!p.showing, "hidden");
-		if (p.showing) {
-			p.description = EditorGUILayout.TextArea (p.description, GUILayout.Height (45));
-			p.image = (Sprite)EditorGUILayout.ObjectField (p.image, typeof(Sprite), false);
+        string pName = EditorGUILayout.TextArea (p.paramName);
+        string pDescription = p.description;
+        Sprite pImage = p.image;
+
+        bool pShowing = !GUILayout.Toggle (!p.showing, "hidden");
+		if (pShowing) {
+			pDescription = EditorGUILayout.TextArea (p.description, GUILayout.Height (45));
+			pImage = (Sprite)EditorGUILayout.ObjectField (p.image, typeof(Sprite), false);
 		}
 
-		/*
-		GUI.color = Color.cyan;
-		if (GUILayout.Button("auto change"))
-		{
-			p.autoActivatedChangesGUIDS.Add(new ConditionChange(new Condition()));
-		}
-		GUI.color = Color.white;
-		*/
-
+        if (EditorGUI.EndChangeCheck())
+        {
+            p.paramName = pName;
+            p.showing = pShowing;
+            p.description = pDescription;
+            p.image = pImage;
+        }
 
 		ConditionChange removingConditionChange = null;
 		foreach (ConditionChange conditionChange in p.autoActivatedChangesGUIDS)
@@ -114,7 +105,6 @@ public class ParamInspector : Editor
 			}
 			else
 			{
-				//removingChanger = path.changes[i];
 				EditorGUILayout.EndHorizontal();
 				return;
 			}

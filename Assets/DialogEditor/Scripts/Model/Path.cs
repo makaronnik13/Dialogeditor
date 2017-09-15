@@ -23,8 +23,6 @@ public class Path: ScriptableObject
                 if (name != ss)
                 {
                     name = ss;
-                    AssetDatabase.SaveAssets();
-                    AssetDatabase.Refresh();
                 }
             }
             _text = value;

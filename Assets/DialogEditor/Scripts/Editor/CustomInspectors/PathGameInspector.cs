@@ -9,12 +9,23 @@ public class PathGameInspector : Editor {
     public override void OnInspectorGUI()
     {
         PathGame myTarget = (PathGame)target;
+
+        EditorGUI.BeginChangeCheck();
         GUILayout.Label("Name:");
-        myTarget.name = EditorGUILayout.TextField(myTarget.name);
+        string gName = EditorGUILayout.TextField(myTarget.name);
         GUILayout.Label("Author:");
-        myTarget.autor = EditorGUILayout.TextField(myTarget.autor);
+        string gAuthor = EditorGUILayout.TextField(myTarget.autor);
         GUILayout.Label("Description:");
-        myTarget.description = EditorGUILayout.TextArea(myTarget.description, GUILayout.Height(120));
+        string gDescription = EditorGUILayout.TextArea(myTarget.description, GUILayout.Height(120));
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(myTarget, "Edit PathGame");
+            myTarget.gameName = gName;
+            myTarget.autor = gAuthor;
+            myTarget.description = gDescription;
+        }
+        
         if (GUILayout.Button("Edit"))
         {
             QuestWindow.Init(myTarget);

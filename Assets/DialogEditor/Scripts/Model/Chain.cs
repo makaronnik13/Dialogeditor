@@ -34,7 +34,6 @@ public class Chain: ScriptableObject
 		AssetDatabase.AddObjectToAsset (sl, AssetDatabase.GetAssetPath(this));
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
-		Debug.Log (sl);
 		links.Add (sl);
 		return sl;
 	}
@@ -50,9 +49,9 @@ public class Chain: ScriptableObject
 	public State AddState()
 	{
 		State newState = CreateInstance<State> ();
-		newState.Init (this);
 		AssetDatabase.AddObjectToAsset (newState, AssetDatabase.GetAssetPath(this));
-		AssetDatabase.SaveAssets ();
+        newState.Init(this);
+        AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 		states.Add (newState);
 		return newState;
@@ -103,7 +102,6 @@ public class Chain: ScriptableObject
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
         game.chains.Insert(0, this);
-        Debug.Log("chain in game");
         StartState = AddState();
 	}
 }

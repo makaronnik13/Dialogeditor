@@ -1,10 +1,28 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 [System.Serializable]
 public class StateLink: ScriptableObject
 {
     public Chain chain;
-	public State state;
+
+    [SerializeField]
+    private State _state;
+	public State state
+    {
+        get
+        {
+            return _state;
+        }
+        set
+        {
+            if (_state!=value)
+            {
+                _state = value;
+                name = _state.name+"_link";
+            }
+        }
+    }
     public Rect position;
 
     public void Init(Chain chain)

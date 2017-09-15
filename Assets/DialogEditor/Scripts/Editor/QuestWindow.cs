@@ -13,8 +13,7 @@ public class QuestWindow : EditorWindow
     public enum EditorMode
     {
         packs,
-        chains,
-        parameters
+        chains
     }
 
 	private GUISkin QuestCreatorSkin
@@ -29,24 +28,25 @@ public class QuestWindow : EditorWindow
 
     public static PathGame game;
 	Vector2 lastMousePosition;
-	Chain currentChain;
-	ReorderableList packList;
+	public Chain currentChain;
 	Vector2 paramsScrollPosition = Vector2.zero;
 	Vector2 chainsScrollPosition = Vector2.zero;
-	EditorMode chainEditorMode = EditorMode.packs;
+	public EditorMode chainEditorMode = EditorMode.packs;
     Rect makingPathRect = new Rect(Vector2.one*0.12345f, Vector2.one*0.12345f);
     bool makingPath = false;
-    State pathAimState;
     Path startPath;
     private State menuState;
     private Path menuPath;
+    private Chain menuChain;
+    private Param menuParam;
     private StateLink menuStateLink;
-	private Param deletingParam;
     private Texture2D backgroundTexture;
 	private Vector2 draggingVector;
 	private State draggingState;
 	private StateLink draggingStateLink;
 	private State debuggingState;
+    private UnityEngine.Object copyBuffer = new UnityEngine.Object();
+
     private float zoom
     {
         get
@@ -146,32 +146,8 @@ public class QuestWindow : EditorWindow
 
 		}
 
-		if(Event.current.isKey && (Event.current.keyCode == KeyCode.Delete) || (Event.current.command && Event.current.keyCode == KeyCode.Backspace ) && Selection.activeObject)
-		{
-	
-			if(Selection.activeObject.GetType() == typeof(State))
-			{
-				menuState = (State)Selection.activeObject;
-				RemoveState();
-			}
-			if(Selection.activeObject.GetType() == typeof(StateLink))
-			{
-				menuStateLink = (StateLink)Selection.activeObject;
-				RemoveStateLink();
-			}
-			if(Selection.activeObject.GetType() == typeof(Path))
-			{
-				RemovePath((Path)Selection.activeObject);
-			}
-			if(Selection.activeObject.GetType() == typeof(Param))
-			{
-				RemoveParam((Param)Selection.activeObject);
-			}
-			if(Selection.activeObject.GetType() == typeof(Chain))
-			{
-				RemoveChain((Chain)Selection.activeObject);
-			}
-		}
+        CopyPasteEvents();
+        DeleteEvents();
 
 		switch (chainEditorMode) {
 		case EditorMode.chains:
@@ -203,7 +179,116 @@ public class QuestWindow : EditorWindow
 
 	}
 
-	private void OnDestroy()
+    private void CopyPasteEvents()
+    {
+        if (Event.current.control && Event.current.isKey)
+        {
+            if (Event.current.keyCode == KeyCode.C)
+            {
+                copyBuffer = Selection.activeObject;
+            }
+
+            if(chainEditorMode == EditorMode.chains)
+            {
+                if (copyBuffer.GetType() == typeof(State))
+                {
+                    if (Event.current.keyCode == KeyCode.V)
+                    {
+                        lastMousePosition = Event.current.mousePosition;
+                        State s = CreateState();
+                        EditorUtility.CopySerialized((State)copyBuffer, s);
+                        s.position = new Rect(lastMousePosition.x - s.position.width / 2, lastMousePosition.y - s.position.height / 2, s.position.width, s.position.height);
+                        Repaint();
+                    }
+                }
+
+                if (copyBuffer.GetType() == typeof(StateLink))
+                {
+                    if (Event.current.keyCode == KeyCode.V)
+                    {
+                        lastMousePosition = Event.current.mousePosition;
+                        StateLink s = CreateStateLink();
+                        EditorUtility.CopySerialized((StateLink)copyBuffer, s);
+                        s.position = new Rect(lastMousePosition.x - s.position.width / 2, lastMousePosition.y - s.position.height / 2, s.position.width, s.position.height);
+                        Repaint();
+                    }
+                }
+
+                if (copyBuffer.GetType() == typeof(Path))
+                {
+                    if (Event.current.keyCode == KeyCode.V)
+                    {
+                        Path p = null;
+                        if (Selection.activeObject.GetType() == typeof(State))
+                        {
+                            p = ((State)Selection.activeObject).AddPath();
+                        }
+                        p = GuidManager.GetStateByPath((Path)Selection.activeObject).AddPath();
+                        EditorUtility.CopySerialized((Path)copyBuffer, p);
+                        Repaint();
+                    }
+                }
+            }
+
+            if (chainEditorMode == EditorMode.packs)
+            {
+                if (copyBuffer.GetType() == typeof(Param))
+                {
+                    if (Event.current.keyCode == KeyCode.V)
+                    {
+                        PasteParam();
+                    }
+                }
+
+                if (copyBuffer.GetType() == typeof(Chain))
+                {
+                    if (Event.current.keyCode == KeyCode.V)
+                    {
+                        PasteChain();
+                    }
+                }
+            }
+        }
+    }
+
+    private void DeleteEvents()
+    {
+        if (Event.current.isKey && (Event.current.keyCode == KeyCode.Delete) || (Event.current.command && Event.current.keyCode == KeyCode.Backspace) && Selection.activeObject)
+        {
+            if (!Selection.activeObject)
+            {
+                return;
+            }
+            if (Selection.activeObject.GetType() == typeof(State))
+            {
+                menuState = (State)Selection.activeObject;
+                RemoveState();
+                return;
+            }
+            if (Selection.activeObject.GetType() == typeof(StateLink))
+            {
+                menuStateLink = (StateLink)Selection.activeObject;
+                RemoveStateLink();
+                return;
+            }
+            if (Selection.activeObject.GetType() == typeof(Path))
+            {
+                RemovePath((Path)Selection.activeObject);
+                return;
+            }
+            if (Selection.activeObject.GetType() == typeof(Param))
+            {
+                RemoveParam((Param)Selection.activeObject);
+                return;
+            }
+            if (Selection.activeObject.GetType() == typeof(Chain))
+            {
+                RemoveChain((Chain)Selection.activeObject);
+            }
+        }
+    }
+
+    private void OnDestroy()
 	{
 		if (game)
 		{
@@ -228,82 +313,171 @@ public class QuestWindow : EditorWindow
         GUILayout.Space(30);
 
         GUILayout.BeginHorizontal();
-       
-		Event evt = Event.current;
-		if (evt.button == 1 && evt.type == EventType.MouseDown)
-		{
-			GenericMenu menu = new GenericMenu();
-			menu.AddItem(new GUIContent("Add dialog"), false, CreateChain);
-			menu.AddItem(new GUIContent("Add parameter"), false, CreateParam);
-			menu.ShowAsContext();
-		}
-
+        ChainLisClickEvent();
         DrawChainsList();
-		DrawParamsList ();
+		DrawParamsList ();  
         GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
 	}
 
-	void DrawParamsList()
+    private void PasteChain()
+    {
+                Chain c = CreateChain();
+                EditorUtility.CopySerialized((Chain)copyBuffer, c);
+                Repaint();
+    }
+
+    void DrawParamsList()
 	{
-		chainsScrollPosition = GUILayout.BeginScrollView (paramsScrollPosition, false, true, GUILayout.Width(position.width/2-5), GUILayout.Height(position.height-20));
-		GUILayout.BeginVertical();
+		paramsScrollPosition = GUILayout.BeginScrollView (paramsScrollPosition, false, true, GUILayout.Width(position.width/2-5), GUILayout.Height(position.height-20));
+        GUILayout.BeginVertical();
+        Param selectedParam = null;
+        if (Selection.activeObject && Selection.activeObject.GetType() == typeof(Param))
+        {
+            selectedParam = (Param)Selection.activeObject;
+        }
 
-		Param deletingParam = null;
+        List<string> paramsNames = game.parameters.Select(x => x.name).ToList();
+        int index = -1;
+        if (game.parameters.Contains(selectedParam))
+        {
+            index = game.parameters.IndexOf(selectedParam);
+        }
 
-		foreach(Param parameter in game.parameters)
-		{
-			GUILayout.BeginHorizontal ();
-			parameter.paramName = EditorGUILayout.TextArea (parameter.paramName);
-			if(GUILayout.Button("edit", GUILayout.Width(50), GUILayout.Height(15)))
-			{
-				Selection.activeObject = parameter;
-			}
-			if(GUILayout.Button("delete", GUILayout.Width(50), GUILayout.Height(15)))
-			{
-				deletingParam = parameter;
-			}
-			GUILayout.EndHorizontal();
-		}
+        GUILayout.Space(30 * game.parameters.Count);
+        int paramIndex = Tabs.DrawTabs(new Rect(0, 0, position.width / 2 - 20, 30 * game.parameters.Count), paramsNames.ToArray(), index, true);
+        if (paramIndex >= 0)
+        {
+            Selection.activeObject = game.parameters[paramIndex];
+        }
+        GUILayout.EndVertical();
+        GUILayout.EndScrollView();
+    }
 
-		if(deletingParam!=null)
-		{
-			RemoveParam (deletingParam);
-		}
+    private void ChainLisClickEvent()
+    {
+        if (Event.current.type == EventType.MouseDown && Event.current.button == 1)
+        {
+            GenericMenu menu = new GenericMenu();
 
-		GUILayout.EndVertical ();
-		GUILayout.EndScrollView ();
-	}
+            for (int i = 0;i<game.chains.Count;i++)
+            {
+                if (new Rect(5, 30*(i+1), -30+position.width / 2, (30 * game.chains.Count) / game.chains.Count).Contains(Event.current.mousePosition))
+                {
+                    menuChain = game.chains[i];
+                    menu.AddItem(new GUIContent("Add chain"), false, CreateNewChain);
+                    menu.AddItem(new GUIContent("Remove"), false, RemoveChain);
+                    menu.AddItem(new GUIContent("Copy"), false, CopyChain);
+                    if (copyBuffer.GetType()==typeof(Chain))
+                    {
+                        menu.AddItem(new GUIContent("Paste values"), false, PasteChainValues); //!
+                        menu.AddItem(new GUIContent("Paste chain"), false, PasteChain);
+                    }
+                    menu.ShowAsContext();
+                    return;
+                }
+            }
+
+            for (int i = 0; i < game.parameters.Count; i++)
+            {
+                if (new Rect(position.width / 2, 30*(1 + i), -5+position.width / 2 - 20, (30 * game.parameters.Count)/game.parameters.Count).Contains(Event.current.mousePosition))
+                {
+                    menuParam = game.parameters[i];
+                    menu.AddItem(new GUIContent("Add param"), false, CreateNewParam);
+                    menu.AddItem(new GUIContent("Remove"), false, RemoveParam);
+                    menu.AddItem(new GUIContent("Copy"), false, CopyParam);
+                    if (copyBuffer.GetType() == typeof(Param))
+                    {
+                        menu.AddItem(new GUIContent("Paste values"), false, PasteParamValues); //!
+                        menu.AddItem(new GUIContent("Paste param"), false, PasteParam);
+                    }
+                    menu.ShowAsContext();
+                   
+                    return;
+                }
+            }
+
+            menu.AddItem(new GUIContent("Add chain"), false, CreateNewChain);
+            menu.AddItem(new GUIContent("Add param"), false, CreateNewParam);
+
+            if (copyBuffer.GetType() == typeof(Chain))
+            {
+                menu.AddItem(new GUIContent("Paste chain"), false, PasteChain);
+               
+            }
+            if (copyBuffer.GetType() == typeof(Param))
+            {
+                menu.AddItem(new GUIContent("Paste param"), false, PasteParam);
+            }
+            menu.ShowAsContext();
+            return;
+
+
+        }
+    }
+
+    private void CopyChain()
+    {
+        copyBuffer = menuChain;
+    }
+
+    private void RemoveChain()
+    {
+        RemoveChain(menuChain);
+    }
+
+    private void PasteChainValues()
+    {
+        EditorUtility.CopySerialized((Param)copyBuffer, menuChain);
+    }
+
+    private void PasteParam()
+    { 
+                Param p = CreateParam();
+                EditorUtility.CopySerialized((Param)copyBuffer, p);
+                Repaint(); 
+    }
+
+    private void PasteParamValues()
+    {
+        EditorUtility.CopySerialized((Param)copyBuffer, menuParam);
+    }
+
+    private void CopyParam()
+    {
+        copyBuffer = menuParam;
+    }
+
+    private void RemoveParam()
+    {
+        RemoveParam(menuParam);
+    }
+
 
     void DrawChainsList()
 	{
         chainsScrollPosition = GUILayout.BeginScrollView (chainsScrollPosition, false, true, GUILayout.Width(position.width/2-5), GUILayout.Height(position.height-20));
 		GUILayout.BeginVertical();
-
-		Chain deletingChain = null;
-         
-		foreach(Chain chain in game.chains)
-		{
-			GUILayout.BeginHorizontal ();
-			chain.dialogName = EditorGUILayout.TextArea (chain.dialogName, GUILayout.Height(15));
-			if(GUILayout.Button("edit", GUILayout.Width(50), GUILayout.Height(15)))
-			{
-				currentChain = chain;
-				chainEditorMode = EditorMode.chains;
-			}
-			if(GUILayout.Button("delete", GUILayout.Width(50), GUILayout.Height(15)))
-			{
-				deletingChain = chain;
-			}
-            GUILayout.EndHorizontal();
+        Chain selectedChain = null;
+        if (Selection.activeObject && Selection.activeObject.GetType() == typeof(Chain))
+        {
+            selectedChain = (Chain)Selection.activeObject;
         }
 
-		if(deletingChain!=null)
-		{
-			RemoveChain (deletingChain);
-	    }
+        List<string> chainNames = game.chains.Select(x=>x.name).ToList();
+        int index = -1;
+        if (game.chains.Contains(selectedChain))
+        {
+            index = game.chains.IndexOf(selectedChain);
+        }
 
+        GUILayout.Space(30 * game.chains.Count);
+        int chainIndex = Tabs.DrawTabs(new Rect(0, 0, position.width / 2 - 20, 30*game.chains.Count), chainNames.ToArray(), index, true);
+        if (chainIndex>=0)
+        {
+            Selection.activeObject = game.chains[chainIndex];
+        }
 		GUILayout.EndVertical ();
 		GUILayout.EndScrollView ();
 	}
@@ -746,7 +920,7 @@ public class QuestWindow : EditorWindow
 		Repaint ();
 	}
 
-	private void RemoveChain(Chain deletingChain)
+	public void RemoveChain(Chain deletingChain)
 	{
 		game.chains.Remove (deletingChain);
 		deletingChain.DestroyChain ();
@@ -828,9 +1002,6 @@ public class QuestWindow : EditorWindow
 	StateLink CreateStateLink()
 	{
 		StateLink newState = currentChain.AddStateLink();
-
-        Debug.Log(zoom);
-
 		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
 		return newState;
 	}
@@ -843,7 +1014,12 @@ public class QuestWindow : EditorWindow
 		return newState;
 	}
 
-	void CreateParam()
+    void CreateNewParam()
+    {
+        CreateParam();
+    }
+
+	Param CreateParam()
 	{
 		Param newParam = CreateInstance<Param> ();
 		newParam.id = GuidManager.GetItemGUID ();
@@ -851,13 +1027,20 @@ public class QuestWindow : EditorWindow
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 		game.parameters.Add (newParam);
+        return newParam;
 	}
 
-	private void CreateChain()
+    private void CreateNewChain()
+    {
+        CreateChain();
+    }
+
+	private Chain CreateChain()
 	{
 		Chain newChain = CreateInstance<Chain> ();
 		newChain.Init (game);
 		Repaint();
+        return newChain;
 	}
 	#endregion
 

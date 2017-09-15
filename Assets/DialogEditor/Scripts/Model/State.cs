@@ -21,8 +21,6 @@ public class State: ScriptableObject
                 ss = ss.Substring(0, Mathf.Min(10, ss.Length));
                 if (name!=ss) {
                     name = ss;
-                    AssetDatabase.SaveAssets();
-                    AssetDatabase.Refresh();
                 }
             }
             _description = value;
@@ -34,7 +32,6 @@ public class State: ScriptableObject
 
 	public void Init(Chain chain)
 	{
-        Debug.Log(GuidManager.getGameByChain(chain));
 		description = "";
         float z = GuidManager.getGameByChain(chain).zoom;
         position = new Rect(300,300,208*z,30*z);
