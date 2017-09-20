@@ -29,11 +29,20 @@ public class StateLinkInspector : Editor {
 		{
 			return;
 		}
-
-		link.chain = game.chains[EditorGUILayout.Popup(game.chains.IndexOf(link.chain), game.chains.Select(x => x.name).ToArray())];
+		EditorGUI.BeginChangeCheck ();
+		int chainId = EditorGUILayout.Popup (game.chains.IndexOf (link.chain), game.chains.Select (x => x.name).ToArray ());
+		if(EditorGUI.EndChangeCheck())
+		{
+			link.chain = game.chains[chainId];
+		}
 		if(link.chain)
 		{
-			link.state = link.chain.states [EditorGUILayout.Popup (link.chain.states.IndexOf (link.state), link.chain.states.Select (x => x.description).ToArray ())];
+			EditorGUI.BeginChangeCheck ();
+			int stateId = EditorGUILayout.Popup (link.chain.states.IndexOf (link.state), link.chain.states.Select (x => x.description).ToArray ());
+			if(EditorGUI.EndChangeCheck())
+			{
+				link.state = link.chain.states [stateId];
+			}
 		}
 	}
 }

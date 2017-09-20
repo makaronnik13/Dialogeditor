@@ -41,7 +41,7 @@ public class Chain: ScriptableObject
 	public void RemoveStateLink(StateLink link)
 	{
 		links.Remove (link);
-		DestroyImmediate (link, true);
+		Undo.DestroyObjectImmediate (link);
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 	}
@@ -80,7 +80,7 @@ public class Chain: ScriptableObject
 
 		states.Remove (state);
 		state.DestroyState ();
-		DestroyImmediate (state, true);
+		Undo.DestroyObjectImmediate(state);
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 	}
@@ -90,12 +90,13 @@ public class Chain: ScriptableObject
 		foreach(State s in states)
 		{
 			s.DestroyState ();
-			DestroyImmediate (s, true);
+			Undo.DestroyObjectImmediate(s);
 		}
 	}
 
 	public void Init(PathGame game)
 	{
+		Debug.Log ("int");
 		dialogName = "New chain";
 		name = dialogName;
 		AssetDatabase.AddObjectToAsset (this, AssetDatabase.GetAssetPath(game));

@@ -223,7 +223,7 @@ public class QuestWindow : EditorWindow
                         {
                             p = ((State)Selection.activeObject).AddPath();
                         }
-                        p = GuidManager.GetStateByPath((Path)Selection.activeObject).AddPath();
+						p = GuidManager.GetStateByPath((Path)copyBuffer).AddPath();
                         EditorUtility.CopySerialized((Path)copyBuffer, p);
                         Repaint();
                     }
@@ -367,6 +367,7 @@ public class QuestWindow : EditorWindow
                 {
                     menuChain = game.chains[i];
                     menu.AddItem(new GUIContent("Add chain"), false, CreateNewChain);
+					menu.AddItem(new GUIContent("Edit"), false, EditChain);
                     menu.AddItem(new GUIContent("Remove"), false, RemoveChain);
                     menu.AddItem(new GUIContent("Copy"), false, CopyChain);
                     if (copyBuffer.GetType()==typeof(Chain))
@@ -416,6 +417,12 @@ public class QuestWindow : EditorWindow
 
         }
     }
+
+	private void EditChain()
+	{
+		currentChain = menuChain;
+		chainEditorMode = EditorMode.chains;
+	}
 
     private void CopyChain()
     {
@@ -913,8 +920,9 @@ public class QuestWindow : EditorWindow
 
 	private void RemoveParam(Param deletingParam)
 	{
+		Undo.RecordObject (game, "delete param");
 		game.parameters.Remove (deletingParam);
-		DestroyImmediate (deletingParam, true);
+		Undo.DestroyObjectImmediate(deletingParam);
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 		Repaint ();
@@ -922,9 +930,10 @@ public class QuestWindow : EditorWindow
 
 	public void RemoveChain(Chain deletingChain)
 	{
+		Undo.RecordObject (game, "delete chain");
 		game.chains.Remove (deletingChain);
 		deletingChain.DestroyChain ();
-		DestroyImmediate (deletingChain, true);
+		Undo.DestroyObjectImmediate(deletingChain);
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 		Repaint ();
@@ -1021,7 +1030,10 @@ public class QuestWindow : EditorWindow
 
 	Param CreateParam()
 	{
+		Undo.RecordObject (game, "param creattion");
 		Param newParam = CreateInstance<Param> ();
+		newParam.paramName = "new param";
+		Undo.RegisterCreatedObjectUndo (newParam, "param creation");
 		newParam.id = GuidManager.GetItemGUID ();
 		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
 		AssetDatabase.SaveAssets ();
@@ -1037,7 +1049,10 @@ public class QuestWindow : EditorWindow
 
 	private Chain CreateChain()
 	{
+		Undo.RecordObject (game, "chain creattion");
 		Chain newChain = CreateInstance<Chain> ();
+		Undo.RegisterCreatedObjectUndo (newChain, "chain creation");
+
 		newChain.Init (game);
 		Repaint();
         return newChain;

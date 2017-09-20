@@ -9,7 +9,8 @@ public class Param: ScriptableObject
 {
     [SerializeField]
     private string _paramName = "new param";
-	public string paramName{
+	public string paramName
+	{
 		get{
 			return _paramName;
 		}

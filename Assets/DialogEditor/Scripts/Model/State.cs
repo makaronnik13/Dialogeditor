@@ -50,7 +50,7 @@ public class State: ScriptableObject
 	public void RemovePath(Path path)
 	{
 		pathes.Remove (path);
-		DestroyImmediate (path, true);
+		Undo.DestroyObjectImmediate (path);
 		AssetDatabase.SaveAssets ();
 		AssetDatabase.Refresh ();
 	}
