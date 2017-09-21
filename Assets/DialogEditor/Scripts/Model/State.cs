@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using System;
 using System.Collections.Generic;
 
@@ -21,19 +20,27 @@ public class State: ScriptableObject
                 ss = ss.Substring(0, Mathf.Min(10, ss.Length));
                 if (name!=ss) {
                     name = ss;
+                    GuidManager.getGameByChain(GuidManager.GetChainByState(this)).Dirty = true;
                 }
             }
             _description = value;
         }
 	}
-	public List<Path> pathes = new List<Path>();
+
+
+    public List<Path> pathes = new List<Path>();
 	public Rect position;
 	public AudioClip sound;
 
 	public void Init(Chain chain)
 	{
 		description = "";
-        float z = GuidManager.getGameByChain(chain).zoom;
+        float z = 1;
+
+        if (GuidManager.getGameByChain(chain))
+        {
+            z = GuidManager.getGameByChain(chain).zoom;
+        }   
         position = new Rect(300,300,208*z,30*z);
 	}
 
@@ -41,19 +48,20 @@ public class State: ScriptableObject
 	{
 		Path newPath = CreateInstance<Path> ();
 		pathes.Add(newPath);
-		AssetDatabase.AddObjectToAsset (newPath, AssetDatabase.GetAssetPath(this));
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		return newPath; 
+        GuidManager.getGameByChain(GuidManager.GetChainByState(this)).Dirty = true;
+        return newPath; 
 	}
 
 	public void RemovePath(Path path)
 	{
-		pathes.Remove (path);
+        if (GuidManager.GetChainByState(this))
+        {
+            GuidManager.getGameByChain(GuidManager.GetChainByState(this)).Dirty = true;
+        }
+        
+        pathes.Remove (path);
 		DestroyImmediate (path, true);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-	}
+    }
 
 	public void DestroyState()
 	{

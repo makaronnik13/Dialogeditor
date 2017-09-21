@@ -44,7 +44,7 @@ public class StateInspector : Editor {
 		};
 
 		list.onAddCallback = (ReorderableList l) => {
-			state.AddPath();
+            AssetDatabase.AddObjectToAsset(state.AddPath(), AssetDatabase.GetAssetPath(state));
 			Repaint();
 			SearchableEditorWindow.GetWindow(typeof(EditorWindow)).Repaint();
 		};

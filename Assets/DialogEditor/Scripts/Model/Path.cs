@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
@@ -23,6 +22,7 @@ public class Path: ScriptableObject
                 if (name != ss)
                 {
                     name = ss;
+                    GuidManager.getGameByChain(GuidManager.GetChainByState(GuidManager.GetStateByPath(this))).Dirty = true;
                 }
             }
             _text = value;

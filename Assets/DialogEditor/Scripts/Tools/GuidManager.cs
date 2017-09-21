@@ -38,7 +38,22 @@ public class GuidManager
 		return r;
 	}
 
-	public static Param GetItemByGuid(int aimParamGuid)
+    public static PathGame getGameByParam(Param param)
+    {
+        foreach (PathGame inspectedgame in Games)
+        {
+            foreach (Param p in inspectedgame.parameters)
+            {
+                if (p.paramGUID == param.paramGUID)
+                {
+                    return inspectedgame;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Param GetItemByGuid(int aimParamGuid)
 	{
 		foreach (PathGame inspectedgame in Games) {
 			foreach (Param p in inspectedgame.parameters) {

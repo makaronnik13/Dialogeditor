@@ -1,11 +1,12 @@
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using System;
 using System.Collections.Generic;
 
 [System.Serializable]
 public class Chain: ScriptableObject
 {
+    private PathGame game;
 	public string dialogName
 	{
 		get
@@ -15,10 +16,12 @@ public class Chain: ScriptableObject
 		set
 		{
 			name = value;
-		}
+            game.Dirty = true;
+        }
 	}
 
-	[HideInInspector]
+
+    [HideInInspector]
 	public State StartState;
 	[HideInInspector]
     public State inspectedState;
@@ -31,10 +34,8 @@ public class Chain: ScriptableObject
 	{
 		StateLink sl = CreateInstance<StateLink> ();
 		sl.Init (this);
-		AssetDatabase.AddObjectToAsset (sl, AssetDatabase.GetAssetPath(this));
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		links.Add (sl);
+        GuidManager.getGameByChain(this).Dirty = true;
+        links.Add (sl);
 		return sl;
 	}
 
@@ -42,48 +43,33 @@ public class Chain: ScriptableObject
 	{
 		links.Remove (link);
 		DestroyImmediate (link, true);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-	}
+        GuidManager.getGameByChain(this).Dirty = true;
+    }
 
 	public State AddState()
 	{
 		State newState = CreateInstance<State> ();
-		AssetDatabase.AddObjectToAsset (newState, AssetDatabase.GetAssetPath(this));
+        if (GuidManager.getGameByChain(this))
+        {
+            GuidManager.getGameByChain(this).Dirty = true;
+        }
+      
+        states.Add(newState);
         newState.Init(this);
-        AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		states.Add (newState);
 		return newState;
 	}
 
 	public void RemoveState(State state)
 	{
-		if (state == StartState)
-		{
-			if (states.Count == 1)
-			{
-				StartState = AddState();
-			}
-			else
-			{
-				foreach (State s in states)
-				{
-					if (s!=state)
-					{
-						StartState = s;
-						break;
-					}
-				}
-			}
-		}
-
+	
 		states.Remove (state);
 		state.DestroyState ();
 		DestroyImmediate (state, true);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-	}
+        if (GuidManager.getGameByChain(this))
+        {
+            GuidManager.getGameByChain(this).Dirty = true;
+        }
+    }
 
 	public void DestroyChain()
 	{
@@ -92,16 +78,21 @@ public class Chain: ScriptableObject
 			s.DestroyState ();
 			DestroyImmediate (s, true);
 		}
-	}
+        foreach (StateLink s in links)
+        {
+            DestroyImmediate(s, true);
+        }
+    }
 
 	public void Init(PathGame game)
 	{
-		dialogName = "New chain";
-		name = dialogName;
-		AssetDatabase.AddObjectToAsset (this, AssetDatabase.GetAssetPath(game));
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
+        this.game = game;
         game.chains.Insert(0, this);
-        StartState = AddState();
-	}
+        dialogName = "New chain";
+		name = dialogName;
+        if (GuidManager.getGameByChain(this))
+        {
+            GuidManager.getGameByChain(this).Dirty = true;
+        }
+    }
 }

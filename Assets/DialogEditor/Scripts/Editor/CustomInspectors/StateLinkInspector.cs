@@ -14,7 +14,6 @@ public class StateLinkInspector : Editor {
 	{
 		link = (StateLink)target;
 		game = AssetDatabase.LoadAssetAtPath<PathGame> (AssetDatabase.GetAssetPath(link)) as PathGame;
-			Debug.Log (game);
 		if(link.chain == null)
 		{
 			link.chain = game.chains [0];
@@ -29,11 +28,31 @@ public class StateLinkInspector : Editor {
 		{
 			return;
 		}
+        EditorGUI.BeginChangeCheck();
+        Chain chain = game.chains[EditorGUILayout.Popup(game.chains.IndexOf(link.chain), game.chains.Select(x => x.name).ToArray())];
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(game, "change link chain");
+            link.chain = chain;
+            if (!link.chain.states.Contains(link.state))
+            {
+                link.state = link.chain.states[0];
+            }
+        }
 
-		link.chain = game.chains[EditorGUILayout.Popup(game.chains.IndexOf(link.chain), game.chains.Select(x => x.name).ToArray())];
-		if(link.chain)
-		{
-			link.state = link.chain.states [EditorGUILayout.Popup (link.chain.states.IndexOf (link.state), link.chain.states.Select (x => x.description).ToArray ())];
-		}
+        State state = null;
+
+        EditorGUI.BeginChangeCheck();
+        if (link.chain)
+        {
+            state = link.chain.states[EditorGUILayout.Popup(link.chain.states.IndexOf(link.state), link.chain.states.Select(x => x.description).ToArray())];
+        }
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(game, "change link state");
+            link.state = state;
+        }
+
 	}
 }

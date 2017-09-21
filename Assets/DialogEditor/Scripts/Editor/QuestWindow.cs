@@ -8,15 +8,13 @@ using UnityEngine.UI;
 
 public class QuestWindow : EditorWindow
 {
-    private delegate void StateDel(State state);
-
     public enum EditorMode
     {
         packs,
         chains
     }
 
-	private GUISkin QuestCreatorSkin
+	private static GUISkin QuestCreatorSkin
 	{
 		get
 		{
@@ -24,30 +22,28 @@ public class QuestWindow : EditorWindow
 		}
 	}
 
-    public Vector2 ParamsScrollPosition { get; private set; }
-
     public static PathGame game;
-	Vector2 lastMousePosition;
-	public Chain currentChain;
-	Vector2 paramsScrollPosition = Vector2.zero;
-	Vector2 chainsScrollPosition = Vector2.zero;
-	public EditorMode chainEditorMode = EditorMode.packs;
-    Rect makingPathRect = new Rect(Vector2.one*0.12345f, Vector2.one*0.12345f);
-    bool makingPath = false;
-    Path startPath;
-    private State menuState;
-    private Path menuPath;
-    private Chain menuChain;
-    private Param menuParam;
-    private StateLink menuStateLink;
-    private Texture2D backgroundTexture;
-	private Vector2 draggingVector;
-	private State draggingState;
-	private StateLink draggingStateLink;
-	private State debuggingState;
-    private UnityEngine.Object copyBuffer = new UnityEngine.Object();
+    private static Vector2 lastMousePosition;
+	public static Chain currentChain;
+    private static Vector2 paramsScrollPosition = Vector2.zero;
+    private static Vector2 chainsScrollPosition = Vector2.zero;
+    public static EditorMode chainEditorMode = EditorMode.packs;
+    private static Rect makingPathRect = new Rect(Vector2.one*0.12345f, Vector2.one*0.12345f);
+    private static bool makingPath = false;
+    private static Path startPath;
+    private static State menuState;
+    private static Path menuPath;
+    private static Chain menuChain;
+    private static Param menuParam;
+    private static StateLink menuStateLink;
+	private static Vector2 draggingVector;
+	private static State draggingState;
+	private static StateLink draggingStateLink;
+    private static State debuggingState;
+    private static UnityEngine.Object copyBuffer = new UnityEngine.Object();
+    private static Texture2D backgroundTexture;
 
-    private float zoom
+    private static float zoom
     {
         get
         {
@@ -74,7 +70,7 @@ public class QuestWindow : EditorWindow
 			{
 				if(!game.chains.SelectMany(g=>g.states).Contains(debuggingState))
 				{
-					foreach(PathGame pg in FindObjectsOfTypeIncludingAssets(typeof(PathGame)))
+					foreach(PathGame pg in Resources.FindObjectsOfTypeAll<PathGame>())
 					{
 						if (pg.chains.SelectMany (g => g.states).Contains (debuggingState)) 
 						{
@@ -96,7 +92,7 @@ public class QuestWindow : EditorWindow
 		}
 	}
 
-    private Texture2D BackgroundTexture
+    private static Texture2D BackgroundTexture
     {
         get
         {
@@ -109,8 +105,15 @@ public class QuestWindow : EditorWindow
         }
     }
 
-	#region LifeCycle
-	public static QuestWindow Init(PathGame editedGame = null)
+    public string GamePath {
+        get
+        {
+            return AssetDatabase.GetAssetPath(game.GetInstanceID());
+        }
+    }
+
+    #region LifeCycle
+    public static QuestWindow Init(PathGame editedGame = null)
 	{
 		game = editedGame;
 		return Init();
@@ -130,6 +133,24 @@ public class QuestWindow : EditorWindow
         QuestWindow window = (QuestWindow)EditorWindow.GetWindow<QuestWindow>("Dialog creator", true, new Type[3] { typeof(Animator), typeof(Console), typeof(SceneView) });
 		window.minSize = new Vector2(600, 400);
         window.ShowAuxWindow();
+        paramsScrollPosition = Vector2.zero;
+        currentChain = null;
+        paramsScrollPosition = Vector2.zero;
+        chainsScrollPosition = Vector2.zero;
+        chainEditorMode = EditorMode.packs;
+        makingPathRect = new Rect(Vector2.one * 0.12345f, Vector2.one * 0.12345f);
+        makingPath = false;
+        startPath = null;
+        menuState = null;
+        menuPath = null;
+        menuChain = null;
+        menuParam = null;
+        menuStateLink = null;
+        draggingVector = Vector2.zero;
+        draggingState = null;
+        draggingStateLink = null;
+        debuggingState = null;
+        copyBuffer = null;
         return window;
 	}
 
@@ -149,9 +170,25 @@ public class QuestWindow : EditorWindow
         CopyPasteEvents();
         DeleteEvents();
 
-		switch (chainEditorMode) {
+        EditorMode newChainMode = (EditorMode)Tabs.DrawTabs(new Rect(0, 0, position.width, 30), new string[] { "Dialogs and parameters", "Node tree" }, (int)chainEditorMode);
+        if (newChainMode == EditorMode.chains && newChainMode != chainEditorMode)
+        {
+            if (currentChain==null && game.chains.Count>0)
+            {
+                currentChain = game.chains[0];
+            }
+            if (currentChain!=null)
+            {
+                RecalculateWindowsPositions(currentChain.StartState.position.position);
+            }
+        }
+
+        chainEditorMode = newChainMode;
+
+
+        switch (chainEditorMode) {
 		case EditorMode.chains:
-			if (game)
+			if (game && currentChain)
 			{
 				DrowChainsWindow();
 			}
@@ -164,17 +201,15 @@ public class QuestWindow : EditorWindow
 			break;
 		}
 
-		EditorMode newChainMode = (EditorMode)Tabs.DrawTabs(new Rect(0, 0, position.width, 30), new string[] { "Dialogs and parameters", "Node tree"}, (int)chainEditorMode);
-		if (newChainMode == EditorMode.chains && newChainMode!=chainEditorMode)
-		{
-			RecalculateWindowsPositions(currentChain.StartState.position.position);
-		}
-
-		chainEditorMode = newChainMode;
-
+		
 		if (game)
 		{
 			EditorUtility.SetDirty (game);
+            if (game.Dirty)
+            {
+                AssetDatabase.SaveAssets();
+                game.Dirty = false;
+            }
 		}
 
 	}
@@ -190,19 +225,35 @@ public class QuestWindow : EditorWindow
 
             if(chainEditorMode == EditorMode.chains)
             {
-                if (copyBuffer.GetType() == typeof(State))
+                if (copyBuffer && copyBuffer.GetType() == typeof(State))
                 {
                     if (Event.current.keyCode == KeyCode.V)
                     {
                         lastMousePosition = Event.current.mousePosition;
                         State s = CreateState();
                         EditorUtility.CopySerialized((State)copyBuffer, s);
+
+                        List<Path> pathes = new List<Path>(s.pathes);
+                        s.pathes.Clear();
+                        foreach (Path p in pathes)
+                        {
+                            Path newPath = s.AddPath();
+                            AssetDatabase.AddObjectToAsset(newPath, AssetDatabase.GetAssetPath(game));
+                            EditorUtility.CopySerialized(p, newPath);
+                            if (!currentChain.states.Contains(p.aimState))
+                            {
+                                StateLink sl = CreateStateLink();
+                                sl.position = new Rect(lastMousePosition.x + sl.position.width / 2, lastMousePosition.y + sl.position.height / 2, sl.position.width, sl.position.height);
+                                sl.chain = GuidManager.GetChainByState(p.aimState);
+                                sl.state = newPath.aimState;
+                            }
+                        }
                         s.position = new Rect(lastMousePosition.x - s.position.width / 2, lastMousePosition.y - s.position.height / 2, s.position.width, s.position.height);
                         Repaint();
                     }
                 }
 
-                if (copyBuffer.GetType() == typeof(StateLink))
+                if (copyBuffer && copyBuffer.GetType() == typeof(StateLink))
                 {
                     if (Event.current.keyCode == KeyCode.V)
                     {
@@ -214,7 +265,7 @@ public class QuestWindow : EditorWindow
                     }
                 }
 
-                if (copyBuffer.GetType() == typeof(Path))
+                if (copyBuffer && copyBuffer.GetType() == typeof(Path))
                 {
                     if (Event.current.keyCode == KeyCode.V)
                     {
@@ -222,9 +273,17 @@ public class QuestWindow : EditorWindow
                         if (Selection.activeObject.GetType() == typeof(State))
                         {
                             p = ((State)Selection.activeObject).AddPath();
+                            AssetDatabase.AddObjectToAsset(p, AssetDatabase.GetAssetPath(game));
                         }
                         p = GuidManager.GetStateByPath((Path)Selection.activeObject).AddPath();
                         EditorUtility.CopySerialized((Path)copyBuffer, p);
+                        if (!currentChain.states.Contains(p.aimState))
+                        {
+                            StateLink sl = CreateStateLink();
+                            sl.position = new Rect(lastMousePosition.x + sl.position.width / 2, lastMousePosition.y + sl.position.height / 2, sl.position.width, sl.position.height);
+                            sl.chain = GuidManager.GetChainByState(p.aimState);
+                            sl.state = p.aimState;
+                        }
                         Repaint();
                     }
                 }
@@ -232,7 +291,7 @@ public class QuestWindow : EditorWindow
 
             if (chainEditorMode == EditorMode.packs)
             {
-                if (copyBuffer.GetType() == typeof(Param))
+                if (copyBuffer && copyBuffer.GetType() == typeof(Param))
                 {
                     if (Event.current.keyCode == KeyCode.V)
                     {
@@ -240,7 +299,7 @@ public class QuestWindow : EditorWindow
                     }
                 }
 
-                if (copyBuffer.GetType() == typeof(Chain))
+                if (copyBuffer && copyBuffer.GetType() == typeof(Chain))
                 {
                     if (Event.current.keyCode == KeyCode.V)
                     {
@@ -259,6 +318,7 @@ public class QuestWindow : EditorWindow
             {
                 return;
             }
+
             if (Selection.activeObject.GetType() == typeof(State))
             {
                 menuState = (State)Selection.activeObject;
@@ -293,11 +353,11 @@ public class QuestWindow : EditorWindow
 		if (game)
 		{
 			AssetDatabase.SaveAssets ();
-		}
+        }
 	}
-	#endregion
-		
-	void DebugState(State s)
+    #endregion
+
+    void DebugState(State s)
 	{
         currentChain = GuidManager.GetChainByState(s);
         chainEditorMode = EditorMode.chains;
@@ -325,7 +385,46 @@ public class QuestWindow : EditorWindow
     {
                 Chain c = CreateChain();
                 EditorUtility.CopySerialized((Chain)copyBuffer, c);
-                Repaint();
+
+                
+                int i = 0;
+                c.states.Clear();
+                foreach (State s in ((Chain)copyBuffer).states)
+                {
+                    State newState = c.AddState();
+                    AssetDatabase.AddObjectToAsset(newState, AssetDatabase.GetAssetPath(this));
+                    PasteStateValues(newState, s, false);
+                    i++;
+                }
+
+                i = 0;
+                c.links.Clear();
+                foreach (StateLink s in ((Chain)copyBuffer).links)
+                {
+                    StateLink newStateLink = c.AddStateLink();
+                    AssetDatabase.AddObjectToAsset(newStateLink, AssetDatabase.GetAssetPath(this));
+                    PasteStateLinkValues(newStateLink, s, false);
+                    i++;
+                }
+
+
+
+        foreach (State s in c.states)
+        {
+            foreach (Path p in s.pathes)
+            {
+                if (((Chain)copyBuffer).states.Contains(p.aimState))
+                {
+                    p.aimState = c.states[((Chain)copyBuffer).states.IndexOf(p.aimState)];
+                }
+                else
+                {
+                    p.aimState = c.links.Find(l=>l.state == p.aimState).state;
+                }
+            }
+        }
+
+        Repaint();
     }
 
     void DrawParamsList()
@@ -369,9 +468,10 @@ public class QuestWindow : EditorWindow
                     menu.AddItem(new GUIContent("Add chain"), false, CreateNewChain);
                     menu.AddItem(new GUIContent("Remove"), false, RemoveChain);
                     menu.AddItem(new GUIContent("Copy"), false, CopyChain);
-                    if (copyBuffer.GetType()==typeof(Chain))
+                    menu.AddItem(new GUIContent("Edit"), false, EditChain);
+                    if (copyBuffer && copyBuffer.GetType()==typeof(Chain))
                     {
-                        menu.AddItem(new GUIContent("Paste values"), false, PasteChainValues); //!
+                        menu.AddItem(new GUIContent("Paste values"), false, PasteChainValues);
                         menu.AddItem(new GUIContent("Paste chain"), false, PasteChain);
                     }
                     menu.ShowAsContext();
@@ -387,7 +487,7 @@ public class QuestWindow : EditorWindow
                     menu.AddItem(new GUIContent("Add param"), false, CreateNewParam);
                     menu.AddItem(new GUIContent("Remove"), false, RemoveParam);
                     menu.AddItem(new GUIContent("Copy"), false, CopyParam);
-                    if (copyBuffer.GetType() == typeof(Param))
+                    if (copyBuffer && copyBuffer.GetType() == typeof(Param))
                     {
                         menu.AddItem(new GUIContent("Paste values"), false, PasteParamValues); //!
                         menu.AddItem(new GUIContent("Paste param"), false, PasteParam);
@@ -401,12 +501,12 @@ public class QuestWindow : EditorWindow
             menu.AddItem(new GUIContent("Add chain"), false, CreateNewChain);
             menu.AddItem(new GUIContent("Add param"), false, CreateNewParam);
 
-            if (copyBuffer.GetType() == typeof(Chain))
+            if (copyBuffer && copyBuffer.GetType() == typeof(Chain))
             {
                 menu.AddItem(new GUIContent("Paste chain"), false, PasteChain);
                
             }
-            if (copyBuffer.GetType() == typeof(Param))
+            if (copyBuffer && copyBuffer.GetType() == typeof(Param))
             {
                 menu.AddItem(new GUIContent("Paste param"), false, PasteParam);
             }
@@ -415,6 +515,12 @@ public class QuestWindow : EditorWindow
 
 
         }
+    }
+
+    private void EditChain()
+    {
+        currentChain = menuChain;
+        chainEditorMode = EditorMode.chains;
     }
 
     private void CopyChain()
@@ -429,14 +535,39 @@ public class QuestWindow : EditorWindow
 
     private void PasteChainValues()
     {
-        EditorUtility.CopySerialized((Param)copyBuffer, menuChain);
+        EditorUtility.CopySerialized((Chain)copyBuffer, menuChain);
+        int i = 0;
+        menuChain.states.Clear();
+        foreach (State s in ((Chain)copyBuffer).states)
+        {
+            State newState = menuChain.AddState();
+            AssetDatabase.AddObjectToAsset(newState, AssetDatabase.GetAssetPath(this));
+            PasteStateValues(newState, s, false);
+            i++;
+        }
+        i = 0;
+        menuChain.links.Clear();
+        foreach (StateLink s in ((Chain)copyBuffer).links)
+        {
+            StateLink newStateLink = menuChain.AddStateLink();
+            AssetDatabase.AddObjectToAsset(newStateLink, AssetDatabase.GetAssetPath(this));
+            PasteStateLinkValues(newStateLink, s, false);
+            i++;
+        }
+        foreach (State s in menuChain.states)
+        {
+            foreach (Path p in s.pathes)
+            {
+                p.aimState = menuChain.states[((Chain)copyBuffer).states.IndexOf(p.aimState)];
+            }
+        }
     }
 
     private void PasteParam()
     { 
-                Param p = CreateParam();
-                EditorUtility.CopySerialized((Param)copyBuffer, p);
-                Repaint(); 
+        Param p = CreateParam();
+        EditorUtility.CopySerialized((Param)copyBuffer, p);
+        Repaint(); 
     }
 
     private void PasteParamValues()
@@ -459,17 +590,18 @@ public class QuestWindow : EditorWindow
 	{
         chainsScrollPosition = GUILayout.BeginScrollView (chainsScrollPosition, false, true, GUILayout.Width(position.width/2-5), GUILayout.Height(position.height-20));
 		GUILayout.BeginVertical();
-        Chain selectedChain = null;
         if (Selection.activeObject && Selection.activeObject.GetType() == typeof(Chain))
         {
-            selectedChain = (Chain)Selection.activeObject;
+            currentChain = (Chain)Selection.activeObject;
         }
+
+        
 
         List<string> chainNames = game.chains.Select(x=>x.name).ToList();
         int index = -1;
-        if (game.chains.Contains(selectedChain))
+        if (Selection.activeObject && Selection.activeObject.GetType() == typeof(Chain) && game.chains.Contains((Chain)Selection.activeObject))
         {
-            index = game.chains.IndexOf(selectedChain);
+            index = game.chains.IndexOf((Chain)Selection.activeObject);
         }
 
         GUILayout.Space(30 * game.chains.Count);
@@ -613,6 +745,11 @@ public class QuestWindow : EditorWindow
                 lastMousePosition = Event.current.mousePosition;
                 GenericMenu menu = new GenericMenu();
                 menu.AddItem(new GUIContent("Remove"), false, RemoveCurrentPath);
+                menu.AddItem(new GUIContent("Copy"), false, CopyPath);
+                if (copyBuffer && copyBuffer.GetType()==typeof(Path))
+                {
+                    menu.AddItem(new GUIContent("Paste values"), false, PastePathValues);
+                }
                 menu.ShowAsContext();
             }
 			else if (onState) {
@@ -622,7 +759,16 @@ public class QuestWindow : EditorWindow
 				menu.AddItem(new GUIContent("Remove state"), false, RemoveState);
 				menu.AddItem(new GUIContent("Add path"), false, AddPath);
 				menu.AddItem(new GUIContent("Make start"), false, MakeStart);
-				menu.ShowAsContext();
+                menu.AddItem(new GUIContent("Copy"), false, CopyState);
+                if (copyBuffer && copyBuffer.GetType() == typeof(Path))
+                {
+                    menu.AddItem(new GUIContent("Paste path"), false, PastePath);
+                }
+                if (copyBuffer && copyBuffer.GetType() == typeof(State))
+                {
+                    menu.AddItem(new GUIContent("Paste values"), false, PasteStateValues);
+                }
+                menu.ShowAsContext();
 			} 
 			else if(onStateLink)
 			{
@@ -630,7 +776,12 @@ public class QuestWindow : EditorWindow
 				lastMousePosition = Event.current.mousePosition;
 				GenericMenu menu = new GenericMenu();
 				menu.AddItem(new GUIContent("Remove"), false, RemoveStateLink);
-				menu.ShowAsContext();
+                menu.AddItem(new GUIContent("Copy"), false, CopyStateLink);
+                if (copyBuffer && copyBuffer.GetType() == typeof(StateLink))
+                {
+                    menu.AddItem(new GUIContent("Paste values"), false, PasteStateLinkValues);
+                }
+                menu.ShowAsContext();
 			}
 
 			else
@@ -639,7 +790,15 @@ public class QuestWindow : EditorWindow
 				GenericMenu menu = new GenericMenu();
 				menu.AddItem(new GUIContent("Add state"), false, CreateNewState);
 				menu.AddItem(new GUIContent("Add state link"), false, CreateNewStateLink);
-				menu.ShowAsContext();
+                if (copyBuffer && copyBuffer.GetType() == typeof(State))
+                {
+                    menu.AddItem(new GUIContent("Paste state"), false, PasteState);
+                }
+                if (copyBuffer && copyBuffer.GetType() == typeof(StateLink))
+                {
+                    menu.AddItem(new GUIContent("Paste state link"), false, PasteStateLink);
+                }
+                menu.ShowAsContext();
 			}
 		}
 
@@ -647,6 +806,129 @@ public class QuestWindow : EditorWindow
         {
             makingPath = false;
         }
+    }
+
+    private void PasteStateLink()
+    {
+        StateLink s = CreateStateLink();
+        EditorUtility.CopySerialized((StateLink)copyBuffer, s);
+        s.position = new Rect(lastMousePosition.x - s.position.width / 2, lastMousePosition.y - s.position.height / 2, s.position.width, s.position.height);
+    }
+
+    private void PasteState()
+    {  
+        State s = CreateState();
+        EditorUtility.CopySerialized((State)copyBuffer, s);
+
+        List<Path> pathes = new List<Path>(s.pathes);
+        s.pathes.Clear();
+
+        foreach (Path p in pathes)
+        {
+            Path newPath = s.AddPath();
+            AssetDatabase.AddObjectToAsset(newPath, AssetDatabase.GetAssetPath(game));
+            EditorUtility.CopySerialized(p, newPath);
+            if (!currentChain.states.Contains(p.aimState))
+            {
+                StateLink sl = CreateStateLink();
+                sl.position = new Rect(lastMousePosition.x + sl.position.width / 2, lastMousePosition.y + sl.position.height / 2, sl.position.width, sl.position.height);
+                sl.chain = GuidManager.GetChainByState(p.aimState);
+                sl.state = newPath.aimState;
+            }
+        }
+
+        s.position = new Rect(lastMousePosition.x - s.position.width / 2, lastMousePosition.y - s.position.height / 2, s.position.width, s.position.height);
+    }
+
+    private void CopyPath()
+    {
+        copyBuffer = menuPath;
+    }
+
+    private void PasteStateLinkValues()
+    {
+        PasteStateLinkValues(menuStateLink, (StateLink)copyBuffer);
+    }
+
+    private void PasteStateLinkValues(StateLink s, StateLink buffer, bool pastePosition = false)
+    {
+        Rect p = s.position;
+        EditorUtility.CopySerialized(buffer, s);
+        if (pastePosition)
+        {
+            s.position = p;
+        }
+        Selection.activeObject = s;
+    }
+
+    private void CopyStateLink()
+    {
+        copyBuffer = menuStateLink;
+    }
+
+    private void CopyState()
+    {
+        copyBuffer = menuState;
+    }
+
+    private void PastePath()
+    {
+        Path pastedPath = menuState.AddPath();
+        AssetDatabase.AddObjectToAsset(pastedPath, AssetDatabase.GetAssetPath(this));
+        EditorUtility.CopySerialized((Path)copyBuffer, pastedPath);
+        if (!currentChain.states.Contains(pastedPath.aimState))
+        {
+            StateLink sl = CreateStateLink();
+            sl.position = new Rect(lastMousePosition.x + sl.position.width / 2, lastMousePosition.y + sl.position.height / 2, sl.position.width, sl.position.height);
+            sl.chain = GuidManager.GetChainByState(pastedPath.aimState);
+            sl.state = pastedPath.aimState;
+        }
+
+        Selection.activeObject = pastedPath;
+    }
+
+    private void PasteStateValues()
+    {
+        PasteStateValues(menuState, (State)copyBuffer);
+    }
+
+    private void PasteStateValues(State s, State copy, bool pastePosition = false)
+    {
+        Rect position = s.position;
+        EditorUtility.CopySerialized(copy, s);
+
+        List<Path> pathes = new List<Path>(s.pathes);
+        s.pathes.Clear();
+
+        foreach (Path p in pathes)
+        {
+            Path newPath = s.AddPath();
+            EditorUtility.CopySerialized(p, newPath);
+        }
+        if (pastePosition)
+        {
+            s.position = position;
+        }
+
+        if (GuidManager.GetChainByState(copy).StartState == copy)
+        {
+            GuidManager.GetChainByState(s).StartState = s;
+        }
+        Selection.activeObject = menuState;
+    }
+
+    private void PastePathValues()
+    {
+        EditorUtility.CopySerialized((Path)copyBuffer, menuPath);
+
+        if (!currentChain.states.Contains(menuPath.aimState))
+        {
+            StateLink sl = CreateStateLink();
+            sl.position = new Rect(lastMousePosition.x + sl.position.width / 2, lastMousePosition.y + sl.position.height / 2, sl.position.width, sl.position.height);
+            sl.chain = GuidManager.GetChainByState(menuPath.aimState);
+            sl.state = menuPath.aimState;
+        }
+        Selection.activeObject = menuPath;
     }
 
     private void RemoveCurrentPath()
@@ -913,26 +1195,36 @@ public class QuestWindow : EditorWindow
 
 	private void RemoveParam(Param deletingParam)
 	{
+        if (copyBuffer == deletingParam)
+        {
+            copyBuffer = null;
+        }
 		game.parameters.Remove (deletingParam);
 		DestroyImmediate (deletingParam, true);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		Repaint ();
+        game.Dirty = true;
+        Repaint ();
 	}
 
 	public void RemoveChain(Chain deletingChain)
 	{
-		game.chains.Remove (deletingChain);
+        if (copyBuffer == deletingChain)
+        {
+            copyBuffer = null;
+        }
+        game.chains.Remove (deletingChain);
 		deletingChain.DestroyChain ();
 		DestroyImmediate (deletingChain, true);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		Repaint ();
+        game.Dirty = true;
+        Repaint ();
 	}
 
 	private void RemovePath(Path p)
 	{
-		foreach(State s in currentChain.states)
+        if (copyBuffer == p)
+        {
+            copyBuffer = null;
+        }
+        foreach (State s in currentChain.states)
 		{
 			foreach(Path path in s.pathes)
 			{
@@ -948,7 +1240,11 @@ public class QuestWindow : EditorWindow
 
 	private void RemoveState()
 	{
-		foreach (State s in currentChain.states)
+        if (copyBuffer == menuState)
+        {
+            copyBuffer = null;
+        }
+        foreach (State s in currentChain.states)
 		{
 			foreach (Path p in s.pathes)
 			{
@@ -959,15 +1255,38 @@ public class QuestWindow : EditorWindow
 			}    
 		}
 
-		currentChain.RemoveState(menuState);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		Repaint ();
+        if (menuState == currentChain.StartState)
+        {
+            if (currentChain.states.Count == 1)
+            {
+                currentChain.StartState = currentChain.AddState();
+                AssetDatabase.AddObjectToAsset(currentChain.StartState, AssetDatabase.GetAssetPath(this));
+            }
+            else
+            {
+                foreach (State s in currentChain.states)
+                {
+                    if (s != menuState)
+                    {
+                        currentChain.StartState = s;
+                        break;
+                    }
+                }
+            }
+        }
+        currentChain.RemoveState(menuState);
+        game.Dirty = true;
+        Repaint ();
 	}
 
 	private void RemoveStateLink()
 	{
-		foreach (State s in currentChain.states)
+        if (copyBuffer == menuStateLink)
+        {
+            copyBuffer = null;
+        }
+
+        foreach (State s in currentChain.states)
 		{
 			foreach (Path p in s.pathes)
 			{
@@ -979,15 +1298,15 @@ public class QuestWindow : EditorWindow
 		}
 
 		currentChain.RemoveStateLink(menuStateLink);
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		Repaint ();
+        game.Dirty = true;
+        Repaint ();
 	}
 
 	private void AddPath()
 	{
-		menuState.AddPath();
-	}
+		Selection.activeObject = menuState.AddPath();
+        AssetDatabase.AddObjectToAsset(Selection.activeObject, AssetDatabase.GetAssetPath(game));
+    }
 
 	private void CreateNewState()
 	{
@@ -1001,16 +1320,19 @@ public class QuestWindow : EditorWindow
 
 	StateLink CreateStateLink()
 	{
-		StateLink newState = currentChain.AddStateLink();
-		newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
-		return newState;
+		StateLink newStateLink = currentChain.AddStateLink();
+        AssetDatabase.AddObjectToAsset(newStateLink, AssetDatabase.GetAssetPath(this));
+        newStateLink.position = new Rect (lastMousePosition.x - newStateLink.position.width/2, lastMousePosition.y - newStateLink.position.height/2, newStateLink.position.width, newStateLink.position.height);
+        Selection.activeObject = newStateLink;
+        return newStateLink;
 	}
 
 	State CreateState()
 	{
 		State newState = currentChain.AddState ();
+        AssetDatabase.AddObjectToAsset(newState, AssetDatabase.GetAssetPath(this));
         newState.position = new Rect (lastMousePosition.x - newState.position.width/2, lastMousePosition.y - newState.position.height/2, newState.position.width, newState.position.height);
-
+        Selection.activeObject = newState;
 		return newState;
 	}
 
@@ -1024,9 +1346,9 @@ public class QuestWindow : EditorWindow
 		Param newParam = CreateInstance<Param> ();
 		newParam.id = GuidManager.GetItemGUID ();
 		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
-		AssetDatabase.SaveAssets ();
-		AssetDatabase.Refresh ();
-		game.parameters.Add (newParam);
+        game.Dirty = true;
+        game.parameters.Add (newParam);
+        Selection.activeObject = newParam;
         return newParam;
 	}
 
@@ -1038,7 +1360,11 @@ public class QuestWindow : EditorWindow
 	private Chain CreateChain()
 	{
 		Chain newChain = CreateInstance<Chain> ();
-		newChain.Init (game);
+        AssetDatabase.AddObjectToAsset(newChain, AssetDatabase.GetAssetPath(game));
+        newChain.StartState = newChain.AddState();
+        AssetDatabase.AddObjectToAsset(newChain.StartState, AssetDatabase.GetAssetPath(this));
+        newChain.Init (game);   
+        Selection.activeObject = newChain;
 		Repaint();
         return newChain;
 	}

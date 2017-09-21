@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEditor;
 
 [System.Serializable]
 public class Param: ScriptableObject
@@ -18,6 +17,7 @@ public class Param: ScriptableObject
             if (name != _paramName)
             {
                 name = _paramName;
+                GuidManager.getGameByParam(this).Dirty = true;
             }
         }
 	}

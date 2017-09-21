@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PathGame", menuName = "PathGame")]
 [System.Serializable]
 public class PathGame: ScriptableObject
 {
+
+    public bool Dirty = false;
     public string gameName
     {
         get
@@ -17,9 +18,7 @@ public class PathGame: ScriptableObject
         {
             if (name != value)
             {
-                name = value;
-                string assetPath = AssetDatabase.GetAssetPath(this.GetInstanceID());
-                AssetDatabase.RenameAsset(assetPath, assetPath.Replace(assetPath, name));
+                name = value; 
             }
         }
     }

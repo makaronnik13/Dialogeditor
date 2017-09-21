@@ -22,6 +22,10 @@ public class PathGameInspector : Editor {
         {
             Undo.RecordObject(myTarget, "Edit PathGame");
             myTarget.gameName = gName;
+
+            string assetPath = AssetDatabase.GetAssetPath(myTarget.GetInstanceID());
+            AssetDatabase.RenameAsset(assetPath, assetPath.Replace(assetPath, gName));
+
             myTarget.autor = gAuthor;
             myTarget.description = gDescription;
         }

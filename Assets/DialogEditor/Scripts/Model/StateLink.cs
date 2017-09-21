@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class StateLink: ScriptableObject
@@ -20,6 +19,7 @@ public class StateLink: ScriptableObject
             {
                 _state = value;
                 name = _state.name+"_link";
+                GuidManager.getGameByChain(GuidManager.GetChainByState(state)).Dirty = true;
             }
         }
     }
@@ -29,7 +29,11 @@ public class StateLink: ScriptableObject
     {
         this.chain= chain;
         this.state = chain.StartState;
-        float z = GuidManager.getGameByChain(chain).zoom;
+        float z = 1;
+        if (GuidManager.getGameByChain(chain))
+        {
+            z = GuidManager.getGameByChain(chain).zoom;
+        }
         position = new Rect(0, 0, 100*z, 30*z);
     }
 }

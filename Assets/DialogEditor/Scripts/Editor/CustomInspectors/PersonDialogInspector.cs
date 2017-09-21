@@ -13,6 +13,7 @@ public class PersonDialogInspector : Editor
 	private SerializedProperty dialogProperty;
     private bool inspectedFlag = false;
     private QuestWindow qw;
+    private List<Chain> inspectedChains = new List<Chain>();
 
 	private void OnEnable()
 	{
@@ -21,21 +22,44 @@ public class PersonDialogInspector : Editor
 		dialogProperty = dialogObject.FindProperty ("pathEvents");
 	}
 
+    private void AddPathes(Chain c, List<Path> newPathes, List<PathEvent> newEvents)
+    {
+        if (inspectedChains.Contains(c))
+        {
+            return;
+        }
+        else
+        {
+            inspectedChains.Add(c);
+        }
+        Debug.Log(c);
+        Debug.Log(c.states);
+        foreach (State s in c.states)
+        {
+            foreach (Path p in s.pathes)
+            {
+                if (GuidManager.GetChainByState(p.aimState) != c)
+                {
+                    AddPathes(GuidManager.GetChainByState(p.aimState), newPathes, newEvents);
+                }
+                if (p.withEvent)
+                {
+                    newEvents.Add(new PathEvent());
+                    newPathes.Add(p);
+                }
+            }
+        }
+        inspectedChains.Clear();
+    }
+
 	private void SetEvents()
 	{
 		List<Path> newPathes = new List<Path>();
 		List<PathEvent> newEvents = new List<PathEvent>();
-		foreach (State s in dialog.personChain.states)
-		{
-			foreach (Path p in s.pathes)
-			{
-				if (p.withEvent)
-				{
-					newEvents.Add (new PathEvent());
-					newPathes.Add (p);
-				}
-			}
-		}
+
+        AddPathes(dialog.personChain, newPathes, newEvents);
+        inspectedChains.Clear();
+
 		dialog.pathes = newPathes.ToArray ();
 		dialog.pathEvents = newEvents.ToArray ();
 
@@ -73,7 +97,10 @@ public class PersonDialogInspector : Editor
 			if (!dialog.game.chains.Contains(dialog.personChain))
             {
 				dialog.personChain = dialog.game.chains[0];
-				SetEvents ();
+                if (dialog.personChain)
+                {
+                    SetEvents();
+                }
             }
 
 			Chain ch = dialog.game.chains[EditorGUILayout.Popup(dialog.game.chains.IndexOf(dialog.personChain), dialog.game.chains.Select(x => x.dialogName).ToArray())];
@@ -81,7 +108,10 @@ public class PersonDialogInspector : Editor
 			if (dialog.personChain!=ch)
             {
 				dialog.personChain = ch;
-				SetEvents ();
+                if (dialog.personChain)
+                {
+                    SetEvents();
+                }
             }
             GUILayout.EndHorizontal();
 			int i = 0;
