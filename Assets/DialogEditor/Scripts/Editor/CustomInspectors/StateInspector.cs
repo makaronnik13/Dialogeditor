@@ -34,6 +34,7 @@ public class StateInspector : Editor {
 		};
 
 		list.onReorderCallback = (ReorderableList l) => {
+			Undo.RecordObject (state, "state path reorder");
 			List<Path> newPathList = new List<Path>();
 			for(int i = list.count-1;i>=0;i--)
 			{
@@ -50,6 +51,7 @@ public class StateInspector : Editor {
 		};
 
 		list.onRemoveCallback = (ReorderableList l) => {
+			Undo.RecordObject (state, "state path remove");
 			state.RemovePath(l.serializedProperty.GetArrayElementAtIndex(l.index).objectReferenceValue as Path);
 			Repaint();
 			SearchableEditorWindow.GetWindow(typeof(EditorWindow)).Repaint();
@@ -58,8 +60,15 @@ public class StateInspector : Editor {
 
 	public override void OnInspectorGUI()
 	{
-		state.description = EditorGUILayout.TextArea (state.description, GUILayout.Height(75));
-		state.sound = (AudioClip)EditorGUILayout.ObjectField (state.sound, typeof(AudioClip), false);
+		EditorGUI.BeginChangeCheck ();
+		string stateDescription = EditorGUILayout.TextArea (state.description, GUILayout.Height(75));
+		AudioClip stateSound = (AudioClip)EditorGUILayout.ObjectField (state.sound, typeof(AudioClip), false);
+		if(EditorGUI.EndChangeCheck())
+		{
+			Undo.RecordObject (state, "state base properties");
+			state.description = stateDescription;
+			state.sound = stateSound;
+		}
 		GUILayout.Space (EditorGUIUtility.singleLineHeight);
 		_serializedObject.Update();
 		list.DoLayoutList();

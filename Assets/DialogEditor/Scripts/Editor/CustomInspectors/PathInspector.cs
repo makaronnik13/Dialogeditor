@@ -20,20 +20,36 @@ public class PathInspector : Editor {
 	public override void OnInspectorGUI()
 	{
 		GUILayout.BeginHorizontal ();
-		p.text = EditorGUILayout.TextArea(p.text, GUILayout.Height(30));
+		EditorGUI.BeginChangeCheck ();
+
+
+		string pText = EditorGUILayout.TextArea(p.text, GUILayout.Height(30));
 		GUI.color = Color.white;
 		GUILayout.EndHorizontal ();
 		GUILayout.BeginHorizontal ();
-		p.auto = GUILayout.Toggle(p.auto, "auto", GUILayout.Width(60));
-		p.withEvent = GUILayout.Toggle(p.withEvent, "action", GUILayout.Width(60));
+		bool pAuto = GUILayout.Toggle(p.auto, "auto", GUILayout.Width(60));
+		bool pWithEvent = GUILayout.Toggle(p.withEvent, "action", GUILayout.Width(60));
+
+		if(EditorGUI.EndChangeCheck())
+		{
+			Undo.RecordObject (p, "path main properties");
+			p.text = pText;
+			p.auto = pAuto;
+			p.withEvent = pWithEvent;
+		}
+
 		EditorGUI.BeginDisabledGroup (game.parameters.Count == 0);
+
+
 		if (GUILayout.Button("add condition param"))
 		{
-				p.condition.AddParam(game.parameters[0]);
+			Undo.RecordObject (p, "path condition creation");
+			p.condition.AddParam(game.parameters[0]);
 		}
 		if (GUILayout.Button("add param changer"))
 		{
-				p.changes.Add(new ParamChanges(game.parameters[0]));
+			Undo.RecordObject (p, "path changer creation");
+			p.changes.Add(new ParamChanges(game.parameters[0]));
 		}
 		EditorGUI.EndDisabledGroup ();
 		GUILayout.EndHorizontal ();
@@ -52,14 +68,20 @@ public class PathInspector : Editor {
 		GUI.backgroundColor = Color.white;
 		try
 		{
-			//ExpressionSolver.CalculateBool(path.condition.conditionString, path.condition.Parameters);
+			List<float> pv = new List<float>();
+			foreach(Param p in path.condition.Parameters)
+			{
+				pv.Add(0);
+			}
+			ExpressionSolver.CalculateBool(path.condition.conditionString, pv);
 		}
 		catch
 		{
 			GUI.color = Color.red;
 		}
 
-		path.condition.conditionString = EditorGUILayout.TextArea (path.condition.conditionString);
+		EditorGUI.BeginChangeCheck ();
+		string conditionString = EditorGUILayout.TextArea (path.condition.conditionString);
 
 
 
@@ -67,6 +89,12 @@ public class PathInspector : Editor {
 		EditorGUILayout.EndHorizontal ();
 
 		Param removingParam = null;
+
+		if(EditorGUI.EndChangeCheck())
+		{
+			Undo.RecordObject (p, "path condition string");
+			path.condition.conditionString = conditionString;
+		}
 
 		for(int i = 0;i<path.condition.Parameters.Count;i++)
 		{
@@ -83,8 +111,16 @@ public class PathInspector : Editor {
 					continue;
 				}
 			}
-			path.condition.setParam(i, game.parameters[EditorGUILayout.Popup (game.parameters.IndexOf(path.condition.Parameters[i]), game.parameters.Select (x => x.paramName).ToArray())]); 
 
+			EditorGUI.BeginChangeCheck ();
+
+			int paramIndex = EditorGUILayout.Popup (game.parameters.IndexOf(path.condition.Parameters[i]), game.parameters.Select (x => x.paramName).ToArray());
+
+			if(EditorGUI.EndChangeCheck())
+			{
+				Undo.RecordObject(p, "set condition param");
+				path.condition.setParam(i, game.parameters[paramIndex]); 
+			}
 
 			GUI.color = Color.red;
 			if(GUILayout.Button("", GUILayout.Height(15), GUILayout.Width(15)))
@@ -97,6 +133,7 @@ public class PathInspector : Editor {
 
 		if(removingParam!=null)
 		{
+			Undo.RecordObject (p, "removing condition param");
 			path.condition.RemoveParam (removingParam);
 		}
 
@@ -115,6 +152,7 @@ public class PathInspector : Editor {
 
 			if (GUILayout.Button ("add param")) 
 			{
+				Undo.RecordObject (p, "add path changer param");
 				path.changes[i].AddParam (game.parameters [0]);
 			}
 			EditorGUILayout.EndHorizontal ();
@@ -130,7 +168,14 @@ public class PathInspector : Editor {
 					continue;
 				}
 			}
-			path.changes [i].aimParam = game.parameters [EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].aimParam), game.parameters.Select (x => x.paramName).ToArray (), GUILayout.Width(100))]; 
+			EditorGUI.BeginChangeCheck ();
+			int paramIndex = EditorGUILayout.Popup (game.parameters.IndexOf (path.changes [i].aimParam), game.parameters.Select (x => x.paramName).ToArray (), GUILayout.Width (100));
+
+			if(EditorGUI.EndChangeCheck())
+			{
+				Undo.RecordObject (p, "chose path changer param");
+				path.changes [i].aimParam = game.parameters [paramIndex]; 
+			}
 
 			GUILayout.Label ("=", GUILayout.Width(15));
 
@@ -149,8 +194,14 @@ public class PathInspector : Editor {
                 GUI.color = Color.red;
             }
 
-            path.changes [i].changeString = EditorGUILayout.TextArea(path.changes [i].changeString);
+			EditorGUI.BeginChangeCheck ();
 
+			string changeString = EditorGUILayout.TextArea(path.changes [i].changeString);
+			if(EditorGUI.EndChangeCheck())
+			{
+				Undo.RecordObject (p, "change path changer string");
+				path.changes [i].changeString = changeString;
+			}
 			GUI.color = Color.white;
 
 			Param removingParam = null;
@@ -170,11 +221,15 @@ public class PathInspector : Editor {
 					}
 				}
 
+				EditorGUI.BeginChangeCheck ();
+
 				int v = EditorGUILayout.Popup (game.parameters.IndexOf (path.changes[i].Parameters [j]), game.parameters.Select (x => x.paramName).ToArray ());
 
-
-                path.changes[i].setParam(game.parameters[v], j);
-                
+				if(EditorGUI.EndChangeCheck())
+				{
+					Undo.RecordObject (p, "change path changer sub param");
+					path.changes[i].setParam(game.parameters[v], j);
+				}
 
                 GUI.color = Color.red;
 				if (GUILayout.Button ("", GUILayout.Height (15), GUILayout.Width (15))) {
@@ -185,6 +240,7 @@ public class PathInspector : Editor {
 			}
 
 			if (removingParam != null) {
+				Undo.RecordObject (p, "remove path changer sub param");
 				path.changes[i].RemoveParam (removingParam);
 			}
 
@@ -193,6 +249,7 @@ public class PathInspector : Editor {
 		}
 		if(removingChanger!=null)
 		{
+			Undo.RecordObject (p, "remove path changer param");
 			path.changes.Remove (removingChanger);
 		}
 	}

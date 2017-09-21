@@ -275,7 +275,7 @@ public class QuestWindow : EditorWindow
                             p = ((State)Selection.activeObject).AddPath();
                             AssetDatabase.AddObjectToAsset(p, AssetDatabase.GetAssetPath(game));
                         }
-                        p = GuidManager.GetStateByPath((Path)Selection.activeObject).AddPath();
+						p = GuidManager.GetStateByPath((Path)copyBuffer).AddPath();
                         EditorUtility.CopySerialized((Path)copyBuffer, p);
                         if (!currentChain.states.Contains(p.aimState))
                         {
@@ -466,6 +466,7 @@ public class QuestWindow : EditorWindow
                 {
                     menuChain = game.chains[i];
                     menu.AddItem(new GUIContent("Add chain"), false, CreateNewChain);
+					menu.AddItem(new GUIContent("Edit"), false, EditChain);
                     menu.AddItem(new GUIContent("Remove"), false, RemoveChain);
                     menu.AddItem(new GUIContent("Copy"), false, CopyChain);
                     menu.AddItem(new GUIContent("Edit"), false, EditChain);
@@ -522,7 +523,6 @@ public class QuestWindow : EditorWindow
         currentChain = menuChain;
         chainEditorMode = EditorMode.chains;
     }
-
     private void CopyChain()
     {
         copyBuffer = menuChain;
@@ -1343,7 +1343,10 @@ public class QuestWindow : EditorWindow
 
 	Param CreateParam()
 	{
+		Undo.RecordObject (game, "param creattion");
 		Param newParam = CreateInstance<Param> ();
+		newParam.paramName = "new param";
+		Undo.RegisterCreatedObjectUndo (newParam, "param creation");
 		newParam.id = GuidManager.GetItemGUID ();
 		AssetDatabase.AddObjectToAsset (newParam, AssetDatabase.GetAssetPath(game));
         game.Dirty = true;
@@ -1359,6 +1362,7 @@ public class QuestWindow : EditorWindow
 
 	private Chain CreateChain()
 	{
+		Undo.RecordObject (game, "chain creattion");
 		Chain newChain = CreateInstance<Chain> ();
         AssetDatabase.AddObjectToAsset(newChain, AssetDatabase.GetAssetPath(game));
         newChain.StartState = newChain.AddState();

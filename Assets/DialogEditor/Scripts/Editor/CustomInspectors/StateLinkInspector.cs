@@ -53,6 +53,5 @@ public class StateLinkInspector : Editor {
             Undo.RecordObject(game, "change link state");
             link.state = state;
         }
-
 	}
 }

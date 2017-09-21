@@ -76,7 +76,7 @@ public class Chain: ScriptableObject
 		foreach(State s in states)
 		{
 			s.DestroyState ();
-			DestroyImmediate (s, true);
+			//Undo.DestroyObjectImmediate(s);
 		}
         foreach (StateLink s in links)
         {

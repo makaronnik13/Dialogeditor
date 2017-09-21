@@ -41,12 +41,14 @@ public class ParamInspector : Editor
 
         if (EditorGUI.EndChangeCheck())
         {
+			Undo.RecordObject (p, "param base properties");
             p.paramName = pName;
             p.showing = pShowing;
             p.description = pDescription;
             p.image = pImage;
         }
 
+		/*
 		ConditionChange removingConditionChange = null;
 		foreach (ConditionChange conditionChange in p.autoActivatedChangesGUIDS)
 		{
@@ -82,14 +84,18 @@ public class ParamInspector : Editor
 				conditionChange.changes.Remove(removingChanger);
 			}
 		}
+		
 
 		if (removingConditionChange!=null)
 		{
 			p.autoActivatedChangesGUIDS.Remove(removingConditionChange);
 		}
+		*/
 		GUI.color = Color.white;
 	}
 
+
+	/*
 	private void DrawChanges(ParamChanges change)
 	{
 		GUILayout.BeginVertical();
@@ -109,7 +115,14 @@ public class ParamInspector : Editor
 				return;
 			}
 		}
-		change.aimParam = game.parameters[EditorGUILayout.Popup(game.parameters.IndexOf(change.aimParam), game.parameters.Select(x => x.paramName).ToArray())];
+
+		EditorGUI.BeginChangeCheck ();
+		int pIndex = EditorGUILayout.Popup (game.parameters.IndexOf (change.aimParam), game.parameters.Select (x => x.paramName).ToArray ());
+		if(EditorGUI.EndChangeCheck())
+		{
+			Undo.RecordObject (p, "set param change param");
+			change.aimParam = game.parameters[pIndex];
+		}
 
 		GUILayout.Label("=");
 
@@ -177,5 +190,5 @@ public class ParamInspector : Editor
 		}
 		GUI.color = Color.white;
 		GUILayout.EndVertical();
-	}
+	}*/
 }
