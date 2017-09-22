@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class StateLink: ScriptableObject
+public class StateLink : ScriptableObject
 {
+    private PathGame game;
     public Chain chain;
-
-    [SerializeField]
-    private State _state;
-	public State state
+    public State _state;
+    public State state
     {
         get
         {
@@ -15,11 +14,11 @@ public class StateLink: ScriptableObject
         }
         set
         {
-            if (_state!=value)
+            if (_state != value)
             {
                 _state = value;
-                name = _state.name+"_link";
-                GuidManager.getGameByChain(GuidManager.GetChainByState(state)).Dirty = true;
+                name = _state.name + "_link";
+                game.Dirty = true;
             }
         }
     }
@@ -27,13 +26,11 @@ public class StateLink: ScriptableObject
 
     public void Init(Chain chain)
     {
-        this.chain= chain;
-        this.state = chain.StartState;
+        this.game = chain.Game;
+        this.chain = chain;
+        state = chain.StartState;
         float z = 1;
-        if (GuidManager.getGameByChain(chain))
-        {
-            z = GuidManager.getGameByChain(chain).zoom;
-        }
-        position = new Rect(0, 0, 100*z, 30*z);
+        z = GuidManager.GetGameByChain(chain).zoom;
+        position = new Rect(0, 0, 100 * z, 30 * z);
     }
 }

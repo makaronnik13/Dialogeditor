@@ -1,29 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectionArrow : MonoBehaviour {
+public class SelectionArrow : MonoBehaviour
+{
+    private RectTransform focusedTransform;
+    private Image img;
+    private RectTransform rt;
 
-	private RectTransform focusedTransform;
-	private Image img;
+    void Start()
+    {
+        img = GetComponent<Image>();
+        rt = GetComponent<RectTransform>();
+    }
 
-	void Start(){
-		img = GetComponent<Image> ();
-	}
-
-	void Update()
-	{
-		if(focusedTransform!=DialogGui.Instance.focusedTransform)
-		{
-			focusedTransform = DialogGui.Instance.focusedTransform;
-			if(focusedTransform){
-				img.enabled = true;
-				GetComponent<RectTransform>().position = new Vector3(focusedTransform.position.x-focusedTransform.sizeDelta.x/2- GetComponent<RectTransform>().sizeDelta.x, focusedTransform.position.y, focusedTransform.position.z);
-			}
-			else{
-				img.enabled = false;
-			}
-		}
-	}
+    void Update()
+    {
+        if (focusedTransform != DialogGui.Instance.focusedTransform)
+        {
+            focusedTransform = DialogGui.Instance.focusedTransform;
+            if (focusedTransform)
+            {
+                rt.SetParent(focusedTransform);
+                rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 35);
+                rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 35);
+                rt.localPosition = new Vector3(-focusedTransform.sizeDelta.x / 2 - rt.sizeDelta.x / 2, 0, 0);
+                GetComponent<Image>().enabled = true;
+            }
+            else
+            {
+                rt.SetParent(null);
+            }
+        }
+    }
 }

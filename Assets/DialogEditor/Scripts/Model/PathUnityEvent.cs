@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
 [System.Serializable]
-public class PathEvent : UnityEvent 
+public class PathEvent : UnityEvent
 {
 }

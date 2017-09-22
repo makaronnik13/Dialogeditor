@@ -1,12 +1,7 @@
-﻿using B83.ExpressionParser;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public static class ExpressionSolver {
-
     private static ExpressionParser parser = new ExpressionParser();
-
 	public static float CalculateFloat(string evalString, List<float> parameters)
     {
         string eval = evalString;
@@ -20,7 +15,6 @@ public static class ExpressionSolver {
         eval = ReplaceRandom(eval);
         return (float)parser.EvaluateExpression(eval).Value; 
     }
-
 	public static bool CalculateBool(string evalString, List<float> parameters)
     {
         if (evalString == "")
@@ -38,7 +32,6 @@ public static class ExpressionSolver {
         eval = ReplaceRandom(eval);
         return BoolExpression.BoolValue(eval, new Dictionary<string, float>());
     }
-
     private static string ReplaceRandom(string valueEx)
     {
         string result = valueEx;

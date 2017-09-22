@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PathGame", menuName = "PathGame")]
-[System.Serializable]
+[Serializable]
 public class PathGame: ScriptableObject
 {
-
     public bool Dirty = false;
     public string gameName
     {

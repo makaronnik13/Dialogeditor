@@ -1,17 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-[System.Serializable]
-public class ConditionChain {
+﻿[System.Serializable]
+public class ConditionChain
+{
     public Condition c;
     public int stateGuid;
-	public int chainGuid;
+    public int chainGuid;
 
     public ConditionChain(Condition key, int chainGuid, int stateGuid)
     {
         this.c = key;
-		this.chainGuid = chainGuid;
-		this.stateGuid = stateGuid;
+        this.chainGuid = chainGuid;
+        this.stateGuid = stateGuid;
     }
 }

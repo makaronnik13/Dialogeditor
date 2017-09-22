@@ -6,22 +6,20 @@ using System;
 
 public class DialogPlayer : Singleton<DialogPlayer> 
 {
-	public delegate void StateEventHandler(State e);
-	public delegate void PathEventHandler(Path e);
+    private PersonDialog currentDialog;
 
+    public delegate void StateEventHandler(State e);
+	public delegate void PathEventHandler(Path e);
 	public event StateEventHandler onStateIn;
 	public event PathEventHandler onPathGo;
-
-    private PersonDialog currentDialog;
     public State currentState;
-
+    
     public void PlayState(State state, PersonDialog pd)
 	{
         currentDialog = pd;
 		onStateIn.Invoke (state);
         currentState = state;
 	}
-
 	public void PlayPath(Path p)
 	{
         if (p.aimState != null)

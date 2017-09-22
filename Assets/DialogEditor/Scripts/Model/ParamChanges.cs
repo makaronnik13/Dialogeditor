@@ -3,26 +3,27 @@
 [System.Serializable]
 public class ParamChanges
 {
-	public Param aimParam;
-    public void setParam(Param p, int index)
-    {
-		Parameters[index] = p;
-    }
-
-	public List<Param> Parameters = new List<Param>();
+    public Param aimParam;
+    public List<Param> Parameters = new List<Param>();
     public string changeString = "";
 
-	public ParamChanges(Param aimParam)
-	{
-		this.aimParam = aimParam;
-	}
+    public ParamChanges(Param aimParam)
+    {
+        this.aimParam = aimParam;
+    }
 
-	public void RemoveParam(Param p)
-	{
-		Parameters.Remove (p);
-	}
-	public void AddParam(Param p)
-	{
-		Parameters.Add(p);
-	}
+    public void RemoveParam(Param p)
+    {
+        Parameters.Remove(p);
+    }
+
+    public void AddParam(Param p)
+    {
+        Parameters.Add(p);
+    }
+
+    public void setParam(Param p, int index)
+    {
+        Parameters[index] = p;
+    }
 }
