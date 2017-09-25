@@ -50,6 +50,7 @@ public class StateInspector : Editor
         {
             Undo.RecordObject(state, "state path remove");
             state.RemovePath(l.serializedProperty.GetArrayElementAtIndex(l.index).objectReferenceValue as Path);
+            Undo.DestroyObjectImmediate(l.serializedProperty.GetArrayElementAtIndex(l.index).objectReferenceValue as Path);
             Repaint();
             EditorWindow.GetWindow(typeof(EditorWindow)).Repaint();
         };

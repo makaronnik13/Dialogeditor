@@ -30,7 +30,7 @@ public class StateLink : ScriptableObject
         this.chain = chain;
         state = chain.StartState;
         float z = 1;
-        z = GuidManager.GetGameByChain(chain).zoom;
-        position = new Rect(0, 0, 100 * z, 30 * z);
+        z = game.zoom;
+        position = new Rect(0, 0, 208 * z, 30 * z);
     }
 }

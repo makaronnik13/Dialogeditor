@@ -10,6 +10,10 @@ public class Path : ScriptableObject
     {
         get
         {
+            if (game == null)
+            {
+                game = GuidManager.GetGameByPath(this);
+            }
             return game;
         }
         set

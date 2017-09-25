@@ -5,6 +5,29 @@ using System.Collections.Generic;
 public class State : ScriptableObject
 {
     private PathGame game;
+    public PathGame Game
+    {
+        get
+        {
+            return game;
+        }
+        set
+        {
+            game = value;
+        }
+    }
+    private Chain chain;
+    public Chain Chain
+    {
+        get
+        {
+            return chain;
+        }
+        set
+        {
+            chain = value;
+        }
+    }
 
     public string _description;
     public string description
@@ -34,6 +57,7 @@ public class State : ScriptableObject
 
     public void Init(Chain chain)
     {
+        this.chain = chain;
         game = chain.Game;
         description = "";
         float z = 1;
@@ -46,24 +70,21 @@ public class State : ScriptableObject
         Path newPath = CreateInstance<Path>();
         newPath.Game = game;
         pathes.Add(newPath);
-        game.Dirty = true;
+        Game.Dirty = true;
         return newPath;
+    }
+
+    public void RemovePathWithoutDestroy(Path path)
+    {
+        game.Dirty = true;
+        pathes.Remove(path);
     }
 
     public void RemovePath(Path path)
     {
         game.Dirty = true;
         pathes.Remove(path);
-        DestroyImmediate(path, true);
     }
 
-    public void DestroyState()
-    {
-        int pc = pathes.Count;
-        for (int i = pc - 1; i >= 0; i--)
-        {
-            RemovePath(pathes[i]);
-        }
-    }
 }
 

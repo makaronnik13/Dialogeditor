@@ -406,14 +406,63 @@ public class QuestWindow : EditorWindow
     }
     void DrawNodeCurve(Rect start, Rect end, Color c)
     {
+        float force = 1;
         Vector3 startPos = new Vector3(start.x + start.width / 2, start.y + start.height / 2, 0);
         Vector3 endPos = new Vector3(end.x + end.width / 2, end.y + end.height / 2, 0);
-        Vector3 startTan = startPos;
-        Vector3 endTan = endPos;
+        float distanceY = Mathf.Abs(startPos.y - endPos.y);
+        float distanceX = Mathf.Abs(startPos.x - endPos.x);
+        Vector3 middlePoint = (startPos + endPos) / 2;
+
+        Vector3 startTan1 = startPos;
+        Vector3 endTan2 = endPos;
+        Vector3 startTan2 = middlePoint;
+        Vector3 endTan1 = middlePoint;
+
+        if (startPos.y > endPos.y)
+        {
+            startTan1 -= Vector3.down * 150;
+            endTan2 -= Vector3.up *  150;
+            if (startPos.y > endPos.y)
+            {
+                endTan1 +=  Vector3.up * Mathf.Max(distanceY,50);
+                startTan2 -=  Vector3.up * Mathf.Max(distanceY, 50);
+            }
+            else
+            {
+                endTan1 += Vector3.down * Mathf.Max(distanceY, 50);
+                startTan2 -= Vector3.down * Mathf.Max(distanceY, 50);
+            }
+        }
+        else
+        {
+            startTan1 -= distanceY * Vector3.down / force/2;
+            endTan2 -= distanceY * Vector3.up / force/2;
+            if (startPos.x > endPos.x)
+            {
+                endTan1 += distanceX * Vector3.right / force/2;
+                startTan2 -= distanceX * Vector3.right / force/2;
+            }
+            else
+            {
+                endTan1 += distanceX * Vector3.left / force/2;
+                startTan2 -= distanceX * Vector3.left / force/2;
+            }
+        }
+
         Color shadowCol = new Color(0, 0, 0, 0.06f);
-        for (int i = 0; i < 2; i++) // Draw a shadow
-            Handles.DrawBezier(startPos, endPos, startTan, endTan, shadowCol, null, (i + 1) * 7);
-        Handles.DrawBezier(startPos, endPos, startTan, endTan, c, null, 3);
+
+        // Draw a shadow
+        for (int i = 0; i < 2; i++)
+        {
+            Handles.DrawBezier(startPos, middlePoint, startTan1, endTan1, shadowCol, null, (i + 1) * 7);
+        }
+        Handles.DrawBezier(startPos, middlePoint, startTan1, endTan1, c, null, 3);
+
+        for (int i = 0; i < 2; i++)
+        {
+            Handles.DrawBezier(middlePoint, endPos, startTan2, endTan2, shadowCol, null, (i + 1) * 7);
+        }
+        Handles.DrawBezier(middlePoint, endPos, startTan2, endTan2, c, null, 3);
     }
     void DrawAditional()
     {
@@ -444,7 +493,7 @@ public class QuestWindow : EditorWindow
                         end = currentChain.links.Find(x => x.state == path.aimState).position;
                     }
 
-                    Rect start = new Rect(state.position.x + 16 * zoom * i, state.position.y + state.position.height, 15 * zoom, 15 * zoom);
+                    Rect start = new Rect(state.position.x + state.position.size.x*0.2f + 16 * zoom * i, state.position.y + state.position.height, 15 * zoom, 15 * zoom);
                     DrawNodeCurve(start, end, Color.gray);
                     Handles.EndGUI();
                 }
@@ -513,6 +562,8 @@ public class QuestWindow : EditorWindow
 
         GUIStyle s = new GUIStyle(GUI.skin.box);
         s.fontSize = Mathf.FloorToInt(15 * zoom);
+        s.border = new RectOffset(15, 15, 5, 5);
+        s.normal.background = (Texture2D)Resources.Load("Icons/button") as Texture2D;
         GUI.Box(state.position, ss, s);
 
         Event c = Event.current;
@@ -585,6 +636,8 @@ public class QuestWindow : EditorWindow
         }
         GUIStyle s = new GUIStyle(GUI.skin.box);
         s.fontSize = Mathf.FloorToInt(15 * zoom);
+        s.border = new RectOffset(15, 15, 5, 5);
+        s.normal.background = (Texture2D)Resources.Load("Icons/button") as Texture2D;
         GUI.Box(state.position, ss, s);
 
         int i = 0;
@@ -593,13 +646,17 @@ public class QuestWindow : EditorWindow
 
         foreach (Path path in state.pathes)
         {
-            Rect r = new Rect(state.position.x + 16 * zoom * i, state.position.y + state.position.height, 15 * zoom, 15 * zoom);
+            Rect r = new Rect(state.position.x + state.position.size.x *0.2f + 16 * zoom * i, state.position.y + state.position.height, 15 * zoom, 15 * zoom);
             GUI.backgroundColor = Color.white * 0.8f;
             if (Selection.activeObject == path)
             {
                 GUI.backgroundColor = Color.white;
             }
-            GUI.Box(r, new GUIContent((Texture2D)Resources.Load("Icons/play-button") as Texture2D));
+
+            GUIStyle style = new GUIStyle(GUI.skin.box);
+            style.normal.background = (Texture2D)Resources.Load("Icons/path") as Texture2D;
+
+            GUI.Box(r, "", style);
 
             if (r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown)
             {
@@ -633,14 +690,19 @@ public class QuestWindow : EditorWindow
     #region Create
     private Path CreatePath(State s)
     {
+        Undo.RecordObject(s, "path creattion");
         Path newPath = s.AddPath();
+        s.position = new Rect(s.position.position, new Vector2(Mathf.Max(208, +s.position.size.x * 0.4f + 16 * s.pathes.Count), 30) * zoom);
+        Undo.RegisterCreatedObjectUndo(newPath, "param creation");
         Selection.activeObject = newPath;
         AssetDatabase.AddObjectToAsset(newPath, AssetDatabase.GetAssetPath(game));
         return newPath;
     }
     private StateLink CreateStateLink(Chain c)
     {
+        Undo.RecordObject(c, "state link creattion");
         StateLink newStateLink = c.AddStateLink();
+        Undo.RegisterCreatedObjectUndo(newStateLink, "param creation");
         AssetDatabase.AddObjectToAsset(newStateLink, AssetDatabase.GetAssetPath(game));
         newStateLink.position = new Rect(lastMousePosition.x - newStateLink.position.width / 2, lastMousePosition.y - newStateLink.position.height / 2, newStateLink.position.width, newStateLink.position.height);
         Selection.activeObject = newStateLink;
@@ -648,7 +710,9 @@ public class QuestWindow : EditorWindow
     }
     private State CreateState(Chain c)
     {
+        Undo.RecordObject(c, "state creattion");
         State newState = c.AddState();
+        Undo.RegisterCreatedObjectUndo(newState, "state creation");
         AssetDatabase.AddObjectToAsset(newState, AssetDatabase.GetAssetPath(game));
         newState.position = new Rect(lastMousePosition.x - newState.position.width / 2, lastMousePosition.y - newState.position.height / 2, newState.position.width, newState.position.height);
         Selection.activeObject = newState;
@@ -658,10 +722,10 @@ public class QuestWindow : EditorWindow
     {
         Undo.RecordObject(game, "param creattion");
         Param newParam = CreateInstance<Param>();
+        Undo.RegisterCreatedObjectUndo(newParam, "param creation");
         game.parameters.Add(newParam);
         newParam.Game = game;
         newParam.paramName = "new param";
-        Undo.RegisterCreatedObjectUndo(newParam, "param creation");
         newParam.id = GuidManager.GetItemGUID();
         AssetDatabase.AddObjectToAsset(newParam, AssetDatabase.GetAssetPath(game));
         game.Dirty = true;   
@@ -670,8 +734,9 @@ public class QuestWindow : EditorWindow
     }
     private Chain CreateChain(bool withStartState = true)
     {
-        Undo.RecordObject(game, "chain creattion");
+        Undo.RecordObject(game, "chain creation");
         Chain newChain = CreateInstance<Chain>();
+        Undo.RegisterCreatedObjectUndo(newChain, "chain creation");
         AssetDatabase.AddObjectToAsset(newChain, AssetDatabase.GetAssetPath(game));
         newChain.Init(game);
         if (withStartState)
@@ -688,12 +753,13 @@ public class QuestWindow : EditorWindow
     #region Delete
     private void RemoveParam(Param deletingParam)
     {
+        Undo.RecordObject(game, "removing param");
         if (copyBuffer == deletingParam)
         {
             copyBuffer = null;
         }
         game.parameters.Remove(deletingParam);
-        DestroyImmediate(deletingParam, true);
+        Undo.DestroyObjectImmediate(deletingParam);
         game.Dirty = true;
         Repaint();
     }
@@ -703,33 +769,41 @@ public class QuestWindow : EditorWindow
         {
             copyBuffer = null;
         }
+
+        foreach (StateLink s in deletingChain.links)
+        {
+            RemoveStateLink(deletingChain, s);
+        }
+
+        foreach (State s in deletingChain.states)
+        {
+            RemoveState(deletingChain, s, false);
+        }
+
         game.chains.Remove(deletingChain);
-        deletingChain.DestroyChain();
-        DestroyImmediate(deletingChain, true);
+        Undo.DestroyObjectImmediate(deletingChain);
         game.Dirty = true;
         Repaint();
     }
-    private void RemovePath(Path p)
+    private void RemovePath(State s, Path p)
     {
+        Undo.RecordObject(s, "remove path");
         if (copyBuffer == p)
         {
             copyBuffer = null;
         }
-        foreach (State s in currentChain.states)
-        {
-            foreach (Path path in s.pathes)
-            {
-                if (path == p)
-                {
-                    s.RemovePath(p);
-                    Repaint();
-                    return;
-                }
-            }
-        }
+
+        s.RemovePath(p);
+
+        Undo.DestroyObjectImmediate(p);
+        s.position = new Rect(s.position.position, new Vector2(Mathf.Max(208, +s.position.size.x/zoom * 0.4f + 16 * s.pathes.Count), 30) * zoom);
+        Repaint();
+        return;
     }
-    private void RemoveState(Chain chain, State state)
+    private void RemoveState(Chain chain, State state, bool WithCreatingStart = true)
     {
+        Undo.RecordObject(chain, "remove state");
+
         if (copyBuffer == state)
         {
             copyBuffer = null;
@@ -745,7 +819,7 @@ public class QuestWindow : EditorWindow
             }
         }
 
-        if (state == chain.StartState)
+        if (state == chain.StartState && WithCreatingStart)
         {
             if (chain.states.Count == 1)
             {
@@ -764,12 +838,19 @@ public class QuestWindow : EditorWindow
                 }
             }
         }
+        int pc = state.pathes.Count;
+        for (int i = pc - 1; i >= 0; i--)
+        {
+            RemovePath(state, state.pathes[i]);
+        }
         chain.RemoveState(state);
+        Undo.DestroyObjectImmediate(state);
         game.Dirty = true;
         Repaint();
     }
     private void RemoveStateLink(Chain chain, StateLink link)
     {
+        Undo.RecordObject(chain, "remove state Link");
         if (copyBuffer == link)
         {
             copyBuffer = null;
@@ -785,6 +866,7 @@ public class QuestWindow : EditorWindow
             }
         }
         chain.RemoveStateLink(link);
+        Undo.DestroyObjectImmediate(link);
         game.Dirty = true;
         Repaint();
     }
@@ -832,7 +914,7 @@ public class QuestWindow : EditorWindow
     {
         Rect p = to.position;
         EditorUtility.CopySerialized(from, to);
-        if (pastePosition)
+        if (!pastePosition)
         {
             to.position = p;
         }
@@ -842,22 +924,30 @@ public class QuestWindow : EditorWindow
     private void PasteStateValues(State from, State to, bool pastePosition = false)
     {
         Rect position = to.position;
+        List<Path> deletingPathes = new List<Path>(to.pathes);
+        foreach (Path p in deletingPathes)
+        {
+            RemovePath(to, p);
+        }
+
         EditorUtility.CopySerialized(from, to);
         List<Path> pathes = new List<Path>(from.pathes);
+
         to.pathes.Clear();
         foreach (Path p in pathes)
         {
             Path newPath = CreatePath(to);
             PastePathValues(p, newPath);
         }
+
         if (!pastePosition)
         {
             to.position = position;
         }
 
-        if (GuidManager.GetChainByState(from).StartState == from)
+        if (from.Chain.StartState == from)
         {
-            GuidManager.GetChainByState(to).StartState = to;
+            to.Chain.StartState = to;
         }
         Selection.activeObject = to;
         Repaint();
@@ -885,6 +975,18 @@ public class QuestWindow : EditorWindow
     }
     private void PasteChainValues(Chain from, Chain to)
     {
+        List<StateLink> removingLinks = to.links;
+        List<State> removingStates = to.states;
+        foreach (StateLink sl in removingLinks)
+        {
+            RemoveStateLink(to, sl);
+        }
+
+        foreach (State s in removingStates)
+        {
+            RemoveState(to, s, false);
+        }
+
         EditorUtility.CopySerialized(from, to);
 
         to.states.Clear();
@@ -919,7 +1021,9 @@ public class QuestWindow : EditorWindow
     }
     private void PasteParamValues(Param from, Param to)
     {
+        Undo.RecordObject(to, "paste param values");
         EditorUtility.CopySerialized(from, to);
+        Selection.activeObject = to;
         Repaint();
     }
     #endregion
@@ -966,7 +1070,13 @@ public class QuestWindow : EditorWindow
     }
     private void DeletePath()
     {
-        RemovePath(menuPath);
+        foreach (State s in currentChain.states)
+        {
+            if (s.pathes.Contains(menuPath))
+            {
+                RemovePath(s, menuPath);
+            }
+        }
     }
     private void DeleteChain()
     {
@@ -1019,22 +1129,26 @@ public class QuestWindow : EditorWindow
     }
     private void PasteChainValues()
     {
+        Undo.RecordObject(menuChain, "paste chain values");
         PasteChainValues((Chain)copyBuffer, menuChain);
     }
     private void PasteParamValues()
-    {
+    {   
         PasteParamValues((Param)copyBuffer, menuParam);
     }
     private void PasteStateLinkValues()
     {
-        PasteStateLinkValues(menuStateLink, (StateLink)copyBuffer);
+        Undo.RecordObject(menuStateLink, "paste link values");
+        PasteStateLinkValues((StateLink)copyBuffer, menuStateLink);
     }
     private void PasteStateValues()
     {
-        PasteStateValues(menuState, (State)copyBuffer);
+        Undo.RecordObject(menuState, "paste state values");
+        PasteStateValues((State)copyBuffer, menuState);
     }
     private void PastePathValues()
     {
+        Undo.RecordObject(menuPath, "paste path values");
         PastePathValues((Path)copyBuffer, menuPath);
     }
     #endregion
@@ -1064,11 +1178,11 @@ public class QuestWindow : EditorWindow
         {
             foreach (State s in currentChain.states)
             {
-                s.position = new Rect((s.position.position - Event.current.mousePosition) * (1 + force) + Event.current.mousePosition, new Vector2(208, 30) * zoom);
+                s.position = new Rect((s.position.position - Event.current.mousePosition) * (1 + force) + Event.current.mousePosition, new Vector2(Mathf.Max(208, +s.position.size.x/zoom * 0.4f+16 *s.pathes.Count), 30) * zoom);
             }
             foreach (StateLink s in currentChain.links)
             {
-                s.position = new Rect((s.position.position - Event.current.mousePosition) * (1 + force) + Event.current.mousePosition, new Vector2(100, 30) * zoom);
+                s.position = new Rect((s.position.position - Event.current.mousePosition) * (1 + force) + Event.current.mousePosition, new Vector2(208, 30) * zoom);
             }
         }
     }
@@ -1093,7 +1207,13 @@ public class QuestWindow : EditorWindow
             }
             if (Selection.activeObject.GetType() == typeof(Path))
             {
-                RemovePath((Path)Selection.activeObject);
+                foreach (State s in currentChain.states)
+                {
+                    if (s.pathes.Contains((Path)Selection.activeObject))
+                    {
+                        RemovePath(s, (Path)Selection.activeObject);
+                    }
+                }
                 return;
             }
             if (Selection.activeObject.GetType() == typeof(Param))
@@ -1187,7 +1307,7 @@ public class QuestWindow : EditorWindow
                     menu.AddItem(new GUIContent("Edit"), false, EditChain);
                     if (copyBuffer && copyBuffer.GetType() == typeof(Chain))
                     {
-                        menu.AddItem(new GUIContent("Paste values"), false, PasteChainValues);
+                        //menu.AddItem(new GUIContent("Paste values"), false, PasteChainValues);
                         menu.AddItem(new GUIContent("Paste chain"), false, PasteChain);
                     }
                     menu.ShowAsContext();
@@ -1205,7 +1325,7 @@ public class QuestWindow : EditorWindow
                     menu.AddItem(new GUIContent("Copy"), false, CopyParam);
                     if (copyBuffer && copyBuffer.GetType() == typeof(Param))
                     {
-                        menu.AddItem(new GUIContent("Paste values"), false, PasteParamValues); //!
+                        //menu.AddItem(new GUIContent("Paste values"), false, PasteParamValues);
                         menu.AddItem(new GUIContent("Paste param"), false, PasteParam);
                     }
                     menu.ShowAsContext();
@@ -1294,7 +1414,7 @@ public class QuestWindow : EditorWindow
                 }
                 if (copyBuffer && copyBuffer.GetType() == typeof(State))
                 {
-                    menu.AddItem(new GUIContent("Paste values"), false, PasteStateValues);
+                    //menu.AddItem(new GUIContent("Paste values"), false, PasteStateValues);
                 }
                 menu.ShowAsContext();
             }

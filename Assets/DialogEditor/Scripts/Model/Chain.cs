@@ -47,7 +47,6 @@ public class Chain : ScriptableObject
     public void RemoveStateLink(StateLink link)
     {
         links.Remove(link);
-        DestroyImmediate(link, true);
         GuidManager.GetGameByChain(this).Dirty = true;
     }
 
@@ -62,24 +61,10 @@ public class Chain : ScriptableObject
 
     public void RemoveState(State state)
     {
-        state.DestroyState();
         states.Remove(state);
-        DestroyImmediate(state, true);
         game.Dirty = true;
     }
 
-    public void DestroyChain()
-    {
-        foreach (State s in states)
-        {
-            s.DestroyState();
-            DestroyImmediate(s, true);
-        }
-        foreach (StateLink s in links)
-        {
-            DestroyImmediate(s, true);
-        }
-    }
 
     public void Init(PathGame game)
     {
