@@ -9,4 +9,5 @@ public class Ability : ScriptableObject {
 	public Sprite icon;
 	public string name = "ability";
 	public StatString description;
+	public ModificatorCondition upgradeCondition;
 }

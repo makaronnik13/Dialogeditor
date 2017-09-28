@@ -34,5 +34,6 @@ public class StatVisualizer : MonoBehaviour {
 		StatsManager.Instance.onValueChanged.AddListener (()=>{
 			OnValueChanged();
 		});	
+		StatsManager.Instance.ChangeParams (stat, stat.defaultValue);
 	}
 }

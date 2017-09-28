@@ -58,13 +58,26 @@ public class StatsManager : Singleton<StatsManager> {
 		stream.Close();
 	}
 
+	public void ChangeParams(Stat stat, float value)
+	{
+		if (!saveInfo.paramsDictionary.ContainsKey(stat.id))
+		{
+			saveInfo.paramsDictionary.Add(stat.id, stat.defaultValue);
+		}
+		saveInfo.paramsDictionary [stat.id] = value;
+		onValueChanged.Invoke ();
+	}
+
 	public void ChangeParams(StatValue value)
 	{
 		if (!saveInfo.paramsDictionary.ContainsKey(value.stat.id))
 		{
 			saveInfo.paramsDictionary.Add(value.stat.id, value.stat.defaultValue);
 		}
-		saveInfo.paramsDictionary [value.stat.id] -= value.value;
+		Debug.Log (value.value);
+		saveInfo.paramsDictionary [value.stat.id] += value.value;
+		Debug.Log (value.stat.id);
+		Debug.Log (saveInfo.paramsDictionary [value.stat.id]);
 		onValueChanged.Invoke ();
 	}
 

@@ -1,0 +1,3712 @@
+fileFormatVersion: 2
+guid: d6c18dd3c2fc84af09ab83c790e2d0b3
+timeCreated: 1506457831
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: 234-rpg-fantasy-spell-icons-7885_imgs_7885_0
+    21300002: 234-rpg-fantasy-spell-icons-7885_imgs_7885_1
+    21300004: 234-rpg-fantasy-spell-icons-7885_imgs_7885_2
+    21300006: 234-rpg-fantasy-spell-icons-7885_imgs_7885_3
+    21300008: 234-rpg-fantasy-spell-icons-7885_imgs_7885_4
+    21300010: 234-rpg-fantasy-spell-icons-7885_imgs_7885_5
+    21300012: 234-rpg-fantasy-spell-icons-7885_imgs_7885_6
+    21300014: 234-rpg-fantasy-spell-icons-7885_imgs_7885_7
+    21300016: 234-rpg-fantasy-spell-icons-7885_imgs_7885_8
+    21300018: 234-rpg-fantasy-spell-icons-7885_imgs_7885_9
+    21300020: 234-rpg-fantasy-spell-icons-7885_imgs_7885_10
+    21300022: 234-rpg-fantasy-spell-icons-7885_imgs_7885_11
+    21300024: 234-rpg-fantasy-spell-icons-7885_imgs_7885_12
+    21300026: 234-rpg-fantasy-spell-icons-7885_imgs_7885_13
+    21300028: 234-rpg-fantasy-spell-icons-7885_imgs_7885_14
+    21300030: 234-rpg-fantasy-spell-icons-7885_imgs_7885_15
+    21300032: 234-rpg-fantasy-spell-icons-7885_imgs_7885_16
+    21300034: 234-rpg-fantasy-spell-icons-7885_imgs_7885_17
+    21300036: 234-rpg-fantasy-spell-icons-7885_imgs_7885_18
+    21300038: 234-rpg-fantasy-spell-icons-7885_imgs_7885_19
+    21300040: 234-rpg-fantasy-spell-icons-7885_imgs_7885_20
+    21300042: 234-rpg-fantasy-spell-icons-7885_imgs_7885_21
+    21300044: 234-rpg-fantasy-spell-icons-7885_imgs_7885_22
+    21300046: 234-rpg-fantasy-spell-icons-7885_imgs_7885_23
+    21300048: 234-rpg-fantasy-spell-icons-7885_imgs_7885_24
+    21300050: 234-rpg-fantasy-spell-icons-7885_imgs_7885_25
+    21300052: 234-rpg-fantasy-spell-icons-7885_imgs_7885_26
+    21300054: 234-rpg-fantasy-spell-icons-7885_imgs_7885_27
+    21300056: 234-rpg-fantasy-spell-icons-7885_imgs_7885_28
+    21300058: 234-rpg-fantasy-spell-icons-7885_imgs_7885_29
+    21300060: 234-rpg-fantasy-spell-icons-7885_imgs_7885_30
+    21300062: 234-rpg-fantasy-spell-icons-7885_imgs_7885_31
+    21300064: 234-rpg-fantasy-spell-icons-7885_imgs_7885_32
+    21300066: 234-rpg-fantasy-spell-icons-7885_imgs_7885_33
+    21300068: 234-rpg-fantasy-spell-icons-7885_imgs_7885_34
+    21300070: 234-rpg-fantasy-spell-icons-7885_imgs_7885_35
+    21300072: 234-rpg-fantasy-spell-icons-7885_imgs_7885_36
+    21300074: 234-rpg-fantasy-spell-icons-7885_imgs_7885_37
+    21300076: 234-rpg-fantasy-spell-icons-7885_imgs_7885_38
+    21300078: 234-rpg-fantasy-spell-icons-7885_imgs_7885_39
+    21300080: 234-rpg-fantasy-spell-icons-7885_imgs_7885_40
+    21300082: 234-rpg-fantasy-spell-icons-7885_imgs_7885_41
+    21300084: 234-rpg-fantasy-spell-icons-7885_imgs_7885_42
+    21300086: 234-rpg-fantasy-spell-icons-7885_imgs_7885_43
+    21300088: 234-rpg-fantasy-spell-icons-7885_imgs_7885_44
+    21300090: 234-rpg-fantasy-spell-icons-7885_imgs_7885_45
+    21300092: 234-rpg-fantasy-spell-icons-7885_imgs_7885_46
+    21300094: 234-rpg-fantasy-spell-icons-7885_imgs_7885_47
+    21300096: 234-rpg-fantasy-spell-icons-7885_imgs_7885_48
+    21300098: 234-rpg-fantasy-spell-icons-7885_imgs_7885_49
+    21300100: 234-rpg-fantasy-spell-icons-7885_imgs_7885_50
+    21300102: 234-rpg-fantasy-spell-icons-7885_imgs_7885_51
+    21300104: 234-rpg-fantasy-spell-icons-7885_imgs_7885_52
+    21300106: 234-rpg-fantasy-spell-icons-7885_imgs_7885_53
+    21300108: 234-rpg-fantasy-spell-icons-7885_imgs_7885_54
+    21300110: 234-rpg-fantasy-spell-icons-7885_imgs_7885_55
+    21300112: 234-rpg-fantasy-spell-icons-7885_imgs_7885_56
+    21300114: 234-rpg-fantasy-spell-icons-7885_imgs_7885_57
+    21300116: 234-rpg-fantasy-spell-icons-7885_imgs_7885_58
+    21300118: 234-rpg-fantasy-spell-icons-7885_imgs_7885_59
+    21300120: 234-rpg-fantasy-spell-icons-7885_imgs_7885_60
+    21300122: 234-rpg-fantasy-spell-icons-7885_imgs_7885_61
+    21300124: 234-rpg-fantasy-spell-icons-7885_imgs_7885_62
+    21300126: 234-rpg-fantasy-spell-icons-7885_imgs_7885_63
+    21300128: 234-rpg-fantasy-spell-icons-7885_imgs_7885_64
+    21300130: 234-rpg-fantasy-spell-icons-7885_imgs_7885_65
+    21300132: 234-rpg-fantasy-spell-icons-7885_imgs_7885_66
+    21300134: 234-rpg-fantasy-spell-icons-7885_imgs_7885_67
+    21300136: 234-rpg-fantasy-spell-icons-7885_imgs_7885_68
+    21300138: 234-rpg-fantasy-spell-icons-7885_imgs_7885_69
+    21300140: 234-rpg-fantasy-spell-icons-7885_imgs_7885_70
+    21300142: 234-rpg-fantasy-spell-icons-7885_imgs_7885_71
+    21300144: 234-rpg-fantasy-spell-icons-7885_imgs_7885_72
+    21300146: 234-rpg-fantasy-spell-icons-7885_imgs_7885_73
+    21300148: 234-rpg-fantasy-spell-icons-7885_imgs_7885_74
+    21300150: 234-rpg-fantasy-spell-icons-7885_imgs_7885_75
+    21300152: 234-rpg-fantasy-spell-icons-7885_imgs_7885_76
+    21300154: 234-rpg-fantasy-spell-icons-7885_imgs_7885_77
+    21300156: 234-rpg-fantasy-spell-icons-7885_imgs_7885_78
+    21300158: 234-rpg-fantasy-spell-icons-7885_imgs_7885_79
+    21300160: 234-rpg-fantasy-spell-icons-7885_imgs_7885_80
+    21300162: 234-rpg-fantasy-spell-icons-7885_imgs_7885_81
+    21300164: 234-rpg-fantasy-spell-icons-7885_imgs_7885_82
+    21300166: 234-rpg-fantasy-spell-icons-7885_imgs_7885_83
+    21300168: 234-rpg-fantasy-spell-icons-7885_imgs_7885_84
+    21300170: 234-rpg-fantasy-spell-icons-7885_imgs_7885_85
+    21300172: 234-rpg-fantasy-spell-icons-7885_imgs_7885_86
+    21300174: 234-rpg-fantasy-spell-icons-7885_imgs_7885_87
+    21300176: 234-rpg-fantasy-spell-icons-7885_imgs_7885_88
+    21300178: 234-rpg-fantasy-spell-icons-7885_imgs_7885_89
+    21300180: 234-rpg-fantasy-spell-icons-7885_imgs_7885_90
+    21300182: 234-rpg-fantasy-spell-icons-7885_imgs_7885_91
+    21300184: 234-rpg-fantasy-spell-icons-7885_imgs_7885_92
+    21300186: 234-rpg-fantasy-spell-icons-7885_imgs_7885_93
+    21300188: 234-rpg-fantasy-spell-icons-7885_imgs_7885_94
+    21300190: 234-rpg-fantasy-spell-icons-7885_imgs_7885_95
+    21300192: 234-rpg-fantasy-spell-icons-7885_imgs_7885_96
+    21300194: 234-rpg-fantasy-spell-icons-7885_imgs_7885_97
+    21300196: 234-rpg-fantasy-spell-icons-7885_imgs_7885_98
+    21300198: 234-rpg-fantasy-spell-icons-7885_imgs_7885_99
+    21300200: 234-rpg-fantasy-spell-icons-7885_imgs_7885_100
+    21300202: 234-rpg-fantasy-spell-icons-7885_imgs_7885_101
+    21300204: 234-rpg-fantasy-spell-icons-7885_imgs_7885_102
+    21300206: 234-rpg-fantasy-spell-icons-7885_imgs_7885_103
+    21300208: 234-rpg-fantasy-spell-icons-7885_imgs_7885_104
+    21300210: 234-rpg-fantasy-spell-icons-7885_imgs_7885_105
+    21300212: 234-rpg-fantasy-spell-icons-7885_imgs_7885_106
+    21300214: 234-rpg-fantasy-spell-icons-7885_imgs_7885_107
+    21300216: 234-rpg-fantasy-spell-icons-7885_imgs_7885_108
+    21300218: 234-rpg-fantasy-spell-icons-7885_imgs_7885_109
+    21300220: 234-rpg-fantasy-spell-icons-7885_imgs_7885_110
+    21300222: 234-rpg-fantasy-spell-icons-7885_imgs_7885_111
+    21300224: 234-rpg-fantasy-spell-icons-7885_imgs_7885_112
+    21300226: 234-rpg-fantasy-spell-icons-7885_imgs_7885_113
+    21300228: 234-rpg-fantasy-spell-icons-7885_imgs_7885_114
+    21300230: 234-rpg-fantasy-spell-icons-7885_imgs_7885_115
+    21300232: 234-rpg-fantasy-spell-icons-7885_imgs_7885_116
+    21300234: 234-rpg-fantasy-spell-icons-7885_imgs_7885_117
+    21300236: 234-rpg-fantasy-spell-icons-7885_imgs_7885_118
+    21300238: 234-rpg-fantasy-spell-icons-7885_imgs_7885_119
+    21300240: 234-rpg-fantasy-spell-icons-7885_imgs_7885_120
+    21300242: 234-rpg-fantasy-spell-icons-7885_imgs_7885_121
+    21300244: 234-rpg-fantasy-spell-icons-7885_imgs_7885_122
+    21300246: 234-rpg-fantasy-spell-icons-7885_imgs_7885_123
+    21300248: 234-rpg-fantasy-spell-icons-7885_imgs_7885_124
+    21300250: 234-rpg-fantasy-spell-icons-7885_imgs_7885_125
+    21300252: 234-rpg-fantasy-spell-icons-7885_imgs_7885_126
+    21300254: 234-rpg-fantasy-spell-icons-7885_imgs_7885_127
+    21300256: 234-rpg-fantasy-spell-icons-7885_imgs_7885_128
+    21300258: 234-rpg-fantasy-spell-icons-7885_imgs_7885_129
+    21300260: 234-rpg-fantasy-spell-icons-7885_imgs_7885_130
+    21300262: 234-rpg-fantasy-spell-icons-7885_imgs_7885_131
+    21300264: 234-rpg-fantasy-spell-icons-7885_imgs_7885_132
+    21300266: 234-rpg-fantasy-spell-icons-7885_imgs_7885_133
+    21300268: 234-rpg-fantasy-spell-icons-7885_imgs_7885_134
+    21300270: 234-rpg-fantasy-spell-icons-7885_imgs_7885_135
+    21300272: 234-rpg-fantasy-spell-icons-7885_imgs_7885_136
+    21300274: 234-rpg-fantasy-spell-icons-7885_imgs_7885_137
+    21300276: 234-rpg-fantasy-spell-icons-7885_imgs_7885_138
+    21300278: 234-rpg-fantasy-spell-icons-7885_imgs_7885_139
+    21300280: 234-rpg-fantasy-spell-icons-7885_imgs_7885_140
+    21300282: 234-rpg-fantasy-spell-icons-7885_imgs_7885_141
+    21300284: 234-rpg-fantasy-spell-icons-7885_imgs_7885_142
+    21300286: 234-rpg-fantasy-spell-icons-7885_imgs_7885_143
+    21300288: 234-rpg-fantasy-spell-icons-7885_imgs_7885_144
+    21300290: 234-rpg-fantasy-spell-icons-7885_imgs_7885_145
+    21300292: 234-rpg-fantasy-spell-icons-7885_imgs_7885_146
+    21300294: 234-rpg-fantasy-spell-icons-7885_imgs_7885_147
+    21300296: 234-rpg-fantasy-spell-icons-7885_imgs_7885_148
+    21300298: 234-rpg-fantasy-spell-icons-7885_imgs_7885_149
+    21300300: 234-rpg-fantasy-spell-icons-7885_imgs_7885_150
+    21300302: 234-rpg-fantasy-spell-icons-7885_imgs_7885_151
+    21300304: 234-rpg-fantasy-spell-icons-7885_imgs_7885_152
+    21300306: 234-rpg-fantasy-spell-icons-7885_imgs_7885_153
+    21300308: 234-rpg-fantasy-spell-icons-7885_imgs_7885_154
+    21300310: 234-rpg-fantasy-spell-icons-7885_imgs_7885_155
+    21300312: 234-rpg-fantasy-spell-icons-7885_imgs_7885_156
+    21300314: 234-rpg-fantasy-spell-icons-7885_imgs_7885_157
+    21300316: 234-rpg-fantasy-spell-icons-7885_imgs_7885_158
+    21300318: 234-rpg-fantasy-spell-icons-7885_imgs_7885_159
+    21300320: 234-rpg-fantasy-spell-icons-7885_imgs_7885_160
+    21300322: 234-rpg-fantasy-spell-icons-7885_imgs_7885_161
+    21300324: 234-rpg-fantasy-spell-icons-7885_imgs_7885_162
+    21300326: 234-rpg-fantasy-spell-icons-7885_imgs_7885_163
+    21300328: 234-rpg-fantasy-spell-icons-7885_imgs_7885_164
+    21300330: 234-rpg-fantasy-spell-icons-7885_imgs_7885_165
+    21300332: 234-rpg-fantasy-spell-icons-7885_imgs_7885_166
+    21300334: 234-rpg-fantasy-spell-icons-7885_imgs_7885_167
+    21300336: 234-rpg-fantasy-spell-icons-7885_imgs_7885_168
+    21300338: 234-rpg-fantasy-spell-icons-7885_imgs_7885_169
+    21300340: 234-rpg-fantasy-spell-icons-7885_imgs_7885_170
+    21300342: 234-rpg-fantasy-spell-icons-7885_imgs_7885_171
+    21300344: 234-rpg-fantasy-spell-icons-7885_imgs_7885_172
+    21300346: 234-rpg-fantasy-spell-icons-7885_imgs_7885_173
+    21300348: 234-rpg-fantasy-spell-icons-7885_imgs_7885_174
+    21300350: 234-rpg-fantasy-spell-icons-7885_imgs_7885_175
+    21300352: 234-rpg-fantasy-spell-icons-7885_imgs_7885_176
+    21300354: 234-rpg-fantasy-spell-icons-7885_imgs_7885_177
+    21300356: 234-rpg-fantasy-spell-icons-7885_imgs_7885_178
+    21300358: 234-rpg-fantasy-spell-icons-7885_imgs_7885_179
+    21300360: 234-rpg-fantasy-spell-icons-7885_imgs_7885_180
+    21300362: 234-rpg-fantasy-spell-icons-7885_imgs_7885_181
+    21300364: 234-rpg-fantasy-spell-icons-7885_imgs_7885_182
+    21300366: 234-rpg-fantasy-spell-icons-7885_imgs_7885_183
+    21300368: 234-rpg-fantasy-spell-icons-7885_imgs_7885_184
+    21300370: 234-rpg-fantasy-spell-icons-7885_imgs_7885_185
+    21300372: 234-rpg-fantasy-spell-icons-7885_imgs_7885_186
+    21300374: 234-rpg-fantasy-spell-icons-7885_imgs_7885_187
+    21300376: 234-rpg-fantasy-spell-icons-7885_imgs_7885_188
+    21300378: 234-rpg-fantasy-spell-icons-7885_imgs_7885_189
+    21300380: 234-rpg-fantasy-spell-icons-7885_imgs_7885_190
+    21300382: 234-rpg-fantasy-spell-icons-7885_imgs_7885_191
+    21300384: 234-rpg-fantasy-spell-icons-7885_imgs_7885_192
+    21300386: 234-rpg-fantasy-spell-icons-7885_imgs_7885_193
+    21300388: 234-rpg-fantasy-spell-icons-7885_imgs_7885_194
+    21300390: 234-rpg-fantasy-spell-icons-7885_imgs_7885_195
+    21300392: 234-rpg-fantasy-spell-icons-7885_imgs_7885_196
+    21300394: 234-rpg-fantasy-spell-icons-7885_imgs_7885_197
+    21300396: 234-rpg-fantasy-spell-icons-7885_imgs_7885_198
+    21300398: 234-rpg-fantasy-spell-icons-7885_imgs_7885_199
+    21300400: 234-rpg-fantasy-spell-icons-7885_imgs_7885_200
+    21300402: 234-rpg-fantasy-spell-icons-7885_imgs_7885_201
+    21300404: 234-rpg-fantasy-spell-icons-7885_imgs_7885_202
+    21300406: 234-rpg-fantasy-spell-icons-7885_imgs_7885_203
+    21300408: 234-rpg-fantasy-spell-icons-7885_imgs_7885_204
+    21300410: 234-rpg-fantasy-spell-icons-7885_imgs_7885_205
+    21300412: 234-rpg-fantasy-spell-icons-7885_imgs_7885_206
+    21300414: 234-rpg-fantasy-spell-icons-7885_imgs_7885_207
+    21300416: 234-rpg-fantasy-spell-icons-7885_imgs_7885_208
+    21300418: 234-rpg-fantasy-spell-icons-7885_imgs_7885_209
+    21300420: 234-rpg-fantasy-spell-icons-7885_imgs_7885_210
+    21300422: 234-rpg-fantasy-spell-icons-7885_imgs_7885_211
+    21300424: 234-rpg-fantasy-spell-icons-7885_imgs_7885_212
+    21300426: 234-rpg-fantasy-spell-icons-7885_imgs_7885_213
+    21300428: 234-rpg-fantasy-spell-icons-7885_imgs_7885_214
+    21300430: 234-rpg-fantasy-spell-icons-7885_imgs_7885_215
+    21300432: 234-rpg-fantasy-spell-icons-7885_imgs_7885_216
+    21300434: 234-rpg-fantasy-spell-icons-7885_imgs_7885_217
+    21300436: 234-rpg-fantasy-spell-icons-7885_imgs_7885_218
+    21300438: 234-rpg-fantasy-spell-icons-7885_imgs_7885_219
+    21300440: 234-rpg-fantasy-spell-icons-7885_imgs_7885_220
+    21300442: 234-rpg-fantasy-spell-icons-7885_imgs_7885_221
+    21300444: 234-rpg-fantasy-spell-icons-7885_imgs_7885_222
+    21300446: 234-rpg-fantasy-spell-icons-7885_imgs_7885_223
+    21300448: 234-rpg-fantasy-spell-icons-7885_imgs_7885_224
+    21300450: 234-rpg-fantasy-spell-icons-7885_imgs_7885_225
+    21300452: 234-rpg-fantasy-spell-icons-7885_imgs_7885_226
+    21300454: 234-rpg-fantasy-spell-icons-7885_imgs_7885_227
+    21300456: 234-rpg-fantasy-spell-icons-7885_imgs_7885_228
+    21300458: 234-rpg-fantasy-spell-icons-7885_imgs_7885_229
+    21300460: 234-rpg-fantasy-spell-icons-7885_imgs_7885_230
+    21300462: 234-rpg-fantasy-spell-icons-7885_imgs_7885_231
+    21300464: 234-rpg-fantasy-spell-icons-7885_imgs_7885_232
+    21300466: 234-rpg-fantasy-spell-icons-7885_imgs_7885_233
+    21300468: 234-rpg-fantasy-spell-icons-7885_imgs_7885_234
+    21300470: 234-rpg-fantasy-spell-icons-7885_imgs_7885_235
+    21300472: 234-rpg-fantasy-spell-icons-7885_imgs_7885_236
+    21300474: 234-rpg-fantasy-spell-icons-7885_imgs_7885_237
+    21300476: 234-rpg-fantasy-spell-icons-7885_imgs_7885_238
+    21300478: 234-rpg-fantasy-spell-icons-7885_imgs_7885_239
+    21300480: 234-rpg-fantasy-spell-icons-7885_imgs_7885_240
+    21300482: 234-rpg-fantasy-spell-icons-7885_imgs_7885_241
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: -1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2465
+        width: 106
+        height: 106
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_1
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 2465
+        width: 106
+        height: 106
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_2
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 2466
+        width: 107
+        height: 105
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_3
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 2465
+        width: 107
+        height: 106
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_4
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 2465
+        width: 107
+        height: 106
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_5
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 2462
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_6
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 2462
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_7
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 2462
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_8
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 2462
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_9
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 2462
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_10
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 2462
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_12
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_13
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_14
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_15
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_16
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_17
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_18
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_19
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_20
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_21
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 2345
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_22
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_23
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_24
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_25
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_26
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_27
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_28
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_29
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_30
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_31
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_32
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 2228
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_33
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_34
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_35
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_36
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_37
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_38
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_39
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_40
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_41
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_42
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_43
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 2111
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_44
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_45
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_46
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_47
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_48
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_49
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_50
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_51
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_52
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_53
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_54
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1994
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_55
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_56
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_57
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_58
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_59
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_60
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_61
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_62
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_63
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_64
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_65
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1877
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_66
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_67
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_68
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_69
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_70
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_71
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_72
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_73
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_74
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_75
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_76
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1760
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_77
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_78
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_79
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_80
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_81
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_82
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_83
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_84
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_85
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_86
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_87
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1643
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_88
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_89
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_90
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_91
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_92
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_93
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_94
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_95
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_96
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_97
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_98
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1526
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_99
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_100
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_101
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_102
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_103
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_104
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_105
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_106
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_107
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_108
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_109
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1409
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_110
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_111
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_112
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_113
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_114
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_115
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_116
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_117
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_118
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_119
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_120
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1292
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_121
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_122
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_123
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_124
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_125
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_126
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_127
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_128
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_129
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_130
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_131
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1175
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_132
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_133
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_134
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_135
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_136
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_137
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_138
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_139
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_140
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_141
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_142
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 1058
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_143
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_144
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_145
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_146
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_147
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_148
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_149
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_150
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_151
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_152
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_153
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 941
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_154
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_155
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_156
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_157
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_158
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_159
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_160
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_161
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_162
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_163
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_164
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 824
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_165
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_166
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_167
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_168
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_169
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_170
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_171
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_172
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_173
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_174
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_175
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 707
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_176
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_177
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_178
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_179
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_180
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_181
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_182
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_183
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_184
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_185
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_186
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 590
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_187
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_188
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_189
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_190
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_191
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_192
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_193
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_194
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_195
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_196
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_197
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 473
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_198
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_199
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_200
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_201
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_202
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_203
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_204
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_205
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_206
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_207
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_208
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 356
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_209
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_210
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_211
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_212
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_213
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_214
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_215
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_216
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_217
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_218
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_219
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 239
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_220
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_221
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_222
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_223
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_224
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_225
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_226
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_227
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_228
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_229
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_230
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 122
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_231
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_232
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_233
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_234
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_235
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_236
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_237
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_238
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_239
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_240
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: 234-rpg-fantasy-spell-icons-7885_imgs_7885_241
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 5
+        width: 108
+        height: 109
+      alignment: 1
+      pivot: {x: 0, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

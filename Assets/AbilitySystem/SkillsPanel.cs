@@ -3,14 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillsPanel : MonoBehaviour {
+	private GameObject skillButtonPrefab;
 
-	// Use this for initialization
-	void Start () {
-		
+	void Awake()
+	{
+		skillButtonPrefab = Resources.Load ("Prefabs/SkillButton") as GameObject;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public void AddSkill(PlayerSkill ps)
+	{
+		SkillButton newSkillButton = Instantiate (skillButtonPrefab, transform).GetComponentInChildren<SkillButton>();
+		newSkillButton.SetAbility (ps.ability);
+	}
+
+	public void RemoveSkill(PlayerSkill ps)
+	{
+		foreach(SkillButton sb in GetComponentsInChildren<SkillButton>())
+		{
+			if(sb.Ability == ps.ability)
+			{
+				sb.Remove ();
+			}
+		}
 	}
 }

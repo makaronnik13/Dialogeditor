@@ -13,5 +13,5 @@ public class Stat : ScriptableObject
 	public float minValue = 0;
 	public float defaultValue = 0.5f;
 	public bool evaluated = false;
-	public ModificatorStruct evaluationStruct;
+	public ModificatorCondition upgradeCondition;
 }
