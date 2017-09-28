@@ -58,83 +58,94 @@ public class StatsManager : Singleton<StatsManager> {
 		stream.Close();
 	}
 
-	public void ChangeParams(Stat stat, float value)
+	public void SetParam(Stat stat, float value)
 	{
+        if (stat.EvaluatedValue)
+        {
+            Debug.LogWarning("you are trying to midify evaluated stat "+stat.name);
+            return;
+        }
+
 		if (!saveInfo.paramsDictionary.ContainsKey(stat.id))
 		{
-			saveInfo.paramsDictionary.Add(stat.id, stat.defaultValue);
+			saveInfo.paramsDictionary.Add(stat.id, stat.MinValue);
 		}
+
 		saveInfo.paramsDictionary [stat.id] = value;
 		onValueChanged.Invoke ();
 	}
 
-	public void ChangeParams(StatValue value)
+	public void ChangeParam(StatValue value)
 	{
-		if (!saveInfo.paramsDictionary.ContainsKey(value.stat.id))
-		{
-			saveInfo.paramsDictionary.Add(value.stat.id, value.stat.defaultValue);
-		}
-		Debug.Log (value.value);
-		saveInfo.paramsDictionary [value.stat.id] += value.value;
-		Debug.Log (value.stat.id);
-		Debug.Log (saveInfo.paramsDictionary [value.stat.id]);
-		onValueChanged.Invoke ();
+        if (value.stat.EvaluatedValue)
+        {
+            Debug.LogWarning("you are trying to midify evaluated stat " + value.stat.name);
+            return;
+        }
+        SetParam(value.stat, GetValue(value.stat)+value.value);
 	}
 
-	public void ChangeParams(ModificatorChanger changer)
+	public void ChangeParam(ModificatorChanger changer)
 	{
-		
-		foreach (Stat p in changer.modificatorStruct.stats)
-			{
+        if (changer.aimStat.EvaluatedValue)
+        {
+            Debug.LogWarning("you are trying to midify evaluated stat " + changer.aimStat.name);
+            return;
+        }
+
+        foreach (Stat p in changer.modificatorStruct.conditionStats)
+		{
 				if (!saveInfo.paramsDictionary.ContainsKey(p.id))
 				{
-				saveInfo.paramsDictionary.Add(p.id, p.defaultValue);
+                    SetParam(p, p.MinValue);
 				}
-			}
+		}
 		if (!saveInfo.paramsDictionary.ContainsKey(changer.aimStat.id))
-			{
-			saveInfo.paramsDictionary.Add(changer.aimStat.id, changer.aimStat.defaultValue);
-			}
+		{
+            SetParam(changer.aimStat, changer.aimStat.MinValue);
+        }
 
-			List<float> values = new List<float>();
-		foreach (Stat p in changer.modificatorStruct.stats)
-			{
-				values.Add(saveInfo.paramsDictionary[p.id]);
-			}
-		saveInfo.paramsDictionary[changer.aimStat.id] = ExpressionSolver.CalculateFloat(changer.modificatorStruct.modificatorString, values);
-		onValueChanged.Invoke ();
+		List<float> values = new List<float>();
+		foreach (Stat p in changer.modificatorStruct.conditionStats)
+		{
+            values.Add(GetValue(p));
+		}
+
+        SetParam(changer.aimStat, ExpressionSolver.CalculateFloat(changer.modificatorStruct.conditionString, values));
 	}
+
 	public bool CheckCondition(ModificatorCondition condition)
 	{
 		List<float> playerParameters = new List<float>();
 
 		foreach (Stat s in condition.conditionStats)
 		{
-			if (!saveInfo.paramsDictionary.ContainsKey(s.id))
-			{
-				saveInfo.paramsDictionary.Add(s.id, s.defaultValue);
-			}
-			playerParameters.Add(saveInfo.paramsDictionary[s.id]);
+            playerParameters.Add(GetValue(s));
 		}
 		return ExpressionSolver.CalculateBool(condition.conditionString, playerParameters);
 	}
 
 	public float GetValue(Stat s)
 	{
+        if (s.EvaluatedValue)
+        {
+            return GetValue(s.valueEvaluator);
+        }
+
 		if (!saveInfo.paramsDictionary.ContainsKey(s.id))
 		{
-			saveInfo.paramsDictionary.Add(s.id, s.defaultValue);
+			saveInfo.paramsDictionary.Add(s.id, s.MinValue);
 		}
 		return saveInfo.paramsDictionary [s.id];
 	}
 
-	public float GetValue(ModificatorStruct mStruct)
+	public float GetValue(ModificatorCondition mStruct)
 	{
 		List<float> values = new List<float> ();
-		foreach(Stat s in mStruct.stats)
+		foreach(Stat s in mStruct.conditionStats)
 		{
 			values.Add (GetValue(s));
 		}
-		return ExpressionSolver.CalculateFloat(mStruct.modificatorString, values);
+		return ExpressionSolver.CalculateFloat(mStruct.conditionString, values);
 	}
 }

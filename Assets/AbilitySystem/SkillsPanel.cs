@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillsPanel : MonoBehaviour {
+public class SkillsPanel : Singleton<SkillsPanel> {
 	private GameObject skillButtonPrefab;
 
 	void Awake()
@@ -26,4 +26,16 @@ public class SkillsPanel : MonoBehaviour {
 			}
 		}
 	}
+
+    public bool ContainSkill(PlayerSkill skill)
+    {
+        foreach (SkillButton sb in GetComponentsInChildren<SkillButton>())
+        {
+            if (sb.Ability == skill.ability)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

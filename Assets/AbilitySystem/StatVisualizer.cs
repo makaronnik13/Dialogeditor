@@ -14,8 +14,8 @@ public class StatVisualizer : MonoBehaviour {
 	{
 		if(slider)
 		{
-			slider.maxValue = stat.maxValue;
-			slider.minValue = stat.minValue;
+			slider.maxValue = stat.MaxValue;
+			slider.minValue = stat.MinValue;
 			slider.value = StatsManager.Instance.GetValue (stat);
 		}
 		if(text)
@@ -23,7 +23,7 @@ public class StatVisualizer : MonoBehaviour {
 			text.text = StatsManager.Instance.GetValue (stat)+"";
 			if(showMax)
 			{
-				text.text += "/"+stat.maxValue;
+				text.text += "/"+stat.MaxValue;
 			}
 		}
 	}
@@ -34,6 +34,5 @@ public class StatVisualizer : MonoBehaviour {
 		StatsManager.Instance.onValueChanged.AddListener (()=>{
 			OnValueChanged();
 		});	
-		StatsManager.Instance.ChangeParams (stat, stat.defaultValue);
 	}
 }

@@ -60,7 +60,7 @@ public class SkillButton : MonoBehaviour {
 	public void Activate()
 	{
 		skillButton.interactable = false;
-		StatsManager.Instance.ChangeParams (((ActiveAbility)ability).value);
+		StatsManager.Instance.ChangeParam (((ActiveAbility)ability).value);
 		coldownSlider.value = coldownSlider.minValue;
 		((ActiveAbility)ability).Activate ();
 	}

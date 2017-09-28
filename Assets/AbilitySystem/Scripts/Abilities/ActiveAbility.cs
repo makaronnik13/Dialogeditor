@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class ActiveAbility : Ability {
 
-	public ModificatorStruct cooldown;
+	public ModificatorCondition cooldown;
 	public StatValue value;
 
 	public virtual void Activate()

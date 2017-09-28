@@ -7,11 +7,23 @@ using UnityEngine;
 public class Stat : ScriptableObject
 {
 	public int id;
-	public string name = "stat";
-	public StatString description;
-	public float maxValue = 1;
-	public float minValue = 0;
-	public float defaultValue = 0.5f;
-	public bool evaluated = false;
-	public ModificatorCondition upgradeCondition;
+	public ModificatorCondition description;
+    public float MaxValue
+    {
+        get
+        {
+            return  StatsManager.Instance.GetValue(maxEvaluator);
+        }
+    }
+    public float MinValue
+    {
+        get
+        {
+            return StatsManager.Instance.GetValue(minEvaluator);
+        }
+    }
+    public ModificatorCondition valueEvaluator;
+    public ModificatorCondition minEvaluator;
+    public ModificatorCondition maxEvaluator;
+    public bool EvaluatedValue;
 }

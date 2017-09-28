@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class ModificatorChanger : MonoBehaviour 
 {
-	public ModificatorStruct modificatorStruct;
+	public ModificatorCondition modificatorStruct;
 	public Stat aimStat;
 }

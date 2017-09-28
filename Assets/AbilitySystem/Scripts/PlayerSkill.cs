@@ -10,6 +10,6 @@ public class PlayerSkill
 	public PlayerSkill(Ability ability)
 	{
 		this.ability = ability;
-		level = 0;
+		level = ability.startLevel;
 	}
 }

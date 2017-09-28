@@ -8,6 +8,8 @@ public class Ability : ScriptableObject {
 	public int maxLevel = 10;
 	public Sprite icon;
 	public string name = "ability";
-	public StatString description;
+	public ModificatorCondition description;
 	public ModificatorCondition upgradeCondition;
+    public SkillCondition upgradeSkillCondition;
+    public List<StatValue> cost;
 }
