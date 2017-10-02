@@ -7,25 +7,25 @@ using UnityEngine.Events;
 public class SkillManager : Singleton<SkillManager>{
 
     public UnityEvent onSkillLevelChanged;
-    private List<PlayerSkill> skills;
+    private List<Ability> skills;
 
 	public void AddSkill(Ability ability)
     {
-        skills.Add(new PlayerSkill(ability));
+        skills.Add(ability);
     }
 
-    public void UpSkillLevel(PlayerSkill skill)
+    public void UpSkillLevel(Ability skill)
     {
-        skill.level++;
+        StatsManager.Instance.SetParam(skill, StatsManager.Instance.GetValue(skill)+1);
         onSkillLevelChanged.Invoke();
     }
 
     public bool CheckSkillUpgradeCondition(SkillCondition upgradeSkillCondition)
     {
         List<float> skillsLevels = new List<float>();
-        foreach(PlayerSkill ps in skills)
+        foreach(Ability ps in skills)
         {
-            skillsLevels.Add(ps.level);
+            skillsLevels.Add(StatsManager.Instance.GetValue(ps));
         }
         return ExpressionSolver.CalculateBool(upgradeSkillCondition.conditionString, skillsLevels);
     }

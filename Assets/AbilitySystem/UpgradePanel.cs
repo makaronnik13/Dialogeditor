@@ -13,7 +13,7 @@ public class UpgradePanel : Singleton<UpgradePanel> {
     }
 
 
-    public void SetUpgradingAbilities(List<PlayerSkill> skills)
+    public void SetUpgradingAbilities(List<Ability> skills)
 	{
 		foreach(SkillUpgradeButton su in upgradeButtons)
 		{
@@ -22,7 +22,7 @@ public class UpgradePanel : Singleton<UpgradePanel> {
 
         upgradeButtons.Clear();
 
-        foreach (PlayerSkill ps in skills)
+        foreach (Ability ps in skills)
         {
             SkillUpgradeButton newSkillUpgradeButton = Instantiate(SkillUpgradeButtonPrefab, transform).GetComponent<SkillUpgradeButton>();
             newSkillUpgradeButton.SetSkill(ps);

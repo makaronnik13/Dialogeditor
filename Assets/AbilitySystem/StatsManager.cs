@@ -58,20 +58,25 @@ public class StatsManager : Singleton<StatsManager> {
 		stream.Close();
 	}
 
-	public void SetParam(Stat stat, float value)
-	{
-        if (stat.EvaluatedValue)
+    public void SetParam(StatWithId stat, float value)
+    {
+        float minValue = 0;
+        if (stat.GetType() == typeof(Stat))
         {
-            Debug.LogWarning("you are trying to midify evaluated stat "+stat.name);
-            return;
+            minValue = ((Stat)stat).MinValue;
+            if (((Stat)stat).EvaluatedValue)
+            {
+                Debug.LogWarning("you are trying to midify evaluated stat " + stat.name);
+                return;
+            }
         }
 
-		if (!saveInfo.paramsDictionary.ContainsKey(stat.id))
+		if (!saveInfo.paramsDictionary.ContainsKey(stat.Id))
 		{
-			saveInfo.paramsDictionary.Add(stat.id, stat.MinValue);
+			saveInfo.paramsDictionary.Add(stat.Id, minValue);
 		}
 
-		saveInfo.paramsDictionary [stat.id] = value;
+		saveInfo.paramsDictionary [stat.Id] = value;
 		onValueChanged.Invoke ();
 	}
 
@@ -87,26 +92,39 @@ public class StatsManager : Singleton<StatsManager> {
 
 	public void ChangeParam(ModificatorChanger changer)
 	{
-        if (changer.aimStat.EvaluatedValue)
+        if (changer.aimStat.GetType() == typeof(Stat) && ((Stat)changer.aimStat).EvaluatedValue)
         {
             Debug.LogWarning("you are trying to midify evaluated stat " + changer.aimStat.name);
             return;
         }
 
-        foreach (Stat p in changer.modificatorStruct.conditionStats)
+        float minValueAim = 0;
+        if (changer.aimStat.GetType() == typeof(Stat))
+        {
+            minValueAim = ((Stat)changer.aimStat).MinValue;
+        }
+
+        foreach (StatWithId stat in changer.modificatorStruct.conditionStats)
+        {
+            float minValue = 0;
+            if (changer.aimStat.GetType() == typeof(Stat))
+            {
+                minValue = ((Stat)changer.aimStat).MinValue;
+            }
+
+            if (!saveInfo.paramsDictionary.ContainsKey(stat.Id))
+            {
+                SetParam(stat, minValue);
+            }
+        }
+
+		if (!saveInfo.paramsDictionary.ContainsKey(changer.aimStat.Id))
 		{
-				if (!saveInfo.paramsDictionary.ContainsKey(p.id))
-				{
-                    SetParam(p, p.MinValue);
-				}
-		}
-		if (!saveInfo.paramsDictionary.ContainsKey(changer.aimStat.id))
-		{
-            SetParam(changer.aimStat, changer.aimStat.MinValue);
+            SetParam(changer.aimStat, minValueAim);
         }
 
 		List<float> values = new List<float>();
-		foreach (Stat p in changer.modificatorStruct.conditionStats)
+		foreach (StatWithId p in changer.modificatorStruct.conditionStats)
 		{
             values.Add(GetValue(p));
 		}
@@ -125,18 +143,22 @@ public class StatsManager : Singleton<StatsManager> {
 		return ExpressionSolver.CalculateBool(condition.conditionString, playerParameters);
 	}
 
-	public float GetValue(Stat s)
+	public float GetValue(StatWithId s)
 	{
-        if (s.EvaluatedValue)
+        if (s.GetType() == typeof(Stat))
         {
-            return GetValue(s.valueEvaluator);
+            if (((Stat)s).EvaluatedValue)
+            {
+                return GetValue(((Stat)s).valueEvaluator);
+            }         
         }
 
-		if (!saveInfo.paramsDictionary.ContainsKey(s.id))
-		{
-			saveInfo.paramsDictionary.Add(s.id, s.MinValue);
-		}
-		return saveInfo.paramsDictionary [s.id];
+        if (!saveInfo.paramsDictionary.ContainsKey(s.Id))
+        {
+            saveInfo.paramsDictionary.Add(s.Id, ((Stat)s).MinValue);
+        }
+
+        return saveInfo.paramsDictionary [s.Id];
 	}
 
 	public float GetValue(ModificatorCondition mStruct)

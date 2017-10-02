@@ -4,10 +4,8 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Stat", menuName = "RPG/Stat")]
 [System.Serializable]
-public class Stat : ScriptableObject
+public class Stat : StatWithId
 {
-	public int id;
-	public ModificatorCondition description;
     public float MaxValue
     {
         get

@@ -50,9 +50,8 @@ public class ModificatorConditionPropertyDrawer : PropertyDrawer
             GUI.color = Color.red;
             if (GUI.Button(deleteRect, GUIContent.none))
             {
-                Debug.Log(property.FindPropertyRelative("conditionStats").arraySize);
                 property.FindPropertyRelative("conditionStats").DeleteArrayElementAtIndex(i);
-                Debug.Log(property.FindPropertyRelative("conditionStats").arraySize);
+                property.FindPropertyRelative("conditionStats").DeleteArrayElementAtIndex(i);
             }
             GUI.color = Color.white;
         }

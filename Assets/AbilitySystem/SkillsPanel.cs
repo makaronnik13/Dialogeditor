@@ -10,28 +10,28 @@ public class SkillsPanel : Singleton<SkillsPanel> {
 		skillButtonPrefab = Resources.Load ("Prefabs/SkillButton") as GameObject;
 	}
 
-	public void AddSkill(PlayerSkill ps)
+	public void AddSkill(Ability ps)
 	{
 		SkillButton newSkillButton = Instantiate (skillButtonPrefab, transform).GetComponentInChildren<SkillButton>();
-		newSkillButton.SetAbility (ps.ability);
+		newSkillButton.SetAbility (ps);
 	}
 
-	public void RemoveSkill(PlayerSkill ps)
+	public void RemoveSkill(Ability ps)
 	{
 		foreach(SkillButton sb in GetComponentsInChildren<SkillButton>())
 		{
-			if(sb.Ability == ps.ability)
+			if(sb.Ability == ps)
 			{
 				sb.Remove ();
 			}
 		}
 	}
 
-    public bool ContainSkill(PlayerSkill skill)
+    public bool ContainSkill(Ability skill)
     {
         foreach (SkillButton sb in GetComponentsInChildren<SkillButton>())
         {
-            if (sb.Ability == skill.ability)
+            if (sb.Ability == skill)
             {
                 return true;
             }

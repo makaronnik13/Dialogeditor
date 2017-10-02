@@ -21,6 +21,28 @@ public class GuidManager
         }
     }
 
+    internal static int GetStatGuid()
+    {
+        int r = UnityEngine.Random.Range(0, Int32.MaxValue);
+
+        List<int> usingGuids = new List<int>();
+        foreach (Stat stat in Resources.FindObjectsOfTypeAll<Stat>())
+        {
+            usingGuids.Add(stat.id);
+        }
+        foreach (Ability ability in Resources.FindObjectsOfTypeAll<Ability>())
+        {
+            usingGuids.Add(ability.id);
+        }
+
+        if (usingGuids.Contains(r))
+        {
+            return GetStatGuid();
+        }
+
+        return r;
+    }
+
     public static int GetItemGUID()
     {
         int r = UnityEngine.Random.Range(0, Int32.MaxValue);
@@ -87,6 +109,19 @@ public class GuidManager
         }
         return null;
     }
+
+    public static StatWithId GetStatByGuid(int guid)
+    {
+        foreach (Stat stat in Resources.FindObjectsOfTypeAll<StatWithId>())
+        {
+            if (stat.Id == guid)
+            {
+                return stat;
+            }
+        }
+        return null;
+    }
+
     public static Param GetItemByGuid(int aimParamGuid)
     {
         foreach (PathGame inspectedgame in Games)

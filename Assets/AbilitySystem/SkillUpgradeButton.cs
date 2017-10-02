@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SkillUpgradeButton : MonoBehaviour {
 
-	private PlayerSkill skill;
+	private Ability skill;
 	private Text lvl;
 	private GameObject lvlField;
     private Button button;
@@ -19,10 +19,10 @@ public class SkillUpgradeButton : MonoBehaviour {
         button = GetComponent<Button>();
 	}
 
-	public void SetSkill(PlayerSkill skill)
+	public void SetSkill(Ability skill)
 	{
 		this.skill = skill;
-        GetComponent<Image>().sprite = skill.ability.icon;
+        GetComponent<Image>().sprite = skill.icon;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(UpgradeSkill);
         StatsManager.Instance.onValueChanged.AddListener(ValueChanged);
@@ -32,8 +32,8 @@ public class SkillUpgradeButton : MonoBehaviour {
 
     private void ValueChanged()
     {
-        button.interactable = StatsManager.Instance.CheckCondition(skill.ability.upgradeCondition) && skill.level<skill.ability.maxLevel;
-        foreach (StatValue sv in skill.ability.cost)
+        button.interactable = StatsManager.Instance.CheckCondition(skill.upgradeCondition) && StatsManager.Instance.GetValue(skill)<skill.maxLevel;
+        foreach (StatValue sv in skill.cost)
         {
             if (StatsManager.Instance.GetValue(sv.stat)< sv.value)
             {
@@ -41,18 +41,18 @@ public class SkillUpgradeButton : MonoBehaviour {
             }
         }
 
-        button.interactable = button.interactable && SkillManager.Instance.CheckSkillUpgradeCondition(skill.ability.upgradeSkillCondition);
+        button.interactable = button.interactable && SkillManager.Instance.CheckSkillUpgradeCondition(skill.upgradeSkillCondition);
     }
 
     private void UpgradeSkill()
     {
         SkillManager.Instance.UpSkillLevel(skill);
-        foreach (StatValue sv in skill.ability.cost)
+        foreach (StatValue sv in skill.cost)
         {
             StatsManager.Instance.ChangeParam(sv);
         }
         lvlField.SetActive(true);
-        lvl.text = "" + skill.level;
+        lvl.text = "" + StatsManager.Instance.GetValue(skill);
         ValueChanged();
         if (!SkillsPanel.Instance.ContainSkill(skill))
         {

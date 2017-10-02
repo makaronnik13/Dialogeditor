@@ -5,5 +5,5 @@ using UnityEngine;
 public class ModificatorChanger : MonoBehaviour 
 {
 	public ModificatorCondition modificatorStruct;
-	public Stat aimStat;
+	public StatWithId aimStat;
 }
