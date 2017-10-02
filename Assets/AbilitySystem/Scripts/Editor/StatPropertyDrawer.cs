@@ -28,7 +28,7 @@ public class StatPropertyDrawer : PropertyDrawer
             {
                 property.objectReferenceValue = stats[0];
             }
-            property.objectReferenceValue = stats[EditorGUI.Popup(position, stats.IndexOf((Stat)property.objectReferenceValue), stats.Select(x => x.name).ToArray())];
+            property.objectReferenceValue = stats[EditorGUI.Popup(position, stats.IndexOf((Stat)property.objectReferenceValue), stats.Select(x => x.Name).ToArray())];
         }
 
         // Set indent back to what it was

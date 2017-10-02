@@ -17,7 +17,7 @@ public class StatInspector : Editor
 
         EditorGUILayout.BeginVertical();
 
-        stat.name =  EditorGUILayout.DelayedTextField(stat.name);
+        stat.Name =  EditorGUILayout.DelayedTextField(stat.Name);
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("description", GUILayout.Width(65));
         EditorGUILayout.PropertyField(sTarget.FindProperty("description"), GUIContent.none);

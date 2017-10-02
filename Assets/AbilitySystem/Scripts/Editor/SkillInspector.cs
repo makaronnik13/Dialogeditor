@@ -6,27 +6,90 @@ using UnityEditor;
 [CustomEditor(typeof(Ability))]
 public class SkillInspector : Editor
 {
-
+	private List<GuiGroups> groups = new List<GuiGroups> ();
     protected Ability skill;
 
-    public override void OnInspectorGUI()
-    {
-        skill = (Ability)target;
+	void OnEnable()
+	{
+		skill = (Ability)target;
+		groups.Clear ();
 
-        BaseInfo();
+		groups.Add (new GuiGroups(false, "ability", ()=>{
+			DrawBaseInfo();
+		}));
 
-        Activation();
+		groups.Add (new GuiGroups(false, "upgrade", ()=>{
+			DrawUpgrade();
+		}));
 
-        Upgrade();
-    }
+		groups.Add (new GuiGroups(true, "activation", ()=>{
+			DrawActivation();
+		}));
 
-    protected virtual void BaseInfo()
+		groups.Add (new GuiGroups(true, "auto activation", ()=>{
+			DrawAutoActivation();
+		}));
+
+
+		groups.Add (new GuiGroups(true, "modificator", ()=>{
+			DrawModificator();
+		}));
+
+		groups.Add (new GuiGroups(true, "aura", ()=>{
+			DrawAura();
+		}));
+			
+		groups [0].open = true;
+		foreach(GuiGroups gg in groups)
+		{
+			switch(gg.name)
+			{
+			case "activation":
+				gg.enable = skill.activating;
+				break;
+			case "modificator":
+				gg.enable = skill.withModificator;
+				break;
+			case "aura":
+				gg.enable = skill.withAura;
+				break;
+			case "auto activation":
+				gg.enable = skill.withAura;
+				break;
+			}
+		}
+	}
+
+	public override void OnInspectorGUI ()
+	{
+		foreach(GuiGroups gg in groups)
+		{
+			gg.DrawGroup ();
+			switch(gg.name)
+			{
+			case "activation":
+				skill.activating = gg.enable;
+				break;
+			case "modificator":
+				skill.withModificator = gg.enable;
+				break;
+			case "aura":
+				skill.withAura = gg.enable;
+				break;
+			case "auto activation":
+				skill.withAura = gg.enable;
+				break;
+			}
+		}
+	}
+
+	private void DrawBaseInfo()
     {
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.Label("name", GUILayout.Width(200));
-        skill.name = GUILayout.TextField(skill.name);
+        skill.Name = GUILayout.TextField(skill.Name);
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
         GUILayout.Label("max lvl", GUILayout.Width(200));
@@ -38,9 +101,8 @@ public class SkillInspector : Editor
         GUILayout.EndHorizontal();
     }
 
-    protected virtual void Activation()
+	private void DrawActivation()
     {
-        GUILayout.Space(EditorGUIUtility.singleLineHeight);
         GUILayout.BeginHorizontal();
         GUILayout.Label("cost");
         if (GUILayout.Button("add cost"))
@@ -55,9 +117,25 @@ public class SkillInspector : Editor
         }
     }
 
-    protected virtual void Upgrade()
+	private void DrawModificator()
+	{
+		
+	}
+
+	private void DrawAura()
+	{
+
+	}
+
+	private void DrawAutoActivation()
+	{
+
+	}
+
+	private void DrawUpgrade()
     {
-        GUILayout.Space(EditorGUIUtility.singleLineHeight);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("upgradeCondition"));
     }
+
+
 }
