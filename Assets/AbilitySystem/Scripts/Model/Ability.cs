@@ -16,7 +16,7 @@ public class Ability : StatWithId
 	//active
 	public bool activating;
 	public ModificatorCondition cooldown;
-	public StatValue value;
+	public List<StatValue> value;
 	public virtual void Activate()
 	{
 
@@ -32,13 +32,14 @@ public class Ability : StatWithId
 
 	//modificator
 	public bool withModificator;
-	public StatModificator modivicator;
+	public StatModificator modificator;
 
 	//aura
 	public bool withAura;
 	public StatsManager auraModificator;
-	public float radius = 5;
+	public ModificatorCondition auraRadius;
 	public List<string> auraTags = new List<string>();
+	public bool auraGlobal = true;
 
 	//auto active
 	public bool autoActivated;

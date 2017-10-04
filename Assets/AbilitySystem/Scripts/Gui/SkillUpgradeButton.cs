@@ -35,7 +35,7 @@ public class SkillUpgradeButton : MonoBehaviour {
         button.interactable = StatsManager.Instance.CheckCondition(skill.upgradeCondition) && StatsManager.Instance.GetValue(skill)<skill.maxLevel;
         foreach (StatValue sv in skill.cost)
         {
-            if (StatsManager.Instance.GetValue(sv.stat)< sv.value)
+			if (StatsManager.Instance.GetValue(sv.stat)< StatsManager.Instance.GetValue(sv.value))
             {
                 button.interactable = false;
             }

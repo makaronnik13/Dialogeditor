@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModificatorChanger : MonoBehaviour 
+[System.Serializable]
+public class ModificatorChanger
 {
 	public ModificatorCondition modificatorStruct;
 	public StatWithId aimStat;

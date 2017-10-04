@@ -82,12 +82,12 @@ public class StatsManager : Singleton<StatsManager> {
 
 	public void ChangeParam(StatValue value)
 	{
-        if (value.stat.EvaluatedValue)
+		if (value.stat.GetType()==typeof(Stat) && ((Stat)value.stat).EvaluatedValue)
         {
             Debug.LogWarning("you are trying to midify evaluated stat " + value.stat.Name);
             return;
         }
-        SetParam(value.stat, GetValue(value.stat)+value.value);
+		SetParam(value.stat, GetValue(value.stat) + GetValue(value.value));
 	}
 
 	public void ChangeParam(ModificatorChanger changer)

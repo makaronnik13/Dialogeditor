@@ -6,6 +6,6 @@ using UnityEngine;
 public class StatValue 
 {
 
-	public Stat stat;
-	public float value;
+	public StatWithId stat;
+	public ModificatorCondition value;
 }

@@ -103,28 +103,118 @@ public class SkillInspector : Editor
 
 	private void DrawActivation()
     {
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("cost");
+		GUILayout.Label("coldown", EditorStyles.boldLabel);
+
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("cooldown"), GUIContent.none);
+
+		GUILayout.Label("cost", EditorStyles.boldLabel);
+
         if (GUILayout.Button("add cost"))
         {
-            skill.cost.Add(new StatValue());
-            Repaint();
+			skill.value.Add(new StatValue());
+			serializedObject.Update ();
         }
-        GUILayout.EndHorizontal();
-        for (int i = 0; i< serializedObject.FindProperty("cost").arraySize; i++)
+        
+        for (int i = 0; i< serializedObject.FindProperty("value").arraySize; i++)
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("cost").GetArrayElementAtIndex(i));
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("value").GetArrayElementAtIndex(i), GUIContent.none);
+			GUI.color = Color.red;
+			if(GUILayout.Button("",GUILayout.Width(15), GUILayout.Height(15)))
+			{
+				skill.value.RemoveAt (i);
+				serializedObject.Update ();
+			}
+			GUI.color = Color.white;
+			EditorGUILayout.EndHorizontal ();
         }
+
+
+
     }
 
 	private void DrawModificator()
 	{
-		
+		GUILayout.Label("condition", EditorStyles.boldLabel);
+
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("modificator").FindPropertyRelative("Condition"), GUIContent.none);
+
+		GUILayout.Label("changers", EditorStyles.boldLabel);
+
+		if (GUILayout.Button("add changer"))
+		{
+			skill.modificator.Changers.Add(new ModificatorChanger());
+			serializedObject.Update ();
+		}
+
+		for (int i = 0; i< serializedObject.FindProperty("modificator").FindPropertyRelative("Changers").arraySize; i++)
+		{
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("modificator").FindPropertyRelative("Changers").GetArrayElementAtIndex(i), GUIContent.none);
+			GUI.color = Color.red;
+			if(GUILayout.Button("",GUILayout.Width(15), GUILayout.Height(15)))
+			{
+				skill.modificator.Changers.RemoveAt (i);
+				serializedObject.Update ();
+			}
+			GUI.color = Color.white;
+			EditorGUILayout.EndHorizontal ();
+		}
 	}
 
 	private void DrawAura()
 	{
+		GUILayout.Label("condition", EditorStyles.boldLabel);
 
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("modificator").FindPropertyRelative("Condition"), GUIContent.none);
+
+		GUILayout.Label("changers", EditorStyles.boldLabel);
+
+		if (GUILayout.Button("add changer"))
+		{
+			skill.modificator.Changers.Add(new ModificatorChanger());
+			serializedObject.Update ();
+		}
+
+		for (int i = 0; i< serializedObject.FindProperty("modificator").FindPropertyRelative("Changers").arraySize; i++)
+		{
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("modificator").FindPropertyRelative("Changers").GetArrayElementAtIndex(i), GUIContent.none);
+			GUI.color = Color.red;
+			if(GUILayout.Button("",GUILayout.Width(15), GUILayout.Height(15)))
+			{
+				skill.modificator.Changers.RemoveAt (i);
+				serializedObject.Update ();
+			}
+			GUI.color = Color.white;
+			EditorGUILayout.EndHorizontal ();
+		}
+
+		GUILayout.Label("taggs", EditorStyles.boldLabel);
+		if (GUILayout.Button("add tag"))
+		{
+			skill.auraTags.Add("");
+		}
+		for(int i = 0; i< skill.auraTags.Count;i++)
+		{
+			GUILayout.BeginHorizontal ();
+			skill.auraTags[i] = EditorGUILayout.DelayedTextField (skill.auraTags[i]);
+
+			GUI.color = Color.red;
+			if(GUILayout.Button("",GUILayout.Width(15), GUILayout.Height(15)))
+			{
+				skill.auraTags.RemoveAt (i);
+			}
+			GUI.color = Color.white;
+			GUILayout.EndHorizontal ();
+		}
+
+		GUILayout.Label("field", EditorStyles.boldLabel);
+		skill.auraGlobal = GUILayout.Toggle (skill.auraGlobal, "global");
+		if(!skill.auraGlobal)
+		{
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("auraRadius"));
+		}
 	}
 
 	private void DrawAutoActivation()
@@ -134,7 +224,31 @@ public class SkillInspector : Editor
 
 	private void DrawUpgrade()
     {
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("upgradeCondition"));
+		
+		GUILayout.Label("condition", EditorStyles.boldLabel);
+
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("upgradeCondition"), GUIContent.none);
+
+		GUILayout.Label("cost", EditorStyles.boldLabel);
+
+		if (GUILayout.Button("add cost"))
+		{
+			skill.cost.Add(new StatValue());
+			serializedObject.Update ();
+		}
+		for (int i = 0; i< serializedObject.FindProperty("cost").arraySize; i++)
+		{
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("cost").GetArrayElementAtIndex(i), GUIContent.none);
+			GUI.color = Color.red;
+			if(GUILayout.Button("",GUILayout.Width(15), GUILayout.Height(15)))
+			{
+				skill.cost.RemoveAt (i);
+				serializedObject.Update ();
+			}
+			GUI.color = Color.white;
+			EditorGUILayout.EndHorizontal ();
+		}
     }
 
 

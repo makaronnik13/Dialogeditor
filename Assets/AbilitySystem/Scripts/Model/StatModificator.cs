@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatModificator : ScriptableObject
+[System.Serializable]
+public class StatModificator
 {
 	public List<ModificatorChanger> Changers = new List<ModificatorChanger>();
 	public ModificatorCondition Condition;

@@ -49,10 +49,13 @@ public class SkillButton : MonoBehaviour {
 			skillButton.interactable = false;
 		} else 
 		{
-			if (StatsManager.Instance.GetValue (ability.value.stat) >= -ability.value.value) {
+			skillButton.interactable = false;
+			foreach(StatValue sv in ability.value){
+				if (StatsManager.Instance.GetValue (sv.stat) >= -StatsManager.Instance.GetValue(sv.value)) 
+			{
 				skillButton.interactable = true;
-			} else {
-				skillButton.interactable = false;
+			} 
+				
 			}
 		}
 	}
@@ -60,7 +63,9 @@ public class SkillButton : MonoBehaviour {
 	public void Activate()
 	{
 		skillButton.interactable = false;
-		StatsManager.Instance.ChangeParam (ability.value);
+		foreach (StatValue sv in ability.value) {
+			StatsManager.Instance.ChangeParam (sv);
+		}
 		coldownSlider.value = coldownSlider.minValue;
 		ability.Activate ();
 	}
@@ -71,10 +76,12 @@ public class SkillButton : MonoBehaviour {
 		coldownSlider.maxValue = StatsManager.Instance.GetValue (ability.cooldown);
 		if(coldownSlider.value >= coldownSlider.maxValue)
 		{
-			if (StatsManager.Instance.GetValue (ability.value.stat) >= -ability.value.value) {
+			skillButton.interactable = false;
+			foreach(StatValue sv in ability.value){
+				if (StatsManager.Instance.GetValue (sv.stat) >= - StatsManager.Instance.GetValue(sv.value)) {
 				skillButton.interactable = true;
-			} else {
-				skillButton.interactable = false;
+			}
+
 			}
 		}
 	}
