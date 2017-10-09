@@ -26,10 +26,11 @@ public class SkillInspector : Editor
 			DrawActivation();
 		}));
 
+        /*
 		groups.Add (new GuiGroups(true, "auto activation", ()=>{
 			DrawAutoActivation();
 		}));
-
+        */
 
 		groups.Add (new GuiGroups(true, "modificator", ()=>{
 			DrawModificator();
