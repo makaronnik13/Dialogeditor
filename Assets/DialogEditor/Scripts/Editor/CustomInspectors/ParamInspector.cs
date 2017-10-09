@@ -24,13 +24,13 @@ public class ParamInspector : Editor
     {
         p = (Param)target;
         EditorGUI.BeginChangeCheck();
-        string pName = EditorGUILayout.TextArea(p.paramName);
+		string pName = EditorGUILayout.DelayedTextField(p.paramName);
         string pDescription = p.description;
         Sprite pImage = p.image;
         bool pShowing = !GUILayout.Toggle(!p.showing, "hidden");
         if (pShowing)
         {
-            pDescription = EditorGUILayout.TextArea(p.description, GUILayout.Height(45));
+			pDescription = EditorGUILayout.DelayedTextField(p.description, GUILayout.Height(45));
             pImage = (Sprite)EditorGUILayout.ObjectField(p.image, typeof(Sprite), false);
         }
         if (EditorGUI.EndChangeCheck())

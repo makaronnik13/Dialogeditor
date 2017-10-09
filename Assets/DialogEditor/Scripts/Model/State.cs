@@ -4,6 +4,9 @@ using System.Collections.Generic;
 [System.Serializable]
 public class State : ScriptableObject
 {
+	#if UNITY_EDITOR
+	public string shortName;
+	#endif
     private PathGame game;
     public PathGame Game
     {
@@ -41,7 +44,7 @@ public class State : ScriptableObject
             if (value != "")
             {
                 string ss = value.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-                ss = ss.Substring(0, Mathf.Min(10, ss.Length));
+                ss = ss.Substring(0, 20);
                 if (name != ss)
                 {
                     name = ss;

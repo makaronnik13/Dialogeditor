@@ -9,11 +9,11 @@ public class PathGameInspector : Editor
         PathGame myTarget = (PathGame)target;
         EditorGUI.BeginChangeCheck();
         GUILayout.Label("Name:");
-        string gName = EditorGUILayout.TextField(myTarget.name);
+		string gName = EditorGUILayout.DelayedTextField(myTarget.name);
         GUILayout.Label("Author:");
-        string gAuthor = EditorGUILayout.TextField(myTarget.autor);
+		string gAuthor = EditorGUILayout.DelayedTextField(myTarget.autor);
         GUILayout.Label("Description:");
-        string gDescription = EditorGUILayout.TextArea(myTarget.description, GUILayout.Height(120));
+		string gDescription = EditorGUILayout.DelayedTextField(myTarget.description, GUILayout.Height(120));
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(myTarget, "Edit PathGame");

@@ -48,6 +48,7 @@ public class PersonDialogInspector : Editor
 
             if (!dialog.game.chains.Contains(dialog.personChain))
             {
+				Debug.Log (dialog.game.chains[0]);
                 dialog.personChain = dialog.game.chains[0];
                 if (dialog.personChain)
                 {
@@ -58,6 +59,7 @@ public class PersonDialogInspector : Editor
             if (dialog.personChain != ch)
             {
                 dialog.personChain = ch;
+
                 if (dialog.personChain)
                 {
                     SetEvents();
@@ -95,7 +97,7 @@ public class PersonDialogInspector : Editor
         {
             foreach (Path p in s.pathes)
             {
-                if (GuidManager.GetChainByState(p.aimState) != c)
+				if (p.aimState!=null && GuidManager.GetChainByState(p.aimState) != c)
                 {
                     AddPathes(GuidManager.GetChainByState(p.aimState), newPathes, newEvents);
                 }
@@ -108,7 +110,7 @@ public class PersonDialogInspector : Editor
         }
         inspectedChains.Clear();
     }
-    private void SetEvents()
+	private void SetEvents()
     {
         List<Path> newPathes = new List<Path>();
         List<PathEvent> newEvents = new List<PathEvent>();

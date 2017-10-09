@@ -58,7 +58,7 @@ public class StateInspector : Editor
     public override void OnInspectorGUI()
     {
         EditorGUI.BeginChangeCheck();
-        string stateDescription = EditorGUILayout.TextArea(state.description, GUILayout.Height(75));
+        string stateDescription = EditorGUILayout.DelayedTextField(state.description, GUILayout.Height(75));
         AudioClip stateSound = (AudioClip)EditorGUILayout.ObjectField(state.sound, typeof(AudioClip), false);
         if (EditorGUI.EndChangeCheck())
         {

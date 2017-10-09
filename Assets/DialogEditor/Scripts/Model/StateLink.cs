@@ -3,6 +3,9 @@
 [System.Serializable]
 public class StateLink : ScriptableObject
 {
+	#if UNITY_EDITOR
+	public string shortName;
+	#endif
     private PathGame game;
     public Chain chain;
     public State _state;

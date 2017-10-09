@@ -1,6 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [Serializable]
 public class Chain : ScriptableObject
@@ -10,6 +13,12 @@ public class Chain : ScriptableObject
     {
         get
         {
+			#if UNITY_EDITOR
+			if(game == null)
+			{
+				game = (PathGame)AssetDatabase.LoadAssetAtPath(AssetDatabase.GetAssetPath(this),typeof(PathGame));
+			}
+			#endif
            return game;
         }
     }
@@ -53,7 +62,7 @@ public class Chain : ScriptableObject
     public State AddState()
     {
         State newState = CreateInstance<State>();
-        game.Dirty = true;
+        Game.Dirty = true;
         states.Add(newState);
         newState.Init(this);
         return newState;

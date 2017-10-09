@@ -482,6 +482,11 @@ public class QuestWindow : EditorWindow
             int i = 0;
             foreach (Path path in state.pathes)
             {
+				if(path == null)
+				{
+					state.pathes.Remove (path);
+					continue;
+				}
                 if (path.aimState != null && path.aimStateGuid != -1)
                 {
                     Handles.BeginGUI();
@@ -505,16 +510,6 @@ public class QuestWindow : EditorWindow
     {
         bool moving = false;
         //GUI.Box(_boxPos, state.description);
-        string ss = "";
-        if (state.state != null)
-        {
-            ss = "=>";
-            if (state.state.description != "")
-            {
-                ss += state.state.description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-            }
-            ss = ss.Substring(0, Mathf.Min(20, ss.Length));
-        }
 
         if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && state.position.Contains(Event.current.mousePosition))
         {
@@ -564,7 +559,7 @@ public class QuestWindow : EditorWindow
         s.fontSize = Mathf.FloorToInt(15 * zoom);
         s.border = new RectOffset(15, 15, 5, 5);
         s.normal.background = (Texture2D)Resources.Load("Icons/button") as Texture2D;
-        GUI.Box(state.position, ss, s);
+		GUI.Box(state.position, state.name, s);
 
         Event c = Event.current;
 
@@ -574,12 +569,7 @@ public class QuestWindow : EditorWindow
     bool DrawStateBox(State state)
     {
         bool moving = false;
-        string ss = "";
-        if (state.description != "")
-        {
-            ss = state.description.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-            ss = ss.Substring(0, Mathf.Min(20, ss.Length));
-        }
+
 
         if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && state.position.Contains(Event.current.mousePosition))
         {
@@ -638,7 +628,7 @@ public class QuestWindow : EditorWindow
         s.fontSize = Mathf.FloorToInt(15 * zoom);
         s.border = new RectOffset(15, 15, 5, 5);
         s.normal.background = (Texture2D)Resources.Load("Icons/button") as Texture2D;
-        GUI.Box(state.position, ss, s);
+		GUI.Box(state.position, state.name, s);
 
         int i = 0;
 

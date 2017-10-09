@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class PersonDialog : MonoBehaviour
 {
+	[SerializeField]
     private Chain _personChain;
     public Chain personChain
     {
