@@ -14,6 +14,20 @@ public class PlayerResource : Singleton<PlayerResource>
     }
     private SaveInfo saveInfo = new SaveInfo();
 
+	public Dictionary<Param, float> GetVisibleParams()
+	{
+		Dictionary<Param, float> result = new Dictionary<Param, float> ();
+		foreach(KeyValuePair<int, float> pair in saveInfo.paramsDictionary)
+		{
+			Param p = GuidManager.GetItemByGuid (pair.Key);
+			if(p.showing)
+			{
+				result.Add (p, pair.Value);
+			}
+		}
+		return result;
+	}
+
     [ContextMenu("save")]
     public void SaveDefault()
     {
