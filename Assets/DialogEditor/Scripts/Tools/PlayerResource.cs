@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public class PlayerResource : Singleton<PlayerResource>
 {
+    [Serializable]
     public class SaveInfo
     {
         public Dictionary<int, float> paramsDictionary = new Dictionary<int, float>();
@@ -55,7 +56,7 @@ public class PlayerResource : Singleton<PlayerResource>
         saveInfo = (SaveInfo)bformatter.Deserialize(stream);
         foreach (PersonDialog pd in FindObjectsOfType<PersonDialog>())
         {
-            pd.personChain = saveInfo.personsChains[pd.gameObject];
+            pd.PersonChain = saveInfo.personsChains[pd.gameObject];
         }
         stream.Close();
     }
@@ -75,7 +76,7 @@ public class PlayerResource : Singleton<PlayerResource>
         Debug.Log("Writing Information");
         foreach (PersonDialog pd in FindObjectsOfType<PersonDialog>())
         {
-            saveInfo.personsChains.Add(pd.gameObject, pd.personChain);
+            saveInfo.personsChains.Add(pd.gameObject, pd.PersonChain);
         }
         bformatter.Serialize(stream, saveInfo);
         stream.Close();
@@ -97,16 +98,23 @@ public class PlayerResource : Singleton<PlayerResource>
                 saveInfo.paramsDictionary.Add(pch.aimParam.id, 0);
             }
         }
+        
         foreach (ParamChanges pch in path.changes)
-        {
-            List<float> values = new List<float>();
-            foreach (Param p in pch.Parameters)
-            {
-                values.Add(saveInfo.paramsDictionary[p.id]);
-            }
-            saveInfo.paramsDictionary[pch.aimParam.id] = ExpressionSolver.CalculateFloat(pch.changeString, values);
+        {  
+            saveInfo.paramsDictionary[pch.aimParam.id] = CalcDifference(pch);
         }
     }
+
+    public float CalcDifference(ParamChanges changer)
+    {
+        List<float> values = new List<float>();
+        foreach (Param p in changer.Parameters)
+        {
+            values.Add(saveInfo.paramsDictionary[p.id]);
+        }
+        return ExpressionSolver.CalculateFloat(changer.changeString, values);
+    }
+
     public bool CheckCondition(Condition condition)
     {
         List<float> playerParameters = new List<float>();

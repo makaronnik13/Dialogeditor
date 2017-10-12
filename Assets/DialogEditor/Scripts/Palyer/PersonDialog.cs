@@ -7,7 +7,7 @@ public class PersonDialog : MonoBehaviour
 {
 	[SerializeField]
     private Chain _personChain;
-    public Chain personChain
+    public Chain PersonChain
     {
         set
         {
@@ -48,14 +48,14 @@ public class PersonDialog : MonoBehaviour
     public void Talk()
     { 
         playing = true;
-        DialogPlayer.Instance.PlayState(personChain.StartState, this);
+        DialogPlayer.Instance.PlayState(PersonChain.StartState, this);
     }
 
     public void InvokeEvent(Path p)
     {
-        if (!personChain.states.Contains(p.aimState))
+        if (!PersonChain.states.Contains(p.aimState))
         {
-            personChain = GuidManager.GetChainByState(p.aimState);
+            PersonChain = GuidManager.GetChainByState(p.aimState);
         }
         if (pathEventsList.ContainsKey(p))
         {

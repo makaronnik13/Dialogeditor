@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class QuestBookLibrary : Singleton<QuestBookLibrary>
 {
@@ -17,10 +16,24 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     public Action onGoldChanged;
     public Action onBooksChanged;
 
+    private AssetBundle playingBundle;
+
+    public void Start()
+    {
+        onBooksChanged();
+    }
+
     public int GetGold()
     {
         gold = fakeGold;
         return gold;
+    }
+
+    public void ShowLibrary()
+    {  
+        TryToUnloadeBundle();
+        onBooksChanged();
+        GetComponent<Animator>().SetBool("Open", false);
     }
 
     public void Exit()
@@ -50,7 +63,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
         foreach (GameInfo gi in gameInfos)
         {
-            if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.dataPath, "Books"), gi.name)))
+            if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
             {
                 gi.downloaded = false;
             }
@@ -68,7 +81,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void DeleteGameFolder(GameInfo gi)
     {
-        Directory.Delete(System.IO.Path.Combine(System.IO.Path.Combine(Application.dataPath, "Books"), gi.name));
+        Directory.Delete(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name));
         gi.downloaded = false;
         onBooksChanged.Invoke();
     }
@@ -83,19 +96,40 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void DownloadBook(GameInfo gi)
     {
-        Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.Combine(Application.dataPath, "Books"), gi.name));
+        //fake
+        Debug.Log(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name));
+        Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name));
+        //create bundle
         gi.downloaded = true;
         onBooksChanged.Invoke();
     }
 
     public void PlayBook(GameInfo gi)
     {
-        PlayerPrefs.SetString("currentGame", gi.name);
-        SceneManager.LoadSceneAsync(2);
+        HideLibrary();
+        TryToUnloadeBundle();
+        playingBundle = AssetBundle.LoadFromFile(System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name), gi.name)+".quest");
+        PathGame game = (PathGame)playingBundle.LoadAsset(gi.name, typeof(PathGame));
+        GameCanvasController.Instance.PlayBook(game);
+    }
+
+    private void TryToUnloadeBundle()
+    {
+        if (playingBundle != null)
+        {
+            playingBundle.Unload(true);
+            playingBundle = null;
+        }
     }
 
     public void ChangeGold()
     {
         onGoldChanged.Invoke();
     }
+
+    public void HideLibrary()
+    {
+        GetComponent<Animator>().SetBool("Open", true);
+    }
+
 }

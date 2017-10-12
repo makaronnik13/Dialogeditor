@@ -25,8 +25,8 @@ public class PersonDialogInspector : Editor
         {
             if (dialog.playing)
             {
-                qw = QuestWindow.Init(GuidManager.GetGameByChain(dialog.personChain));
-                qw.DebugPathGame(DialogPlayer.Instance.currentState);
+                qw = QuestWindow.Init(GuidManager.GetGameByChain(dialog.PersonChain));
+                //qw.DebugPathGame(DialogPlayer.Instance.currentState);
             }
             else
             {
@@ -46,21 +46,21 @@ public class PersonDialogInspector : Editor
             GUILayout.BeginHorizontal();
             GUILayout.Label("Dialog:");
 
-            if (!dialog.game.chains.Contains(dialog.personChain))
+            if (!dialog.game.chains.Contains(dialog.PersonChain))
             {
 				Debug.Log (dialog.game.chains[0]);
-                dialog.personChain = dialog.game.chains[0];
-                if (dialog.personChain)
+                dialog.PersonChain = dialog.game.chains[0];
+                if (dialog.PersonChain)
                 {
                     SetEvents();
                 }
             }
-            Chain ch = dialog.game.chains[EditorGUILayout.Popup(dialog.game.chains.IndexOf(dialog.personChain), dialog.game.chains.Select(x => x.dialogName).ToArray())];
-            if (dialog.personChain != ch)
+            Chain ch = dialog.game.chains[EditorGUILayout.Popup(dialog.game.chains.IndexOf(dialog.PersonChain), dialog.game.chains.Select(x => x.dialogName).ToArray())];
+            if (dialog.PersonChain != ch)
             {
-                dialog.personChain = ch;
+                dialog.PersonChain = ch;
 
-                if (dialog.personChain)
+                if (dialog.PersonChain)
                 {
                     SetEvents();
                 }
@@ -114,7 +114,7 @@ public class PersonDialogInspector : Editor
     {
         List<Path> newPathes = new List<Path>();
         List<PathEvent> newEvents = new List<PathEvent>();
-        AddPathes(dialog.personChain, newPathes, newEvents);
+        AddPathes(dialog.PersonChain, newPathes, newEvents);
         inspectedChains.Clear();
         dialog.pathes = newPathes.ToArray();
         dialog.pathEvents = newEvents.ToArray();

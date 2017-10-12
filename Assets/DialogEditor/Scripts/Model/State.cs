@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [System.Serializable]
 public class State : ScriptableObject
@@ -12,6 +15,10 @@ public class State : ScriptableObject
     {
         get
         {
+            if (game == null)
+            {
+                game = (PathGame)AssetDatabase.LoadAssetAtPath(AssetDatabase.GetAssetPath(this), typeof(PathGame));
+            }
             return game;
         }
         set
@@ -85,7 +92,7 @@ public class State : ScriptableObject
 
     public void RemovePath(Path path)
     {
-        game.Dirty = true;
+        Game.Dirty = true;
         pathes.Remove(path);
     }
 

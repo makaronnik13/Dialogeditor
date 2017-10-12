@@ -93,9 +93,8 @@ public class FakeGamePanelInitiation : MonoBehaviour
         Show();
     }
 
-    private void Start()
+    private void Awake()
     {
-        Show();
         QuestBookLibrary.Instance.onBooksChanged += Show;
     }
 

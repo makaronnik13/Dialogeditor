@@ -71,7 +71,7 @@ public class Chain : ScriptableObject
     public void RemoveState(State state)
     {
         states.Remove(state);
-        game.Dirty = true;
+        Game.Dirty = true;
     }
 
 

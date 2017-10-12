@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,13 +7,25 @@ public class TextQuesVisualizer : MonoBehaviour {
 	public Transform buttonsArea;
 	public GameObject variantButtonPrefab;
 
-	// Use this for initialization
-	void Start () {
+	
+	public void PlayBook (PathGame book)
+    {
 		DialogPlayer.Instance.onStateIn += StateIn;
-		GetComponent<PersonDialog> ().Talk ();
+        DialogPlayer.Instance.onPathGo += PathGo;
+        GetComponent<PersonDialog>().game = book;
+        GetComponent<PersonDialog>().PersonChain = book.chains[0];
+        GetComponent<PersonDialog> ().Talk ();
 	}
 
-	private void StateIn(State state)
+    private void PathGo(Path e)
+    {
+        foreach (ParamChanges changer in e.changes)
+        {
+            ChangerEmmiter.Instance.Emmit(changer.aimParam.image, PlayerResource.Instance.CalcDifference(changer), changer.aimParam.name);
+        }
+    }
+
+    private void StateIn(State state)
 	{
 		text.text = state.description;
 

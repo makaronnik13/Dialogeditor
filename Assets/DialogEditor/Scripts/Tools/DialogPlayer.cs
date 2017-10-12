@@ -6,8 +6,16 @@ using System;
 
 public class DialogPlayer : Singleton<DialogPlayer> 
 {
-    private PersonDialog currentDialog;
+    public enum PlayerMode
+    {
+        Dialoges,
+        TextQuest
+    }
 
+    public PlayerMode playerMode;
+
+    private PersonDialog currentDialog;
+    
     public delegate void StateEventHandler(State e);
 	public delegate void PathEventHandler(Path e);
 	public event StateEventHandler onStateIn;
@@ -28,12 +36,15 @@ public class DialogPlayer : Singleton<DialogPlayer>
             PlayState(p.aimState, currentDialog);
         }
         else
-        {
-            DialogGui.Instance.focusedTransform = null;
-            DialogGui.Instance.controller.enabled = true;
-            DialogGui.Instance.HideText();
-            DialogGui.Instance.HideVariants();
-            Camera.main.GetComponent<CameraFocuser>().UnFocus();
+        {        
+            if (playerMode == PlayerMode.Dialoges)
+            {
+                DialogGui.Instance.focusedTransform = null;
+                DialogGui.Instance.controller.enabled = true;
+                DialogGui.Instance.HideText();
+                DialogGui.Instance.HideVariants();
+                Camera.main.GetComponent<CameraFocuser>().UnFocus();
+            }       
             currentDialog.playing = false;
             currentDialog = null;
         }

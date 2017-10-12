@@ -12,11 +12,11 @@ public class GamePanel : MonoBehaviour {
         this.gameInfo = gameInfo;
         this.infoPanel = infoPanel;
         transform.GetChild(0).GetComponent<Text>().text = gameInfo.name;
-        Button readButton = transform.GetChild(1).GetChild(2).GetComponent<Button>();
-        Button BuyButton = transform.GetChild(1).GetChild(4).GetComponent<Button>();
-        Button DownloadButton = transform.GetChild(1).GetChild(3).GetComponent<Button>();
-        Button DeleteButton = transform.GetChild(1).GetChild(1).GetComponent<Button>();
-        Button AboutButton = transform.GetChild(1).GetChild(0).GetComponent<Button>();
+        Button readButton = transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<Button>();
+        Button BuyButton = transform.GetChild(1).GetChild(0).GetChild(4).GetComponent<Button>();
+        Button DownloadButton = transform.GetChild(1).GetChild(0).GetChild(3).GetComponent<Button>();
+        Button DeleteButton = transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<Button>();
+        Button AboutButton = transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Button>();
 
         AboutButton.onClick.AddListener(ShowInfo);
         readButton.onClick.AddListener(Read);
