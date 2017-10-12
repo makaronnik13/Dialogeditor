@@ -12,10 +12,9 @@ public class StatsView : MonoBehaviour {
 	{
 		animator = GetComponent<Animator> ();
 	}
-
+		
 	public void Open()
 	{
-		Debug.Log ("Open");
 		animator.SetBool ("Open", true);
 		/*
 		foreach (KeyValuePair<Param, float> pair in PlayerResource.Instance.GetVisibleParams ()) 
@@ -29,7 +28,6 @@ public class StatsView : MonoBehaviour {
 
 	public void Close()
 	{
-		Debug.Log ("close");
 		animator.SetBool ("Open", false);
 	}
 
