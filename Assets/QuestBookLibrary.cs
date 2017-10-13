@@ -81,7 +81,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void DeleteGameFolder(GameInfo gi)
     {
-        Directory.Delete(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name));
+        Directory.Delete(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name), true);
         gi.downloaded = false;
         onBooksChanged.Invoke();
     }
@@ -97,9 +97,10 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     public void DownloadBook(GameInfo gi)
     {
         //fake
-        Debug.Log(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name));
-        Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name));
+        string dirrectoryPath = System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name);
+        Directory.CreateDirectory(dirrectoryPath);
         //create bundle
+        NetManager.Instance.DownloadBundle(System.IO.Path.Combine(dirrectoryPath, gi.name));
         gi.downloaded = true;
         onBooksChanged.Invoke();
     }

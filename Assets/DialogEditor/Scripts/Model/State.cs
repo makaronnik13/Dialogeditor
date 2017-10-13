@@ -17,7 +17,9 @@ public class State : ScriptableObject
         {
             if (game == null)
             {
+#if UNITY_EDITOR
                 game = (PathGame)AssetDatabase.LoadAssetAtPath(AssetDatabase.GetAssetPath(this), typeof(PathGame));
+#endif
             }
             return game;
         }
