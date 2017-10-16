@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HoloGroup.Threading;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,19 +60,23 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     {
         //fake
         gold = fakeGold;
-        gameInfos = fakeGameInfos.ToList();
 
-        foreach (GameInfo gi in gameInfos)
-        {
-            if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
+        NetManager nm = NetManager.Instance;
+
+        AsyncManager.Instance.MakeAsync(() => {
+            gameInfos = nm.GetListOfBooks();
+            foreach (GameInfo gi in gameInfos)
             {
-                gi.downloaded = false;
+                if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
+                {
+                    gi.downloaded = false;
+                }
+                else
+                {
+                    gi.downloaded = true;
+                }
             }
-            else
-            {
-                gi.downloaded = true;
-            }
-        }
+        }).Start();
     }
 
     public List<GameInfo> GetBooksList()
