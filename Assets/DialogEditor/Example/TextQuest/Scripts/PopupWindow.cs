@@ -18,7 +18,6 @@ public class PopupWindow : MonoBehaviour {
 
     public void Close()
     {
-        Debug.Log("close");
         animator.SetBool("Open", false);
     }
 

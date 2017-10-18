@@ -1,8 +1,10 @@
 ﻿using HoloGroup.Threading;
+using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class QuestBookLibrary : Singleton<QuestBookLibrary>
@@ -31,15 +33,17 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     }
 
     public void ShowLibrary()
-    {  
+    {
         TryToUnloadeBundle();
+        GetGamesInfosListFromServer();
         onBooksChanged();
-        GetComponent<Animator>().SetBool("Open", false);
+        GetComponent<Animator>().SetBool("Open", true);
     }
 
     public void Exit()
     {
-        Application.Quit();
+        HideLibrary();
+        LoginCanvasControler.Instance.ShowCanvas();
     }
 
     public void SetSound(float value)
@@ -51,10 +55,6 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
         }
     }
 
-    private void OnEnable()
-    {
-        GetGamesInfosListFromServer();
-    }
 
     public void GetGamesInfosListFromServer()
     {
@@ -63,21 +63,63 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
         NetManager nm = NetManager.Instance;
 
+        string gameInfosString = "";
+
         AsyncManager.Instance.MakeAsync(() => {
-            gameInfos = nm.GetListOfBooks();
-            foreach (GameInfo gi in gameInfos)
+            gameInfosString = nm.GetListOfBooks();
+
+            ThreadDispatcher.Instance.InvokeFromMainThread(()=>
             {
-                if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
+                if (gameInfosString!="")
                 {
-                    gi.downloaded = false;
+                    gameInfos = StringToBooks(gameInfosString);
                 }
                 else
                 {
-                    gi.downloaded = true;
+                    gameInfos = new List<GameInfo>();
                 }
-            }
+
+                foreach(GameInfo gi in gameInfos)
+                {
+
+                    gi.image = nm.GetImage(gi.name);
+
+                    if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
+                    {
+                        gi.downloaded = false;
+                    }
+                    else
+                    {
+                        gi.downloaded = true;
+                    }
+                }
+
+                FindObjectOfType<FakeGamePanelInitiation>().Show();
+            });
         }).Start();
     }
+
+    public List<GameInfo> StringToBooks(string recievedString)
+    {
+        List<GameInfo> booksList = new List<GameInfo>();
+
+        JSONArray books = JSONArray.Parse(recievedString) as JSONArray;
+        foreach (JSONNode node in books)
+        {
+            booksList.Add(
+                new GameInfo(
+                    node["name"].Value,
+                    node["description"].Value,
+                    node["popularity"].AsInt,
+                    node["old"].AsFloat,
+                    node["price"].AsInt,
+                    node["author"].Value
+                )
+            );
+        }
+        return booksList;
+    }
+
 
     public List<GameInfo> GetBooksList()
     {
@@ -135,7 +177,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void HideLibrary()
     {
-        GetComponent<Animator>().SetBool("Open", true);
+        GetComponent<Animator>().SetBool("Open", false);
     }
 
 }

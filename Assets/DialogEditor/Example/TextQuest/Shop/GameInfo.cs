@@ -15,11 +15,8 @@ public class GameInfo
     public string author;
     public Sprite image;
 
-	public GameInfo(string name, string description, int popularity, float old, int price, string author, byte[] image)
+	public GameInfo(string name, string description, int popularity, float old, int price, string author)
 	{
-		Texture2D texture = new Texture2D (512, 512);
-		texture.LoadRawTextureData (image);
-		this.image = Sprite.Create(texture, new Rect(0,0,texture.width, texture.height), 0.5f*Vector2.one);
 		this.name = name;
 		this.description = description;
 		this.popularity = popularity;

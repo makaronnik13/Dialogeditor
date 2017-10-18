@@ -1,76 +1,128 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using UnityEngine.Networking;
 using SimpleJSON;
 using System.Text;
+using System;
 
 public class NetManager : Singleton<NetManager>
 {
-	public void DownloadBundle(string bundlePath, string bundleName)
+    public static string NetworkError = "@ConnectionError"; 
+    private string filePath;
+    private string booksImagesFolderPath;
+    public string UserName = "user1";
+
+    private void Awake()
     {
-		System.IO.Path.Combine(dirrectoryPath, gi.name)
+        filePath = System.IO.Path.Combine(Application.persistentDataPath, "BooksInfo.txt");
+        if (!Directory.Exists(System.IO.Path.Combine(Application.persistentDataPath, "BooksImages")))
+        {
+            Directory.CreateDirectory(System.IO.Path.Combine(Application.persistentDataPath, "BooksImages"));
+        }
+        booksImagesFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "BooksImages");
+    }
+
+    public int Login(string name, string pass)
+    {
+        string s = CallOnServer("@Login," + name + "," + pass);
+        if (s==NetworkError)
+        {
+            return 2;
+        }
+        if (int.Parse(s)==1)
+        {
+            return 0;
+        }
+        return 1;
+    }
+
+    public void DownloadBundle(string bundlePath, string bundleName)
+    {
+		//System.IO.Path.Combine(dirrectoryPath, gi.name)
 		string bundleString = CallOnServer ("@GetBundle"+bundlePath);
     }
 
-    public List<GameInfo> GetListOfBooks()
+    public Sprite GetImage(string bookName)
     {
-		string filePath = System.IO.Path.Combine(Application.persistentDataPath, "BooksInfo.txt");
+        Debug.Log("Geting image");
+        string imagePath = System.IO.Path.Combine(booksImagesFolderPath, bookName+".png");
 
-		try
-		{
-	        Connect();
-			string recievedString = CallOnServer ("@GetBooksList");
-			if(!File.Exists(filePath))
-			{
-				File.Create (filePath);
-			}
-			File.WriteAllText (filePath, recievedString);
+        Texture2D texture = new Texture2D(64, 64, TextureFormat.ARGB32, false);
 
-				return StringToBooks (recievedString);
-			}
-		catch
-		{
-			if (!File.Exists (filePath)) 
-			{
-				Debug.Log ("no connection, no books");
-				return new List<GameInfo> ();
-			} else 
-			{
-				Debug.Log ("тщ сщттусешщт");
-				return StringToBooks (File.ReadAllText(filePath));	
-			}
-		}
+        if (File.Exists(imagePath))
+        {
+            byte[] data = File.ReadAllBytes(imagePath);
+            texture.LoadImage(data, true);
+        }
+        else
+        {
+            byte[] data = CallOnServerBytes("@GetImage," + bookName);
+            texture.LoadImage(data, true);
+            File.Create(imagePath).Dispose();
+            File.WriteAllBytes(imagePath, data);
+        }
+
+        Sprite result = Sprite.Create(texture, new Rect(0,0,texture.width, texture.height), Vector2.one*0.5f);
+        return result;
     }
 
-	public List<GameInfo> StringToBooks(string recievedString)
-	{
-		List<GameInfo> booksList = new List<GameInfo>();
+    public string GetListOfBooks()
+    {
+        if (Online)
+        {
+            try
+            {
+                return GetOnlineBooksInfo();
+            }
+            catch
+            {
+                return GetOfflineBooksInfo();
+            }
+        }
+        else
+        {
+            return GetOfflineBooksInfo();
+        }
+    }
 
-		JSONArray books = JSONArray.Parse(recievedString) as JSONArray;
-		foreach(JSONNode node in books)
-		{
-			booksList.Add (
-				new GameInfo(
-					node["name"].ToString(), 
-					node["description"].ToString(), 
-					node["popularity"].AsInt, 
-					node["old"].AsFloat, 
-					node["price"].AsInt, 
-					node["author"].ToString(), 
-					Encoding.ASCII.GetBytes(node["image"].ToString())
-				)
-			);
-		}
-		return booksList;
-	}
+    public string GetOfflineBooksInfo()
+    {
+        if (!File.Exists(filePath))
+        {
+            Debug.Log("no connection, no books");
+            return "";
+        }
+        else
+        {
+            Debug.Log("no connection");
+            return File.ReadAllText(filePath);
+        }
+    }
+
+    public string GetOnlineBooksInfo()
+    {
+        string recievedString = CallOnServer("@GetBooksList," + UserName);
+        if (!File.Exists(filePath))
+        {
+            File.Create(filePath);
+        }
+        File.WriteAllText(filePath, recievedString);
+        return recievedString;
+    }
+
+    public bool SignIn(string name, string pass)
+    {
+        string s = CallOnServer("@SignUp," + name + "," + pass);
+        if (int.Parse(s) == 1)
+        {
+            return true;
+        }
+        return false;
+    }
 
     TcpClient clientSocket;
+    public bool Online;
 
     private void Disconnect()
     {
@@ -81,19 +133,34 @@ public class NetManager : Singleton<NetManager>
 
     private void Connect()
     {
-        clientSocket = new System.Net.Sockets.TcpClient();
+        clientSocket = new TcpClient();
+        
         clientSocket.Connect("127.0.0.1", 8888);
         //label1.text = "Server Connected ...";
     }
 
 	private string CallOnServer(string comand)
     {
-        NetworkStream serverStream = clientSocket.GetStream();
-        byte[] outStream = System.Text.Encoding.ASCII.GetBytes(comand + "$");
-        serverStream.Write(outStream, 0, outStream.Length);
-        serverStream.Flush();
-        byte[] inStream = new byte[clientSocket.ReceiveBufferSize];
-        serverStream.Read(inStream, 0, inStream.Length);
-		return System.Text.Encoding.ASCII.GetString(inStream);
+        return Encoding.ASCII.GetString(CallOnServerBytes(comand));
+    }
+
+    private byte[] CallOnServerBytes(string comand)
+    {
+        try
+        {
+            Connect();
+            NetworkStream serverStream = clientSocket.GetStream();
+            byte[] outStream = Encoding.ASCII.GetBytes(comand + "$");
+            serverStream.Write(outStream, 0, outStream.Length);
+            serverStream.Flush();
+            byte[] inStream = new byte[clientSocket.ReceiveBufferSize];
+            serverStream.Read(inStream, 0, inStream.Length);
+            Disconnect();
+            return inStream;
+        }
+        catch
+        {
+            return Encoding.ASCII.GetBytes(NetworkError);
+        }
     }
 }
