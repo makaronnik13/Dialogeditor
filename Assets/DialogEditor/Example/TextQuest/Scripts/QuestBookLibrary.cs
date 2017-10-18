@@ -82,7 +82,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
                 foreach(GameInfo gi in gameInfos)
                 {
 
-                    gi.image = nm.GetImage(gi.name);
+                    //gi.image = nm.GetImage(gi.name);
 
                     if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
                     {

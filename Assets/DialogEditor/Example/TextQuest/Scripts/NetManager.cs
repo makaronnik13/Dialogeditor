@@ -45,7 +45,6 @@ public class NetManager : Singleton<NetManager>
 
     public Sprite GetImage(string bookName)
     {
-        Debug.Log("Geting image");
         string imagePath = System.IO.Path.Combine(booksImagesFolderPath, bookName+".png");
 
         Texture2D texture = new Texture2D(64, 64, TextureFormat.ARGB32, false);
@@ -59,11 +58,11 @@ public class NetManager : Singleton<NetManager>
         {
             byte[] data = CallOnServerBytes("@GetImage," + bookName);
             texture.LoadImage(data, true);
-            File.Create(imagePath).Dispose();
-            File.WriteAllBytes(imagePath, data);
+            //File.Create(imagePath).Dispose();
+            //File.WriteAllBytes(imagePath, data);
         }
 
-        Sprite result = Sprite.Create(texture, new Rect(0,0,texture.width, texture.height), Vector2.one*0.5f);
+        Sprite result = new Sprite();//Sprite.Create(texture, new Rect(0,0,texture.width, texture.height), Vector2.one*0.5f);
         return result;
     }
 
