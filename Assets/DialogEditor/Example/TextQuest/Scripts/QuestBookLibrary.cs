@@ -105,7 +105,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
         string dirrectoryPath = System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name);
         Directory.CreateDirectory(dirrectoryPath);
         //create bundle
-        NetManager.Instance.DownloadBundle(System.IO.Path.Combine(dirrectoryPath, gi.name));
+        NetManager.Instance.DownloadBundle(dirrectoryPath, gi.name);
         gi.downloaded = true;
         onBooksChanged.Invoke();
     }
