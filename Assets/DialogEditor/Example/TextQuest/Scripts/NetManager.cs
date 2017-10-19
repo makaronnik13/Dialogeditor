@@ -11,7 +11,40 @@ public class NetManager : Singleton<NetManager>
     public static string NetworkError = "@ConnectionError"; 
     private string filePath;
     private string booksImagesFolderPath;
-    public string UserName = "user1";
+
+    public int GetMoney()
+    {
+        if (Online)
+        {
+            return int.Parse(CallOnServer("@Money," + UserName));
+        }
+        else
+        {
+            if (PlayerPrefs.HasKey("Money"))
+            {
+                return PlayerPrefs.GetInt("Money");
+            }
+
+            return 0;
+        }
+    }
+
+    private string userName;
+    public string UserName
+    {
+        get
+        {
+            if (userName == null)
+            {
+                userName = PlayerPrefs.GetString("Username");
+            }
+            return userName;
+        }
+        set
+        {
+            userName = value;
+        }
+    }
 
     private void Awake()
     {
@@ -57,12 +90,17 @@ public class NetManager : Singleton<NetManager>
         else
         {
             byte[] data = CallOnServerBytes("@GetImage," + bookName);
+
+
+
             texture.LoadImage(data, true);
-            //File.Create(imagePath).Dispose();
-            //File.WriteAllBytes(imagePath, data);
+
+            var fs = new FileStream(imagePath, FileMode.Create);
+            fs.Write(data, 0 , data.Length);
+            fs.Dispose();
         }
 
-        Sprite result = new Sprite();//Sprite.Create(texture, new Rect(0,0,texture.width, texture.height), Vector2.one*0.5f);
+        Sprite result = Sprite.Create(texture, new Rect(0,0,texture.width, texture.height), Vector2.one*0.5f);
         return result;
     }
 
@@ -148,14 +186,30 @@ public class NetManager : Singleton<NetManager>
         try
         {
             Connect();
+
             NetworkStream serverStream = clientSocket.GetStream();
             byte[] outStream = Encoding.ASCII.GetBytes(comand + "$");
             serverStream.Write(outStream, 0, outStream.Length);
             serverStream.Flush();
-            byte[] inStream = new byte[clientSocket.ReceiveBufferSize];
+
+        
+            byte[] inStream = new byte[clientSocket.ReceiveBufferSize*10];
+            MemoryStream ms = new MemoryStream();
+
+
+            int numBytesRead = inStream.Length;
+
+        
+            //while ((numBytesRead = serverStream.Read(inStream, 0, inStream.Length)) > 0)
+            //{
+                ms.Write(inStream, 0, numBytesRead);
+            //}
+
             serverStream.Read(inStream, 0, inStream.Length);
             Disconnect();
             return inStream;
+      
+
         }
         catch
         {

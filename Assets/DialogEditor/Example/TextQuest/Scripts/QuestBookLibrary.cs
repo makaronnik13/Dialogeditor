@@ -16,7 +16,6 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     private int gold;
     private List<GameInfo> gameInfos = new List<GameInfo>();
 
-    public Action onGoldChanged;
     public Action onBooksChanged;
 
     private AssetBundle playingBundle;
@@ -34,6 +33,7 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void ShowLibrary()
     {
+        int i = PlayerStats.Instance.Money;
         TryToUnloadeBundle();
         GetGamesInfosListFromServer();
         onBooksChanged();
@@ -82,8 +82,6 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
                 foreach(GameInfo gi in gameInfos)
                 {
 
-                    //gi.image = nm.GetImage(gi.name);
-
                     if (!Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name)))
                     {
                         gi.downloaded = false;
@@ -95,6 +93,11 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
                 }
 
                 FindObjectOfType<FakeGamePanelInitiation>().Show();
+
+                foreach (GameInfo gi in gameInfos)
+                {
+                    gi.image = nm.GetImage(gi.name);
+                }
             });
         }).Start();
     }
@@ -137,7 +140,6 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     {
         //fake
         gi.bought = true;
-        onGoldChanged.Invoke();
         onBooksChanged.Invoke();
     }
 
@@ -170,10 +172,6 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
         }
     }
 
-    public void ChangeGold()
-    {
-        onGoldChanged.Invoke();
-    }
 
     public void HideLibrary()
     {

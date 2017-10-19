@@ -53,6 +53,7 @@ public class LoginCanvasControler : Singleton<LoginCanvasControler> {
                 case 0:
                     PlayerPrefs.SetString("Username", usernameField.text);
                     PlayerPrefs.SetString("Password", passwordField.text);
+                    NetManager.Instance.UserName = usernameField.text;
                     NetManager.Instance.Online = true;
                     HideCanvas();
                     QuestBookLibrary.Instance.ShowLibrary();

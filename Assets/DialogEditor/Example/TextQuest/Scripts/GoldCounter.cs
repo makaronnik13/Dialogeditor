@@ -8,11 +8,11 @@ public class GoldCounter : MonoBehaviour {
 
     private void OnEnable()
     {
-        QuestBookLibrary.Instance.onGoldChanged += GoldChanged;
+        PlayerStats.Instance.OnMoneyChanged+= GoldChanged;
     }
 
     private void GoldChanged()
     {
-        GetComponent<Text>().text = QuestBookLibrary.Instance.GetGold()+"";
+        GetComponent<Text>().text = PlayerStats.Instance.money+"";
     }
 }
