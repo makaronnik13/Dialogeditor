@@ -101,6 +101,14 @@ public class FakeGamePanelInitiation : MonoBehaviour
     public void Show()
     {
         List<GameInfo> booksInfos = new List<GameInfo>(QuestBookLibrary.Instance.GetBooksList());
+
+
+        //Debug.Log("___");
+        foreach (GameInfo gi in booksInfos)
+        {
+          //  Debug.Log(gi.bought);
+        }
+
         if (showBought)
         {
             booksInfos.RemoveAll(book=>book.bought==false);

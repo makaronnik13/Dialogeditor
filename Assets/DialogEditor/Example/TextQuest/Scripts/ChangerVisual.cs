@@ -6,6 +6,11 @@ public class ChangerVisual : MonoBehaviour
 {
     public void Show(ChangerEmmiter.ChangerEmmitionStruct pch, Action action)
     {
+        if (pch.img==null)
+        {
+            Destroy(gameObject);
+        }
+
         transform.GetChild(0).GetComponent<Image>().sprite = pch.img;
         transform.GetChild(1).GetComponent<Text>().text = pch.name;
         transform.GetChild(2).GetComponent<Text>().text = pch.change+"";

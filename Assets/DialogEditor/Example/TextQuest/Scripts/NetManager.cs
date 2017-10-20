@@ -10,13 +10,25 @@ public class NetManager : Singleton<NetManager>
 {
     public static string NetworkError = "@ConnectionError"; 
     private string filePath;
-    private string booksImagesFolderPath;
+    private string booksImagesFolderPath, booksFolderPath;
 
     public int GetMoney()
     {
         if (Online)
         {
-            return int.Parse(CallOnServer("@Money," + UserName));
+            string r = CallOnServer("@Money," + UserName);
+            if (r != NetworkError)
+            {
+                return int.Parse(r);
+            }
+            else
+            {
+                if (PlayerPrefs.HasKey("Money"))
+                {
+                    return PlayerPrefs.GetInt("Money");
+                }
+                return 0;
+            }
         }
         else
         {
@@ -27,6 +39,26 @@ public class NetManager : Singleton<NetManager>
 
             return 0;
         }
+    }
+
+    public bool IsPremium()
+    {
+        int result = int.Parse(CallOnServer("@IsPremium," + UserName));
+        if (result!=1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool HasAddBlock()
+    {
+        int result = int.Parse(CallOnServer("@HasAddBlock," + UserName));
+        if (result != 1)
+        {
+            return false;
+        }
+        return true;
     }
 
     private string userName;
@@ -49,11 +81,19 @@ public class NetManager : Singleton<NetManager>
     private void Awake()
     {
         filePath = System.IO.Path.Combine(Application.persistentDataPath, "BooksInfo.txt");
-        if (!Directory.Exists(System.IO.Path.Combine(Application.persistentDataPath, "BooksImages")))
-        {
-            Directory.CreateDirectory(System.IO.Path.Combine(Application.persistentDataPath, "BooksImages"));
-        }
+
         booksImagesFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "BooksImages");
+        booksFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "Books");
+
+        if (!Directory.Exists(booksImagesFolderPath))
+        {
+            Directory.CreateDirectory(booksImagesFolderPath);
+        }
+        if (!Directory.Exists(booksFolderPath))
+        {
+            Directory.CreateDirectory(booksFolderPath);
+        }
+        
     }
 
     public int Login(string name, string pass)
@@ -68,12 +108,6 @@ public class NetManager : Singleton<NetManager>
             return 0;
         }
         return 1;
-    }
-
-    public void DownloadBundle(string bundlePath, string bundleName)
-    {
-		//System.IO.Path.Combine(dirrectoryPath, gi.name)
-		string bundleString = CallOnServer ("@GetBundle"+bundlePath);
     }
 
     public Sprite GetImage(string bookName)
@@ -104,6 +138,31 @@ public class NetManager : Singleton<NetManager>
         return result;
     }
 
+    public AssetBundle GetGame(string bookName)
+    {
+        string folderPath = System.IO.Path.Combine(booksFolderPath, bookName);
+        byte[] data = new byte[0];
+        string bundlePath = System.IO.Path.Combine(folderPath, bookName + ".pgb");
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        if (File.Exists(bundlePath))
+        {
+            data = File.ReadAllBytes(bundlePath);
+            return AssetBundle.LoadFromMemory(data);
+        }
+        else
+        {
+            data = CallOnServerBytes("@DownloadBook," + bookName);
+            var fs = new FileStream(bundlePath, FileMode.Create);
+            fs.Write(data, 0, data.Length);
+            fs.Dispose();
+            return null;
+        }    
+    }
     public string GetListOfBooks()
     {
         if (Online)
@@ -158,6 +217,24 @@ public class NetManager : Singleton<NetManager>
         return false;
     }
 
+    public void BuyBonuce(int bonuceId)
+    {
+        CallOnServer("@BuyBonuce," + UserName+","+bonuceId);
+        PlayerStats.Instance.UpdateMoney();
+    }
+
+    public bool BuyBook(string bookName)
+    {
+        int result = int.Parse(CallOnServer("@BuyBook," + UserName + "," + bookName));
+        if (result == 1)
+        {
+            PlayerStats.Instance.UpdateMoney();
+            QuestBookLibrary.Instance.onBooksChanged.Invoke();
+            return true;
+        }
+        return false;
+    }
+
     TcpClient clientSocket;
     public bool Online;
 
@@ -183,10 +260,9 @@ public class NetManager : Singleton<NetManager>
 
     private byte[] CallOnServerBytes(string comand)
     {
-        try
-        {
+         try
+         {  
             Connect();
-
             NetworkStream serverStream = clientSocket.GetStream();
             byte[] outStream = Encoding.ASCII.GetBytes(comand + "$");
             serverStream.Write(outStream, 0, outStream.Length);
@@ -199,18 +275,12 @@ public class NetManager : Singleton<NetManager>
 
             int numBytesRead = inStream.Length;
 
-        
-            //while ((numBytesRead = serverStream.Read(inStream, 0, inStream.Length)) > 0)
-            //{
-                ms.Write(inStream, 0, numBytesRead);
-            //}
+            ms.Write(inStream, 0, numBytesRead);
 
             serverStream.Read(inStream, 0, inStream.Length);
             Disconnect();
             return inStream;
-      
-
-        }
+       }
         catch
         {
             return Encoding.ASCII.GetBytes(NetworkError);

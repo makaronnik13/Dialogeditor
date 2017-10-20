@@ -3,17 +3,10 @@ using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public class QuestBookLibrary : Singleton<QuestBookLibrary>
 {
-
-    public GameInfo[] fakeGameInfos;
-    public int fakeGold;
-
-    private int gold;
     private List<GameInfo> gameInfos = new List<GameInfo>();
 
     public Action onBooksChanged;
@@ -25,16 +18,14 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
         onBooksChanged();
     }
 
-    public int GetGold()
-    {
-        gold = fakeGold;
-        return gold;
-    }
-
     public void ShowLibrary()
     {
+        if (playingBundle)
+        {
+            playingBundle.Unload(true);
+        }
+
         int i = PlayerStats.Instance.Money;
-        TryToUnloadeBundle();
         GetGamesInfosListFromServer();
         onBooksChanged();
         GetComponent<Animator>().SetBool("Open", true);
@@ -58,9 +49,6 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void GetGamesInfosListFromServer()
     {
-        //fake
-        gold = fakeGold;
-
         NetManager nm = NetManager.Instance;
 
         string gameInfosString = "";
@@ -116,7 +104,8 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
                     node["popularity"].AsInt,
                     node["old"].AsFloat,
                     node["price"].AsInt,
-                    node["author"].Value
+                    node["author"].Value,
+                    node["bought"].AsBool
                 )
             );
         }
@@ -138,18 +127,14 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
 
     public void BuyBook(GameInfo gi)
     {
-        //fake
-        gi.bought = true;
-        onBooksChanged.Invoke();
+        NetManager.Instance.BuyBook(gi.name);
+        GetGamesInfosListFromServer();
+        onBooksChanged();
     }
 
     public void DownloadBook(GameInfo gi)
     {
-        //fake
-        string dirrectoryPath = System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name);
-        Directory.CreateDirectory(dirrectoryPath);
-        //create bundle
-        NetManager.Instance.DownloadBundle(dirrectoryPath, gi.name);
+        NetManager.Instance.GetGame(gi.name);
         gi.downloaded = true;
         onBooksChanged.Invoke();
     }
@@ -157,19 +142,9 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     public void PlayBook(GameInfo gi)
     {
         HideLibrary();
-        TryToUnloadeBundle();
-        playingBundle = AssetBundle.LoadFromFile(System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.Combine(Application.persistentDataPath, "Books"), gi.name), gi.name)+".quest");
-        PathGame game = (PathGame)playingBundle.LoadAsset(gi.name, typeof(PathGame));
-        GameCanvasController.Instance.PlayBook(game);
-    }
-
-    private void TryToUnloadeBundle()
-    {
-        if (playingBundle != null)
-        {
-            playingBundle.Unload(true);
-            playingBundle = null;
-        }
+        playingBundle = NetManager.Instance.GetGame(gi.name);
+        Debug.Log(playingBundle.LoadAsset<PathGame>(gi.name));
+        GameCanvasController.Instance.PlayBook(playingBundle.LoadAsset<PathGame>(gi.name));
     }
 
 

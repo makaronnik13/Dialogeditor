@@ -15,7 +15,7 @@ public class GameInfo
     public string author;
     public Sprite image;
 
-	public GameInfo(string name, string description, int popularity, float old, int price, string author)
+	public GameInfo(string name, string description, int popularity, float old, int price, string author, bool bought)
 	{
 		this.name = name;
 		this.description = description;
@@ -23,5 +23,6 @@ public class GameInfo
 		this.old = old;
 		this.price = price;
 		this.author = author;
+        this.bought = bought;
 	}
 }

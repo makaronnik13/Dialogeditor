@@ -48,6 +48,10 @@ public class GamePanel : MonoBehaviour {
         {
             BuyButton.gameObject.SetActive(false);
         }
+
+
+        BuyButton.interactable = gameInfo.price <= PlayerStats.Instance.Money;
+        DownloadButton.interactable = NetManager.Instance.Online;
     }
 
     private void Delete()

@@ -21,4 +21,25 @@ public class PlayerStats : Singleton<PlayerStats> {
             return money;
         }
     }
+
+    public void UpdateMoney()
+    {
+        money = Money;
+    }
+
+    public bool IsPremium
+    {
+        get
+        {
+            return NetManager.Instance.IsPremium();
+        }
+    }
+
+    public bool HasAddBlock
+    {
+        get
+        {
+            return NetManager.Instance.HasAddBlock();
+        }
+    }
 }

@@ -21,7 +21,10 @@ public class TextQuesVisualizer : MonoBehaviour {
     {
         foreach (ParamChanges changer in e.changes)
         {
-            ChangerEmmiter.Instance.Emmit(changer.aimParam.image, PlayerResource.Instance.CalcDifference(changer), changer.aimParam.name);
+            if (changer.aimParam.showing)
+            {
+                ChangerEmmiter.Instance.Emmit(changer.aimParam.image, PlayerResource.Instance.CalcDifference(changer), changer.aimParam.name);
+            }
         }
     }
 

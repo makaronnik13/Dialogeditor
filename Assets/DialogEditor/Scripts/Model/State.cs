@@ -53,7 +53,7 @@ public class State : ScriptableObject
             if (value != "")
             {
                 string ss = value.Split(new string[] { "\n" }, System.StringSplitOptions.RemoveEmptyEntries)[0];
-                ss = ss.Substring(0, 20);
+                ss = ss.Substring(0, Mathf.Min(ss.Length,20));
                 if (name != ss)
                 {
                     name = ss;
