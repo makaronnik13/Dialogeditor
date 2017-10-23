@@ -97,17 +97,18 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
         JSONArray books = JSONArray.Parse(recievedString) as JSONArray;
         foreach (JSONNode node in books)
         {
-            booksList.Add(
-                new GameInfo(
-                    node["name"].Value,
-                    node["description"].Value,
-                    node["popularity"].AsInt,
-                    node["old"].AsFloat,
-                    node["price"].AsInt,
-                    node["author"].Value,
-                    node["bought"].AsBool
-                )
-            );
+			booksList.Add(
+				new GameInfo (
+					node ["name"].Value,
+					node ["description"].Value,
+					node ["popularity"].AsInt,
+					node ["old"].AsFloat,
+					node ["price"].AsInt,
+					node ["author"].Value,
+					node ["bought"].AsBool || PlayerStats.Instance.IsPremium
+				)
+			);
+
         }
         return booksList;
     }
@@ -139,12 +140,11 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
         onBooksChanged.Invoke();
     }
 
-    public void PlayBook(GameInfo gi)
+    public void PlayBook(string gi)
     {
         HideLibrary();
-        playingBundle = NetManager.Instance.GetGame(gi.name);
-        Debug.Log(playingBundle.LoadAsset<PathGame>(gi.name));
-        GameCanvasController.Instance.PlayBook(playingBundle.LoadAsset<PathGame>(gi.name));
+		playingBundle = NetManager.Instance.GetGame(gi);
+        GameCanvasController.Instance.PlayBook(playingBundle.LoadAsset<PathGame>(gi));
     }
 
 

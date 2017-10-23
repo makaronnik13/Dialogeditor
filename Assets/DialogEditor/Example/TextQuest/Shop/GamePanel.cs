@@ -71,7 +71,7 @@ public class GamePanel : MonoBehaviour {
 
     private void Read()
     {
-        QuestBookLibrary.Instance.PlayBook(gameInfo);
+		QuestBookLibrary.Instance.PlayBook(gameInfo.name);
     }
 
     private void ShowInfo()

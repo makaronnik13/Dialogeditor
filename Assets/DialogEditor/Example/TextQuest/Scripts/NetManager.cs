@@ -140,6 +140,7 @@ public class NetManager : Singleton<NetManager>
 
     public AssetBundle GetGame(string bookName)
     {
+		Debug.Log (booksFolderPath);
         string folderPath = System.IO.Path.Combine(booksFolderPath, bookName);
         byte[] data = new byte[0];
         string bundlePath = System.IO.Path.Combine(folderPath, bookName + ".pgb");

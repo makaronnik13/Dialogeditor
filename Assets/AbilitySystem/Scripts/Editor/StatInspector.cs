@@ -5,6 +5,7 @@ using UnityEngine;
 public class StatInspector : Editor
 {
     private SerializedObject sTarget;
+	private bool showAdditional;
 
     public override void OnInspectorGUI()
     {
@@ -16,7 +17,6 @@ public class StatInspector : Editor
 
 
         EditorGUILayout.BeginVertical();
-
         stat.Name =  EditorGUILayout.DelayedTextField(stat.Name);
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("description", GUILayout.Width(65));

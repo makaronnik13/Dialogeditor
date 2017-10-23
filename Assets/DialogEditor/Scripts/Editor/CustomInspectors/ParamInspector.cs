@@ -24,15 +24,25 @@ public class ParamInspector : Editor
     {
         p = (Param)target;
         EditorGUI.BeginChangeCheck();
+		EditorGUILayout.LabelField ("name:");
+		EditorGUILayout.BeginHorizontal ();
 		string pName = EditorGUILayout.DelayedTextField(p.paramName);
+		bool pShowing = !GUILayout.Toggle(!p.showing, "hidden", GUILayout.Width(60));
+		EditorGUILayout.EndHorizontal ();
         string pDescription = p.description;
         Sprite pImage = p.image;
-        bool pShowing = !GUILayout.Toggle(!p.showing, "hidden");
         if (pShowing)
         {
-			pDescription = EditorGUILayout.DelayedTextField(p.description, GUILayout.Height(45));
-            pImage = (Sprite)EditorGUILayout.ObjectField(p.image, typeof(Sprite), false);
+			EditorGUILayout.LabelField ("description:");
+			EditorGUILayout.BeginHorizontal ();
+			pDescription = EditorGUILayout.DelayedTextField(p.description, GUILayout.Height(60));
+			pImage = (Sprite)EditorGUILayout.ObjectField(p.image, typeof(Sprite), false, GUILayout.Width(60), GUILayout.Height(60));
+			EditorGUILayout.EndHorizontal ();
         }
+
+		EditorGUILayout.LabelField ("tags:");
+		string pTags = EditorGUILayout.DelayedTextField(p.tags);
+
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(p, "param base properties");
@@ -40,6 +50,7 @@ public class ParamInspector : Editor
             p.showing = pShowing;
             p.description = pDescription;
             p.image = pImage;
+			p.tags = pTags;
         }
     }
 }

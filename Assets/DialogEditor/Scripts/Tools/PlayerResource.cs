@@ -13,6 +13,7 @@ public class PlayerResource : Singleton<PlayerResource>
         public Dictionary<int, float> paramsDictionary = new Dictionary<int, float>();
         public Dictionary<GameObject, Chain> personsChains = new Dictionary<GameObject, Chain>();
     }
+
     private SaveInfo saveInfo = new SaveInfo();
 
 	public Dictionary<Param, float> GetVisibleParams()
@@ -87,32 +88,44 @@ public class PlayerResource : Singleton<PlayerResource>
         {
             foreach (Param p in pch.Parameters)
             {
-                if (!saveInfo.paramsDictionary.ContainsKey(p.id))
+				if (!saveInfo.paramsDictionary.ContainsKey(p.paramGUID))
                 {
-                    saveInfo.paramsDictionary.Add(p.id, 0);
+					saveInfo.paramsDictionary.Add(p.paramGUID, 0);
                 }
             }
-            if (!saveInfo.paramsDictionary.ContainsKey(pch.aimParam.id))
+			if (!saveInfo.paramsDictionary.ContainsKey(pch.aimParam.paramGUID))
             {
 
-                saveInfo.paramsDictionary.Add(pch.aimParam.id, 0);
+				saveInfo.paramsDictionary.Add(pch.aimParam.paramGUID, 0);
             }
         }
         
         foreach (ParamChanges pch in path.changes)
         {  
-            saveInfo.paramsDictionary[pch.aimParam.id] = CalcDifference(pch);
+			saveInfo.paramsDictionary[pch.aimParam.paramGUID] = CalcParamAfterChange(pch);
         }
     }
 
+	public float CalcParamAfterChange(ParamChanges changer)
+	{
+		List<float> values = new List<float>();
+		foreach (Param p in changer.Parameters)
+		{
+			Debug.Log ("___");
+			Debug.Log (p.paramGUID);
+			foreach(KeyValuePair<int, float> pair in saveInfo.paramsDictionary)
+			{
+				Debug.Log (pair.Key);
+			}
+
+			values.Add(saveInfo.paramsDictionary[p.paramGUID]);
+		}
+		return  ExpressionSolver.CalculateFloat(changer.changeString, values);
+	}
+
     public float CalcDifference(ParamChanges changer)
     {
-        List<float> values = new List<float>();
-        foreach (Param p in changer.Parameters)
-        {
-            values.Add(saveInfo.paramsDictionary[p.id]);
-        }
-        return ExpressionSolver.CalculateFloat(changer.changeString, values);
+		return  CalcParamAfterChange (changer)-saveInfo.paramsDictionary[changer.aimParam.paramGUID];
     }
 
     public bool CheckCondition(Condition condition)
@@ -121,12 +134,23 @@ public class PlayerResource : Singleton<PlayerResource>
 
         foreach (Param p in condition.Parameters)
         {
-            if (!saveInfo.paramsDictionary.ContainsKey(p.id))
+			if (!saveInfo.paramsDictionary.ContainsKey(p.paramGUID))
             {
-                saveInfo.paramsDictionary.Add(p.id, 0);
+				saveInfo.paramsDictionary.Add(p.paramGUID, 0);
             }
-            playerParameters.Add(saveInfo.paramsDictionary[p.id]);
+			playerParameters.Add(saveInfo.paramsDictionary[p.paramGUID]);
         }
         return ExpressionSolver.CalculateBool(condition.conditionString, playerParameters);
     }
+
+	public Dictionary<Param, float> GetParamsDictionary()
+	{
+		Dictionary<Param, float> dict = new Dictionary<Param, float> ();
+		foreach(KeyValuePair<int, float> kvp in saveInfo.paramsDictionary)
+		{
+			Param p = GuidManager.GetItemByGuid (kvp.Key);
+			dict.Add (p, kvp.Value);
+		}
+		return dict;
+	}
 }

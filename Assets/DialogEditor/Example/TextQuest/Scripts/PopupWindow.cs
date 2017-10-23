@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PopupWindow : MonoBehaviour {
 
+	public Action onOpen;
     private Animator animator;
    
     void Start()
@@ -13,10 +15,14 @@ public class PopupWindow : MonoBehaviour {
 
     public virtual void Open()
     {
+		if(onOpen!=null)
+		{
+			onOpen.Invoke ();
+		}
         animator.SetBool("Open", true);  
     }
 
-    public void Close()
+    public virtual void Close()
     {
         animator.SetBool("Open", false);
     }

@@ -37,8 +37,19 @@ public class Param : ScriptableObject
     public string description = "";
     public Sprite image;
     public bool withChange;
-    public int id;
     public List<ConditionChange> autoActivatedChangesGUIDS = new List<ConditionChange>();
     public Vector2 scrollPosition;
     public int paramGUID;
+	public string tags;
+	public string[] Tags
+	{
+		get
+		{
+			if (tags == "") {
+				return new string[0];
+			} else {
+				return tags.Split (',');
+			}
+		}
+	}
 }

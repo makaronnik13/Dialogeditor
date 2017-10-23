@@ -716,7 +716,7 @@ public class QuestWindow : EditorWindow
         game.parameters.Add(newParam);
         newParam.Game = game;
         newParam.paramName = "new param";
-        newParam.id = GuidManager.GetItemGUID();
+		newParam.paramGUID = GuidManager.GetItemGUID();
         AssetDatabase.AddObjectToAsset(newParam, AssetDatabase.GetAssetPath(game));
         game.Dirty = true;   
         Selection.activeObject = newParam;
