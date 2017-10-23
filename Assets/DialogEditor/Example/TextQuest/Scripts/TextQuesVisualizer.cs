@@ -6,12 +6,15 @@ public class TextQuesVisualizer : MonoBehaviour {
 	public Text text;
 	public Transform buttonsArea;
 	public GameObject variantButtonPrefab;
+    public Image background;
 
-	
+    private Sprite defaultBackground;
+
 	public void PlayBook (PathGame book)
     {
 		DialogPlayer.Instance.onStateIn += StateIn;
         DialogPlayer.Instance.onPathGo += PathGo;
+        defaultBackground = background.sprite;
         GetComponent<PersonDialog>().game = book;
         GetComponent<PersonDialog>().PersonChain = book.chains[0];
         GetComponent<PersonDialog> ().Talk ();
@@ -30,6 +33,14 @@ public class TextQuesVisualizer : MonoBehaviour {
 
     private void StateIn(State state)
 	{
+        if (state.image)
+        {
+            background.sprite = state.image;
+        }
+        else
+        {
+            background.sprite = defaultBackground;
+        }
 		text.text = state.description;
 
 		foreach(Transform t in buttonsArea)

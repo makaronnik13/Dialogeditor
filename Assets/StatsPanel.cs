@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public class StatsPanel : MonoBehaviour  {
 
@@ -13,43 +14,82 @@ public class StatsPanel : MonoBehaviour  {
 	public Transform content;
 	public GameObject descriptionInfo;
 	public Text descriptionText, itemName;
+    private List<ItemButton> items = new List<ItemButton>();
 
-	void Start()
-	{
-		if(GetComponent<PopupWindow> ())
-		{
-			GetComponent<PopupWindow> ().onOpen += Open;	
-		}
+	void Awake()
+	{	
+        PlayerResource.Instance.onParamchanged += ParamChanged;
+        DialogPlayer.Instance.onDialogChanged += DialogChanged;
 	}
 
-	public void Open()
-	{
-		foreach(Transform t in content)
-		{
-			Destroy(t.gameObject);
-		}
+    private void DialogChanged(PersonDialog obj)
+    {
+        foreach(string s in showingTags)
+        {
+            foreach (Param p in DialogPlayer.Instance.CurrentDialog.game.parameters)
+            {
+                if (IsShowing(p))
+                {
+                    PlayerResource.Instance.GetValue(p);
+                }
+            }
+        }
+    }
 
-		foreach(KeyValuePair<Param, float> kvp in PlayerResource.Instance.GetParamsDictionary())
-		{
+    private void ParamChanged(Param p)
+    {
+        if (!IsWeakShowing(p))
+        {
+            return;
+        }
 
+       
+            ItemButton itemButton = GetParamButton(p);
+            if (itemButton==null)
+            {
+                if(PlayerResource.Instance.GetValue(p) != 0 || IsShowing(p))
+                {
+                    GameObject newButton = Instantiate(ItemPrefab);
+                    newButton.transform.SetParent(content);
+                    newButton.transform.localScale = Vector3.one;
+                    newButton.GetComponent<ItemButton>().Init(p, PlayerResource.Instance.GetValue(p));
+                    items.Add(newButton.GetComponent<ItemButton>());
+                }
+            }
+            else
+            {
+                itemButton.UpdateValue(PlayerResource.Instance.GetValue(p));
+            }
+       
+    }
 
-			if(kvp.Key.Tags.ToList().Intersect(hiddenTags.ToList()).Count()>0)
-			{
-				continue;
-			}
+    private ItemButton GetParamButton(Param p)
+    {
+        foreach (ItemButton ib in items)
+        {
+            if (ib.Param.paramGUID == p.paramGUID)
+            {
+                return ib;
+            }
+        }
+        return null;
+    }
 
-			if(showingTags.Length>0 && kvp.Key.Tags.ToList().Intersect(showingTags.ToList()).Count()==0)
-			{
-				//continue;
-			}
+    public bool IsShowing(Param p)
+    {
+        if (p.Tags.ToList().Intersect(showingTags.ToList()).Count() > 0 && p.Tags.ToList().Intersect(hiddenTags.ToList()).Count() == 0)
+        {
+            return true;
+        }
+        return false;
+    }
 
-			if(kvp.Key.showing && kvp.Value!=0)
-			{
-				GameObject newButton = Instantiate(ItemPrefab);
-				newButton.transform.SetParent(content);
-				newButton.transform.localScale = Vector3.one;
-				newButton.GetComponent<ItemButton>().Init(kvp.Key, kvp.Value);
-			}
-		}
-	}
+    public bool IsWeakShowing(Param p)
+    {
+        if (p.Tags.ToList().Intersect(hiddenTags.ToList()).Count() == 0)
+        {
+            return true;
+        }
+        return false;
+    }
 }

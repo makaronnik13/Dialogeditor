@@ -6,6 +6,8 @@ using System;
 
 public class DialogPlayer : Singleton<DialogPlayer> 
 {
+    public Action<PersonDialog> onDialogChanged;
+
     public enum PlayerMode
     {
         Dialoges,
@@ -15,7 +17,13 @@ public class DialogPlayer : Singleton<DialogPlayer>
     public PlayerMode playerMode;
 
     private PersonDialog currentDialog;
-    
+    public PersonDialog CurrentDialog
+    {
+        get
+        {
+            return currentDialog;
+        }
+    }
     public delegate void StateEventHandler(State e);
 	public delegate void PathEventHandler(Path e);
 	public event StateEventHandler onStateIn;
@@ -25,6 +33,7 @@ public class DialogPlayer : Singleton<DialogPlayer>
     public void PlayState(State state, PersonDialog pd)
 	{
         currentDialog = pd;
+        onDialogChanged.Invoke(pd);
 		onStateIn.Invoke (state);
         currentState = state;
 	}
@@ -47,6 +56,7 @@ public class DialogPlayer : Singleton<DialogPlayer>
             }       
             currentDialog.playing = false;
             currentDialog = null;
+            onDialogChanged.Invoke(null);
         }
 	}
 }

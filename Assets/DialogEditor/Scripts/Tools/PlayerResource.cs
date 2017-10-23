@@ -14,6 +14,8 @@ public class PlayerResource : Singleton<PlayerResource>
         public Dictionary<GameObject, Chain> personsChains = new Dictionary<GameObject, Chain>();
     }
 
+    public Action<Param> onParamchanged;
+
     private SaveInfo saveInfo = new SaveInfo();
 
 	public Dictionary<Param, float> GetVisibleParams()
@@ -86,39 +88,30 @@ public class PlayerResource : Singleton<PlayerResource>
     {
         foreach (ParamChanges pch in path.changes)
         {
+            InitParam(pch.aimParam);
             foreach (Param p in pch.Parameters)
             {
-				if (!saveInfo.paramsDictionary.ContainsKey(p.paramGUID))
-                {
-					saveInfo.paramsDictionary.Add(p.paramGUID, 0);
-                }
-            }
-			if (!saveInfo.paramsDictionary.ContainsKey(pch.aimParam.paramGUID))
-            {
-
-				saveInfo.paramsDictionary.Add(pch.aimParam.paramGUID, 0);
+                InitParam(p);
             }
         }
         
         foreach (ParamChanges pch in path.changes)
         {  
 			saveInfo.paramsDictionary[pch.aimParam.paramGUID] = CalcParamAfterChange(pch);
+            onParamchanged(pch.aimParam);
         }
     }
 
 	public float CalcParamAfterChange(ParamChanges changer)
 	{
 		List<float> values = new List<float>();
-		foreach (Param p in changer.Parameters)
-		{
-			Debug.Log ("___");
-			Debug.Log (p.paramGUID);
-			foreach(KeyValuePair<int, float> pair in saveInfo.paramsDictionary)
-			{
-				Debug.Log (pair.Key);
-			}
 
-			values.Add(saveInfo.paramsDictionary[p.paramGUID]);
+        InitParam(changer.aimParam);
+
+        foreach (Param p in changer.Parameters)
+		{
+            InitParam(p);
+            values.Add(saveInfo.paramsDictionary[p.paramGUID]);
 		}
 		return  ExpressionSolver.CalculateFloat(changer.changeString, values);
 	}
@@ -134,11 +127,8 @@ public class PlayerResource : Singleton<PlayerResource>
 
         foreach (Param p in condition.Parameters)
         {
-			if (!saveInfo.paramsDictionary.ContainsKey(p.paramGUID))
-            {
-				saveInfo.paramsDictionary.Add(p.paramGUID, 0);
-            }
-			playerParameters.Add(saveInfo.paramsDictionary[p.paramGUID]);
+            InitParam(p);
+            playerParameters.Add(saveInfo.paramsDictionary[p.paramGUID]);
         }
         return ExpressionSolver.CalculateBool(condition.conditionString, playerParameters);
     }
@@ -153,4 +143,20 @@ public class PlayerResource : Singleton<PlayerResource>
 		}
 		return dict;
 	}
+
+    public float GetValue(Param p)
+    {
+        InitParam(p);
+        return saveInfo.paramsDictionary[p.paramGUID];
+    }
+
+    private void InitParam(Param p)
+    {
+        Debug.Log("init "+p.name);
+        if (!saveInfo.paramsDictionary.ContainsKey(p.paramGUID))
+        {
+            saveInfo.paramsDictionary.Add(p.paramGUID, 0);
+            onParamchanged(p);
+        }
+    }
 }

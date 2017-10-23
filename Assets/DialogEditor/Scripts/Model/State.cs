@@ -66,6 +66,7 @@ public class State : ScriptableObject
     public List<Path> pathes = new List<Path>();
     public Rect position;
     public AudioClip sound;
+    public Sprite image;
 
     public void Init(Chain chain)
     {

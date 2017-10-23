@@ -93,7 +93,10 @@ public class QuestBookLibrary : Singleton<QuestBookLibrary>
     public List<GameInfo> StringToBooks(string recievedString)
     {
         List<GameInfo> booksList = new List<GameInfo>();
-
+        if (recievedString==NetManager.NetworkError)
+        {
+            return booksList;
+        }
         JSONArray books = JSONArray.Parse(recievedString) as JSONArray;
         foreach (JSONNode node in books)
         {

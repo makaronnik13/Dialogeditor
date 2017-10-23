@@ -6,7 +6,7 @@ public class ChangerVisual : MonoBehaviour
 {
 	public Image img;
 
-    public void Show(ChangerEmmiter.ChangerEmmitionStruct pch, Action action)
+    public void Show(ChangerEmmiter.ChangerEmmitionStruct pch)
     {
         if (pch.img==null)
         {
@@ -22,7 +22,6 @@ public class ChangerVisual : MonoBehaviour
         }
         GetComponent<Animator>().SetBool("Plus", (pch.change > 0));
         GetComponent<Animator>().SetTrigger("Showing");
-        action.Invoke();
         Destroy(gameObject, 4);
     }
 }

@@ -10,7 +10,7 @@ public class NetManager : Singleton<NetManager>
 {
     public static string NetworkError = "@ConnectionError"; 
     private string filePath;
-    private string booksImagesFolderPath, booksFolderPath;
+    private string booksImagesFolderPath, booksFolderPath, stylesFolderPath;
 
     public int GetMoney()
     {
@@ -84,6 +84,8 @@ public class NetManager : Singleton<NetManager>
 
         booksImagesFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "BooksImages");
         booksFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "Books");
+        stylesFolderPath = System.IO.Path.Combine(Application.persistentDataPath, "Styles");
+
 
         if (!Directory.Exists(booksImagesFolderPath))
         {
@@ -93,7 +95,11 @@ public class NetManager : Singleton<NetManager>
         {
             Directory.CreateDirectory(booksFolderPath);
         }
-        
+        if (!Directory.Exists(stylesFolderPath))
+        {
+            Directory.CreateDirectory(stylesFolderPath);
+        }
+
     }
 
     public int Login(string name, string pass)
@@ -138,9 +144,32 @@ public class NetManager : Singleton<NetManager>
         return result;
     }
 
+    public AssetBundle GetStyle(string styleName)
+    {     
+        byte[] data = new byte[0];
+        string bundlePath = System.IO.Path.Combine(stylesFolderPath, styleName + ".qbls");
+
+        if (File.Exists(bundlePath))
+        {
+            data = File.ReadAllBytes(bundlePath);
+            return AssetBundle.LoadFromMemory(data);
+        }
+        else
+        {
+            data = CallOnServerBytes("@DownloadStyle," + styleName);
+            if (Encoding.ASCII.GetString(data) == NetworkError)
+            {
+                return null;
+            }
+            var fs = new FileStream(bundlePath, FileMode.Create);
+            fs.Write(data, 0, data.Length);
+            fs.Dispose();
+            return AssetBundle.LoadFromMemory(data);
+        }
+    }
+
     public AssetBundle GetGame(string bookName)
     {
-		Debug.Log (booksFolderPath);
         string folderPath = System.IO.Path.Combine(booksFolderPath, bookName);
         byte[] data = new byte[0];
         string bundlePath = System.IO.Path.Combine(folderPath, bookName + ".pgb");
@@ -158,12 +187,17 @@ public class NetManager : Singleton<NetManager>
         else
         {
             data = CallOnServerBytes("@DownloadBook," + bookName);
+            if (Encoding.ASCII.GetString(data) == NetworkError)
+            {
+                return null;
+            }
             var fs = new FileStream(bundlePath, FileMode.Create);
             fs.Write(data, 0, data.Length);
             fs.Dispose();
             return null;
         }    
     }
+
     public string GetListOfBooks()
     {
         if (Online)

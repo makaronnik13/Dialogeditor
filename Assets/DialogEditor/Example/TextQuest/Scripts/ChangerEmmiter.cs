@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChangerEmmiter : Singleton<ChangerEmmiter>
 {
+    public bool running;
     public GameObject emitionVisual;
     public struct ChangerEmmitionStruct
     {
@@ -25,29 +27,30 @@ public class ChangerEmmiter : Singleton<ChangerEmmiter>
             name = name
         };
         changersStack.Enqueue(newStruct);
-        if (!emmiting)
+        if (changersStack.Count > 0 && !running)
         {
-            EmmitNext();
+            StopCoroutine("EmmitOne");
+            StartCoroutine("EmmitOne");
         }
     }
 
-    private void EmmitOne(ChangerEmmitionStruct pch)
+    IEnumerator EmmitOne()
     {
-        GameObject visual = Instantiate(emitionVisual, transform, false);
-        ChangerVisual visualScript = visual.GetComponent<ChangerVisual>();
-        visualScript.Show(pch, ()=>{ EmmitNext();});
-    }
-
-    public void EmmitNext()
-    {
-        if (changersStack.Count>0)
+        while (true)
         {
-            emmiting = true;
-            EmmitOne(changersStack.Dequeue());
-        }
-        else
-        {
-            emmiting = false;
+            if (changersStack.Count>0)
+            {
+                running = true;
+                GameObject visual = Instantiate(emitionVisual, transform, false);
+                ChangerVisual visualScript = visual.GetComponent<ChangerVisual>();
+                visualScript.Show(changersStack.Dequeue());
+            }
+            else
+            {
+                running = false;
+                yield return null;
+            }
+            yield return new WaitForSeconds(3); 
         }
     }
 }

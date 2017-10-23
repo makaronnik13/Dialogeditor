@@ -58,13 +58,17 @@ public class StateInspector : Editor
     public override void OnInspectorGUI()
     {
         EditorGUI.BeginChangeCheck();
-        string stateDescription = EditorGUILayout.DelayedTextField(state.description, GUILayout.Height(75));
+        EditorGUILayout.BeginHorizontal();
+        string stateDescription = EditorGUILayout.DelayedTextField(state.description, GUILayout.Height(150));
+        Sprite stateSprite = (Sprite)EditorGUILayout.ObjectField(state.image, typeof(Sprite), false, GUILayout.Width(80), GUILayout.Height(80));
+        EditorGUILayout.EndHorizontal();
         AudioClip stateSound = (AudioClip)EditorGUILayout.ObjectField(state.sound, typeof(AudioClip), false);
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(state, "state base properties");
             state.description = stateDescription;
             state.sound = stateSound;
+            state.image = stateSprite;
         }
         GUILayout.Space(EditorGUIUtility.singleLineHeight);
         _serializedObject.Update();
