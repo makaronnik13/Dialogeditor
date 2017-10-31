@@ -9,6 +9,11 @@ public class Param : ScriptableObject
     {
         get
         {
+            if (game == null)
+            {
+                game = GuidManager.GetGameByParam(this);
+            }
+
             return game;
         }
         set
@@ -36,8 +41,14 @@ public class Param : ScriptableObject
     public bool showing;
     public string description = "";
     public Sprite image;
-    public bool withChange;
-    public List<ConditionChange> autoActivatedChangesGUIDS = new List<ConditionChange>();
+
+    //activation fields
+    public Path activationPath;
+    public Condition condition;
+    public List<ParamChanges> changes = new List<ParamChanges>();
+    public bool withEvent;
+    public bool autoActivating;
+
     public Vector2 scrollPosition;
     public int paramGUID;
 	public string tags;

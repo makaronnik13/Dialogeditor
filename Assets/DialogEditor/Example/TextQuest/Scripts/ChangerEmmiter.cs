@@ -27,6 +27,7 @@ public class ChangerEmmiter : Singleton<ChangerEmmiter>
             name = name
         };
         changersStack.Enqueue(newStruct);
+
         if (changersStack.Count > 0 && !running)
         {
             StopCoroutine("EmmitOne");
@@ -44,6 +45,7 @@ public class ChangerEmmiter : Singleton<ChangerEmmiter>
                 GameObject visual = Instantiate(emitionVisual, transform, false);
                 ChangerVisual visualScript = visual.GetComponent<ChangerVisual>();
                 visualScript.Show(changersStack.Dequeue());
+                Debug.Log(changersStack.Count);
             }
             else
             {

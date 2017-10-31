@@ -152,7 +152,6 @@ public class PlayerResource : Singleton<PlayerResource>
 
     private void InitParam(Param p)
     {
-        Debug.Log("init "+p.name);
         if (!saveInfo.paramsDictionary.ContainsKey(p.paramGUID))
         {
             saveInfo.paramsDictionary.Add(p.paramGUID, 0);
