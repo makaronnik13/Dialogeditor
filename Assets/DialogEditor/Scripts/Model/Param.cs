@@ -4,6 +4,13 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Param : ScriptableObject
 {
+	public enum ActivationType
+	{
+		None,
+		Manual,
+		Auto
+	}
+
     private PathGame game;
     public PathGame Game
     {
@@ -46,8 +53,7 @@ public class Param : ScriptableObject
     public Path activationPath;
     public Condition condition;
     public List<ParamChanges> changes = new List<ParamChanges>();
-    public bool withEvent;
-    public bool autoActivating;
+	public ActivationType activationType;
 
     public Vector2 scrollPosition;
     public int paramGUID;

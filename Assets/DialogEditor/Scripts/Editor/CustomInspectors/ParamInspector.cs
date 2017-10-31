@@ -7,7 +7,6 @@ using System.Linq;
 
 public class ParamInspector : Editor
 {
-    private bool showActivation = false;
     private Param p;
     private PathGame _game;
     private PathGame game
@@ -44,27 +43,24 @@ public class ParamInspector : Editor
         }
 
         Path pPath = p.activationPath;   
-        bool pAuto = p.autoActivating;
-        bool pEvent = p.withEvent;
+		Param.ActivationType pType = (Param.ActivationType)EditorGUILayout.EnumPopup (p.activationType);
 
-        showActivation = EditorGUILayout.Foldout(showActivation, "activation");
-        if (showActivation)
+		if (pType != Param.ActivationType.None)
         {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(15);
-            EditorGUILayout.BeginVertical();
             DrawCondition(p);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Activatiuon path: ", GUILayout.Width(100));
-            pPath = (Path)EditorGUILayout.ObjectField(p.activationPath, typeof(Path), false);
-            EditorGUILayout.EndHorizontal();
-            DrawChanges(p);
-            EditorGUILayout.BeginHorizontal();
-            pAuto = EditorGUILayout.Toggle("auto activation: ", p.autoActivating);
-            pEvent = EditorGUILayout.Toggle("with event: ", p.withEvent);
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
-            EditorGUILayout.EndHorizontal();
+			pPath = (Path)EditorGUILayout.ObjectField(p.activationPath, typeof(Path), false);
+            EditorGUILayout.EndHorizontal();         
+			EditorGUI.BeginDisabledGroup(p.Game.parameters.Count == 0);
+			if (GUILayout.Button("add changer", GUILayout.Width(110)))
+			{
+				Undo.RecordObject(p, "path condition creation");
+				p.changes.Add(new ParamChanges(p.Game.parameters[0]));
+			}
+			GUI.color = Color.white;
+			EditorGUI.EndDisabledGroup();
+			DrawChanges(p);
         }
 
         EditorGUILayout.BeginHorizontal();
@@ -81,15 +77,14 @@ public class ParamInspector : Editor
             p.image = pImage;
 			p.tags = pTags;
             p.activationPath = pPath;
-            p.withEvent = pEvent;
-            p.autoActivating = pAuto;
+			p.activationType = pType;
         }
     }
 
     private void DrawCondition(Param param)
     {
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("condition:", GUILayout.Width(100));
+		EditorGUILayout.LabelField("condition: ", GUILayout.Width(100));
         GUI.backgroundColor = Color.white;
         try
         {
@@ -109,7 +104,8 @@ public class ParamInspector : Editor
         string conditionString = EditorGUILayout.DelayedTextField(param.condition.conditionString);
 
         EditorGUI.BeginDisabledGroup(param.Game.parameters.Count == 0);
-        if (GUILayout.Button("add condition param"))
+		GUI.color = Color.green;
+		if (GUILayout.Button("", GUILayout.Width(15), GUILayout.Height(15)))
         {
             Undo.RecordObject(p, "path condition creation");
             param.condition.AddParam(param.Game.parameters[0]);
@@ -147,7 +143,7 @@ public class ParamInspector : Editor
 
             EditorGUI.BeginChangeCheck();
 
-            int paramIndex = EditorGUILayout.Popup(p.Game.parameters.IndexOf(param.condition.Parameters[i]), p.Game.parameters.Select(x => x.paramName).ToArray());
+			int paramIndex = EditorGUILayout.Popup(p.Game.parameters.IndexOf(param.condition.Parameters[i]), p.Game.parameters.Select(x => x.paramName).ToArray());
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -173,18 +169,10 @@ public class ParamInspector : Editor
     }
     private void DrawChanges(Param param)
     {
-        EditorGUI.BeginDisabledGroup(param.Game.parameters.Count == 0);
-        if (GUILayout.Button("add changer"))
-        {
-            Undo.RecordObject(p, "path condition creation");
-            param.changes.Add(new ParamChanges(param.Game.parameters[0]));
-        }
-        EditorGUI.EndDisabledGroup();
-
         ParamChanges removingChanger = null;
         for (int i = 0; i < param.changes.Count; i++)
         {
-            GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
+            GUILayout.Box("", new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1)});
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("delete"))
             {
@@ -210,7 +198,7 @@ public class ParamInspector : Editor
                 }
             }
             EditorGUI.BeginChangeCheck();
-            int paramIndex = EditorGUILayout.Popup(p.Game.parameters.IndexOf(param.changes[i].aimParam), p.Game.parameters.Select(x => x.paramName).ToArray(), GUILayout.Width(100));
+            int paramIndex = EditorGUILayout.Popup(p.Game.parameters.IndexOf(param.changes[i].aimParam), p.Game.parameters.Select(x => x.paramName).ToArray(), GUILayout.Width(81));
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(p, "chose path changer param");

@@ -14,7 +14,7 @@ public class StatsPanel : MonoBehaviour  {
 	public Transform content;
 	public GameObject descriptionInfo;
 	public Text descriptionText, itemName;
-    private List<ItemButton> items = new List<ItemButton>();
+	public List<ItemButton> items = new List<ItemButton>();
 
 	void Awake()
 	{	
@@ -28,7 +28,7 @@ public class StatsPanel : MonoBehaviour  {
         {
             foreach (Param p in DialogPlayer.Instance.CurrentDialog.game.parameters)
             {
-                if (IsShowing(p))
+                if (InShowing(p))
                 {
                     PlayerResource.Instance.GetValue(p);
                 }
@@ -37,17 +37,11 @@ public class StatsPanel : MonoBehaviour  {
     }
 
     private void ParamChanged(Param p)
-    {
-        if (!IsWeakShowing(p))
-        {
-            return;
-        }
-
-       
+    {  
             ItemButton itemButton = GetParamButton(p);
             if (itemButton==null)
             {
-                if(PlayerResource.Instance.GetValue(p) != 0 || IsShowing(p))
+			if(PlayerResource.Instance.GetValue(p) != 0 && InShowing(p) && !InHidden(p))
                 {
                     GameObject newButton = Instantiate(ItemPrefab);
                     newButton.transform.SetParent(content);
@@ -60,6 +54,11 @@ public class StatsPanel : MonoBehaviour  {
             {
                 itemButton.UpdateValue(PlayerResource.Instance.GetValue(p));
             }
+
+		foreach(ItemButton ib in items)
+		{
+			ib.UpdateCondition ();
+		}
        
     }
 
@@ -75,21 +74,25 @@ public class StatsPanel : MonoBehaviour  {
         return null;
     }
 
-    public bool IsShowing(Param p)
+    public bool InShowing(Param p)
     {
-        if (p.Tags.ToList().Intersect(showingTags.ToList()).Count() > 0 && p.Tags.ToList().Intersect(hiddenTags.ToList()).Count() == 0)
+		if(showingTags.Length == 0)
+		{
+			return true;
+		}
+        if (p.Tags.ToList().Intersect(showingTags.ToList()).Count() > 0)
         {
             return true;
         }
         return false;
     }
 
-    public bool IsWeakShowing(Param p)
+    public bool InHidden(Param p)
     {
-        if (p.Tags.ToList().Intersect(hiddenTags.ToList()).Count() == 0)
-        {
-            return true;
-        }
-        return false;
+		if (p.Tags.ToList().Intersect(hiddenTags.ToList()).Count() > 0)
+		{
+			return true;
+		}
+		return false;
     }
 }

@@ -84,9 +84,15 @@ public class PlayerResource : Singleton<PlayerResource>
         bformatter.Serialize(stream, saveInfo);
         stream.Close();
     }
-    public void ChangeParams(Path path)
+
+	public void ChangeParams(Path path)
+	{
+		ChangeParams (path.changes);
+	}
+
+	public void ChangeParams(List<ParamChanges> changes)
     {
-        foreach (ParamChanges pch in path.changes)
+        foreach (ParamChanges pch in changes)
         {
             InitParam(pch.aimParam);
             foreach (Param p in pch.Parameters)
@@ -95,7 +101,7 @@ public class PlayerResource : Singleton<PlayerResource>
             }
         }
         
-        foreach (ParamChanges pch in path.changes)
+        foreach (ParamChanges pch in changes)
         {  
 			saveInfo.paramsDictionary[pch.aimParam.paramGUID] = CalcParamAfterChange(pch);
             onParamchanged(pch.aimParam);

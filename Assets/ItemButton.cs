@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Linq;
 
 public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 	public Text count;
@@ -25,6 +26,27 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 		if(value==1)
 		{
 			count.transform.parent.gameObject.SetActive(false);
+		}
+		if(param.activationType == Param.ActivationType.Manual)
+		{
+			GetComponent<Button> ().onClick.AddListener (()=>{
+			PlayerResource.Instance.ChangeParams(param.changes);
+			if(param.activationPath)
+			{
+				DialogPlayer.Instance.PlayPath(param.activationPath);
+			}
+		});
+		}
+		UpdateCondition ();
+	}
+
+	public void UpdateCondition()
+	{
+		if (param.activationType == Param.ActivationType.Manual) {
+			GetComponent<Button> ().interactable = (param.condition.conditionString == "" || PlayerResource.Instance.CheckCondition (param.condition));
+		} else 
+		{
+			GetComponent<Button> ().interactable = false;
 		}
 	}
 
@@ -48,14 +70,14 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         count.transform.parent.gameObject.SetActive(true);
         count.text = v+"";
-        if (v == 1)
+		if (v == 1 && !GetComponentInParent<StatsPanel> ().InShowing (Param))
         {
             count.transform.parent.gameObject.SetActive(false);
         }
-        if (v == 0)
-        {
-            Destroy(gameObject);
-        }
+		if (v == 0 && !GetComponentInParent<StatsPanel> ().InShowing (Param)) {
+			GetComponentInParent<StatsPanel> ().items.Remove (this);
+            Destroy (gameObject);
+		}
     }
 
     #endregion

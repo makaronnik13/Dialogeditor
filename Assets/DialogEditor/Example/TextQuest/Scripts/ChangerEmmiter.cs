@@ -16,8 +16,6 @@ public class ChangerEmmiter : Singleton<ChangerEmmiter>
 
     private Queue<ChangerEmmitionStruct> changersStack = new Queue<ChangerEmmitionStruct>();
 
-    private bool emmiting = false;
-
     public void Emmit(Sprite image, float change, string name)
     {
         ChangerEmmitionStruct newStruct = new ChangerEmmitionStruct
@@ -44,15 +42,14 @@ public class ChangerEmmiter : Singleton<ChangerEmmiter>
                 running = true;
                 GameObject visual = Instantiate(emitionVisual, transform, false);
                 ChangerVisual visualScript = visual.GetComponent<ChangerVisual>();
-                visualScript.Show(changersStack.Dequeue());
-                Debug.Log(changersStack.Count);
+				visualScript.Show(changersStack.Dequeue(), 1+changersStack.Count*0.2f);
             }
             else
             {
                 running = false;
                 yield return null;
             }
-            yield return new WaitForSeconds(3); 
+			yield return new WaitForSeconds(3/(1+changersStack.Count*0.5f)); 
         }
     }
 }

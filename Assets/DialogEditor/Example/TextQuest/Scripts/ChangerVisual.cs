@@ -6,7 +6,7 @@ public class ChangerVisual : MonoBehaviour
 {
 	public Image img;
 
-    public void Show(ChangerEmmiter.ChangerEmmitionStruct pch)
+	public void Show(ChangerEmmiter.ChangerEmmitionStruct pch, float speed)
     {
         if (pch.img==null)
         {
@@ -20,6 +20,7 @@ public class ChangerVisual : MonoBehaviour
         {
             transform.GetChild(2).GetComponent<Text>().text = "+" + transform.GetChild(2).GetComponent<Text>().text;
         }
+		GetComponent<Animator> ().speed = speed;
         GetComponent<Animator>().SetBool("Plus", (pch.change > 0));
         GetComponent<Animator>().SetTrigger("Showing");
         Destroy(gameObject, 4);
