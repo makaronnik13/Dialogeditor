@@ -74,10 +74,50 @@ public class GuidManager
         }
         return null;
     }
+
+    public static int GetStateGuid()
+    {
+        int r = UnityEngine.Random.Range(0, Int32.MaxValue);
+
+        foreach (PathGame inspectedgame in Games)
+        {
+            foreach (Chain c in inspectedgame.chains)
+            {
+                foreach (State s in c.states)
+                {
+                    if (s.Guid == r)
+                    {
+                        return GetStateGuid();
+                    }
+                }
+            }
+        }
+        return r;
+    }
+
     public static PathGame GetGameByState(State state)
     {
         return GetGameByChain(GetChainByState(state));
     }
+
+    public static State GetStateByGuid(int guid)
+    {
+        foreach (PathGame inspectedgame in Games)
+        {
+            foreach (Chain c in inspectedgame.chains)
+            {
+                foreach (State s in c.states)
+                {
+                    if (s.Guid == guid)
+                    {
+                        return s;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static PathGame GetGameByChain(Chain personChain)
     {
         foreach (PathGame inspectedgame in Games)

@@ -9,7 +9,25 @@ public class State : ScriptableObject
 {
 	#if UNITY_EDITOR
 	public string shortName;
-	#endif
+#endif
+    [SerializeField]
+    private int _guid;
+    public int Guid
+    {
+        get
+        {
+            if (_guid == 0)
+            {
+                _guid = GuidManager.GetStateGuid();
+            }
+            return _guid;
+        }
+        set
+        {
+            _guid = value;
+        }
+    }
+
     private PathGame game;
     public PathGame Game
     {
@@ -70,6 +88,7 @@ public class State : ScriptableObject
 
     public void Init(Chain chain)
     {
+        Guid = GuidManager.GetStateGuid();
         this.chain = chain;
         game = chain.Game;
         description = "";

@@ -9,9 +9,11 @@ public class TextQuesVisualizer : MonoBehaviour {
     public Image background;
 
     private Sprite defaultBackground;
+    private PathGame playingBook;
 
 	public void PlayBook (PathGame book)
     {
+        playingBook = book;
 		DialogPlayer.Instance.onStateIn += StateIn;
         DialogPlayer.Instance.onPathGo += PathGo;
         defaultBackground = background.sprite;
@@ -59,5 +61,16 @@ public class TextQuesVisualizer : MonoBehaviour {
 				newButton.GetComponent<TextQuestVariantButton> ().Init(p);
 			}
 		}
+
+        if (state.pathes.Count == 0)
+        {
+            GameCanvasController.Instance.gameFinished = true;
+            GameObject newButton = Instantiate(variantButtonPrefab);
+            newButton.transform.SetParent(buttonsArea);
+            newButton.transform.localScale = Vector3.one;
+            newButton.GetComponentInChildren<Text>().text = "конец";
+            newButton.GetComponent<Button>().onClick.AddListener(()=> {
+                GameCanvasController.Instance.GoToLibrary(); });
+        }
 	}
 }

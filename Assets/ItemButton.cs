@@ -30,11 +30,7 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 		if(param.activationType == Param.ActivationType.Manual)
 		{
 			GetComponent<Button> ().onClick.AddListener (()=>{
-			PlayerResource.Instance.ChangeParams(param.changes);
-			if(param.activationPath)
-			{
-				DialogPlayer.Instance.PlayPath(param.activationPath);
-			}
+                ParamsActivator.Instance.ActivateParam(Param);
 		});
 		}
 		UpdateCondition ();

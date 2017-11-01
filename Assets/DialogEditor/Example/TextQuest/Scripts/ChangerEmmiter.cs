@@ -16,6 +16,11 @@ public class ChangerEmmiter : Singleton<ChangerEmmiter>
 
     private Queue<ChangerEmmitionStruct> changersStack = new Queue<ChangerEmmitionStruct>();
 
+    public void StopEmmit()
+    {
+        changersStack.Clear();
+    }
+
     public void Emmit(Sprite image, float change, string name)
     {
         ChangerEmmitionStruct newStruct = new ChangerEmmitionStruct

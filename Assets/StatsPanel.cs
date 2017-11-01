@@ -95,4 +95,13 @@ public class StatsPanel : MonoBehaviour  {
 		}
 		return false;
     }
+
+    public void Clear()
+    {
+        foreach (ItemButton ib in items)
+        {
+            Destroy(ib.gameObject);
+        }
+        items.Clear();
+    }
 }

@@ -41,8 +41,8 @@ public class DialogPlayer : Singleton<DialogPlayer>
 	{
         if (p.aimState != null)
         {
-            onPathGo.Invoke(p);
             PlayState(p.aimState, currentDialog);
+            onPathGo.Invoke(p);
         }
         else
         {        

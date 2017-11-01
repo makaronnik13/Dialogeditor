@@ -11,7 +11,8 @@ public class PlayerResource : Singleton<PlayerResource>
     public class SaveInfo
     {
         public Dictionary<int, float> paramsDictionary = new Dictionary<int, float>();
-        public Dictionary<GameObject, Chain> personsChains = new Dictionary<GameObject, Chain>();
+        public int lastState;
+     //   public Dictionary<GameObject, Chain> personsChains = new Dictionary<GameObject, Chain>();
     }
 
     public Action<Param> onParamchanged;
@@ -46,22 +47,45 @@ public class PlayerResource : Singleton<PlayerResource>
     public void Start()
     {
         DialogPlayer.Instance.onPathGo += new DialogPlayer.PathEventHandler(ChangeParams);
+        DialogPlayer.Instance.onStateIn += (State s) =>
+        {
+            saveInfo.lastState = s.Guid;
+        };
     }
-    public void Load(string fileName)
+
+    public void DeleteSave(string fileName)
     {
-        if (!Directory.Exists(Application.dataPath + "/saves"))
+        if (!File.Exists(Application.dataPath + "/saves/" + fileName))
         {
             return;
         }
+        else
+        {
+            File.Delete(Application.dataPath + "/saves/" + fileName);
+        }
+    }
+
+    public void Load(string fileName)
+    {
+        saveInfo = new SaveInfo();
+        if (!File.Exists(Application.dataPath + "/saves/"+fileName))
+        {
+            return;
+        }
+
+        Debug.Log(Application.dataPath + "/saves/" + fileName);
+
         Stream stream = File.Open(Application.dataPath + "/saves/" + fileName, FileMode.Open);
         BinaryFormatter bformatter = new BinaryFormatter();
         bformatter.Binder = new PathGameSaveBinder();
         saveInfo = (SaveInfo)bformatter.Deserialize(stream);
         foreach (PersonDialog pd in FindObjectsOfType<PersonDialog>())
         {
-            pd.PersonChain = saveInfo.personsChains[pd.gameObject];
+            //pd.PersonChain = saveInfo.personsChains[pd.gameObject];
         }
         stream.Close();
+
+        DialogPlayer.Instance.PlayState(GuidManager.GetStateByGuid(saveInfo.lastState), FindObjectOfType<PersonDialog>());
     }
     public void Save(string fileName)
     {
@@ -69,19 +93,15 @@ public class PlayerResource : Singleton<PlayerResource>
         {
             Directory.CreateDirectory(Application.dataPath + "/saves");
         }
-        if (!File.Exists(Application.dataPath + "/saves/" + fileName))
-        {
-            File.Create(Application.dataPath + "/saves/" + fileName);
-        }
-        Stream stream = File.Open(Application.dataPath + "/saves/" + fileName, FileMode.OpenOrCreate);
+        StreamWriter stream = new StreamWriter(Application.dataPath + "/saves/" + fileName, true);
         BinaryFormatter bformatter = new BinaryFormatter();
         bformatter.Binder = new PathGameSaveBinder();
         Debug.Log("Writing Information");
         foreach (PersonDialog pd in FindObjectsOfType<PersonDialog>())
         {
-            saveInfo.personsChains.Add(pd.gameObject, pd.PersonChain);
+         //   saveInfo.personsChains.Add(pd.gameObject, pd.PersonChain);
         }
-        bformatter.Serialize(stream, saveInfo);
+        bformatter.Serialize(stream.BaseStream, saveInfo);
         stream.Close();
     }
 
