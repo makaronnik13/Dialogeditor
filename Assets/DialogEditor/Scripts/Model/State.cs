@@ -11,20 +11,20 @@ public class State : ScriptableObject
 	public string shortName;
 #endif
     [SerializeField]
-    private int _guid;
+	public int guid;
     public int Guid
     {
         get
         {
-            if (_guid == 0)
+            if (guid == 0)
             {
-                _guid = GuidManager.GetStateGuid();
+                guid = GuidManager.GetStateGuid();
             }
-            return _guid;
+            return guid;
         }
         set
         {
-            _guid = value;
+            guid = value;
         }
     }
 

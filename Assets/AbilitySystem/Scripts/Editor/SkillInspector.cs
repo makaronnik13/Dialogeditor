@@ -199,7 +199,7 @@ public class SkillInspector : Editor
 		for(int i = 0; i< skill.auraTags.Count;i++)
 		{
 			GUILayout.BeginHorizontal ();
-			skill.auraTags[i] = EditorGUILayout.DelayedTextField (skill.auraTags[i]);
+			skill.auraTags[i] = EditorGUILayout.TextField (skill.auraTags[i]);
 
 			GUI.color = Color.red;
 			if(GUILayout.Button("",GUILayout.Width(15), GUILayout.Height(15)))

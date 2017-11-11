@@ -85,7 +85,7 @@ public class GuidManager
             {
                 foreach (State s in c.states)
                 {
-                    if (s.Guid == r)
+                    if (s.guid == r)
                     {
                         return GetStateGuid();
                     }

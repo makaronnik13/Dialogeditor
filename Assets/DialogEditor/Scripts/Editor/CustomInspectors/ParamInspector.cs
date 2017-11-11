@@ -28,7 +28,7 @@ public class ParamInspector : Editor
         EditorGUI.BeginChangeCheck();
 		EditorGUILayout.LabelField ("name:");
 		EditorGUILayout.BeginHorizontal ();
-		string pName = EditorGUILayout.DelayedTextField(p.paramName);
+		string pName = EditorGUILayout.TextField(p.paramName);
 		bool pShowing = !GUILayout.Toggle(!p.showing, "hidden", GUILayout.Width(60));
 		EditorGUILayout.EndHorizontal ();
         string pDescription = p.description;
@@ -37,7 +37,7 @@ public class ParamInspector : Editor
         {
 			EditorGUILayout.LabelField ("description:");
 			EditorGUILayout.BeginHorizontal ();
-			pDescription = EditorGUILayout.DelayedTextField(p.description, GUILayout.Height(60));
+			pDescription = EditorGUILayout.TextField(p.description, GUILayout.Height(60));
 			pImage = (Sprite)EditorGUILayout.ObjectField(p.image, typeof(Sprite), false, GUILayout.Width(60), GUILayout.Height(60));
 			EditorGUILayout.EndHorizontal ();
         }
@@ -65,7 +65,7 @@ public class ParamInspector : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField ("tags:", GUILayout.Width(100));
-		string pTags = EditorGUILayout.DelayedTextField(p.tags);
+		string pTags = EditorGUILayout.TextField(p.tags);
         EditorGUILayout.EndHorizontal();
 
         if (EditorGUI.EndChangeCheck())
@@ -101,7 +101,7 @@ public class ParamInspector : Editor
         }
         EditorGUI.BeginChangeCheck();
 
-        string conditionString = EditorGUILayout.DelayedTextField(param.condition.conditionString);
+        string conditionString = EditorGUILayout.TextField(param.condition.conditionString);
 
         EditorGUI.BeginDisabledGroup(param.Game.parameters.Count == 0);
 		GUI.color = Color.green;
@@ -220,7 +220,7 @@ public class ParamInspector : Editor
                 GUI.color = Color.red;
             }
             EditorGUI.BeginChangeCheck();
-            string changeString = EditorGUILayout.DelayedTextField(param.changes[i].changeString);
+            string changeString = EditorGUILayout.TextField(param.changes[i].changeString);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(p, "change path changer string");

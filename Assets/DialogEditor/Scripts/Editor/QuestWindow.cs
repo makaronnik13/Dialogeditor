@@ -760,14 +760,15 @@ public class QuestWindow : EditorWindow
             copyBuffer = null;
         }
 
-        foreach (StateLink s in deletingChain.links)
-        {
-            RemoveStateLink(deletingChain, s);
-        }
+		for (int i = 0; i<deletingChain.links.Count;i++)
+		{
+			RemoveStateLink(deletingChain, deletingChain.links[i]);
+		}
+			
 
-        foreach (State s in deletingChain.states)
+		for (int i = 0; i<deletingChain.states.Count;i++)
         {
-            RemoveState(deletingChain, s, false);
+			RemoveState(deletingChain, deletingChain.states[i], false);
         }
 
         game.chains.Remove(deletingChain);

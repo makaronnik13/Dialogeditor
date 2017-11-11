@@ -23,7 +23,7 @@ public class ChainInspector : Editor
     {
         c = (Chain)target;
         EditorGUI.BeginChangeCheck();
-		string dName = EditorGUILayout.DelayedTextField(c.dialogName, GUILayout.Height(15));
+		string dName = EditorGUILayout.TextField(c.dialogName, GUILayout.Height(15));
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(c, "Edit chain");

@@ -59,7 +59,7 @@ public class StateInspector : Editor
     {
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.BeginHorizontal();
-        string stateDescription = EditorGUILayout.DelayedTextField(state.description, GUILayout.Height(150));
+        string stateDescription = EditorGUILayout.TextField(state.description, GUILayout.Height(150));
         Sprite stateSprite = (Sprite)EditorGUILayout.ObjectField(state.image, typeof(Sprite), false, GUILayout.Width(80), GUILayout.Height(80));
         EditorGUILayout.EndHorizontal();
         AudioClip stateSound = (AudioClip)EditorGUILayout.ObjectField(state.sound, typeof(AudioClip), false);

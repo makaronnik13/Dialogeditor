@@ -18,7 +18,7 @@ public class PathInspector : Editor
     {
         GUILayout.BeginHorizontal();
         EditorGUI.BeginChangeCheck();
-		string pText = EditorGUILayout.DelayedTextField(p.text, GUILayout.Height(30));
+		string pText = EditorGUILayout.TextField(p.text, GUILayout.Height(30));
         GUI.color = Color.white;
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
@@ -68,7 +68,7 @@ public class PathInspector : Editor
             GUI.color = Color.red;
         }
         EditorGUI.BeginChangeCheck();
-		string conditionString = EditorGUILayout.DelayedTextField(path.condition.conditionString);
+		string conditionString = EditorGUILayout.TextField(path.condition.conditionString);
 
 
 
@@ -180,7 +180,7 @@ public class PathInspector : Editor
                 GUI.color = Color.red;
             }
             EditorGUI.BeginChangeCheck();
-			string changeString = EditorGUILayout.DelayedTextField(path.changes[i].changeString);
+			string changeString = EditorGUILayout.TextField(path.changes[i].changeString);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(p, "change path changer string");
